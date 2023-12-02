@@ -1,22 +1,22 @@
 import { PrismaClient } from "@prisma/client";
-import ItemWidget, { ItemProps } from "components/Item";
+import StudentWidget, { StudentProps } from "components/Student";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
 import { GetServerSideProps } from "next";
 import prisma from "services/prisma";
 
 type Props = {
-  items: ItemProps[];
+  students: StudentProps[];
   admins: string[];
 };
 
-const Items: React.FC<Props> = (props) => {
+const Students: React.FC<Props> = (props) => {
   return (
     <Layout admins={props.admins}>
       <SearchView
-        set={props.items.map((item) => ({
-          name: item.name,
-          widget: <ItemWidget item={item} key={item.id} />,
+        set={props.students.map((student) => ({
+          name: student.name,
+          widget: <StudentWidget student={student} key={student.id} />,
         }))}
       />
     </Layout>
@@ -24,11 +24,11 @@ const Items: React.FC<Props> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const items = await prisma.item.findMany();
+  const students = await prisma.student.findMany();
   const admins = await prisma.admin.findMany();
   return {
-    props: { items: items, admins: admins.map((admin) => admin.email) },
+    props: { students: students, admins: admins.map((admin) => admin.email) },
   };
 };
 
-export default Items;
+export default Students;

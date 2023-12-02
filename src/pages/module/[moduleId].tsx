@@ -6,50 +6,46 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { PrismaClient } from "@prisma/client";
-import { ItemProps } from "components/Item";
+import { DeleteIcon, EditIcon, Icon } from "@chakra-ui/icons";
+import { SlPrinter } from "react-icons/sl";
 import { GetServerSideProps } from "next";
-import StorageWidget from "components/Storage";
-import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import Router from "next/router";
-import Layout from "components/Layout";
+import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import SearchView from "components/SearchView";
-import Protect from "components/Protect";
-import { AdminProps } from "components/Admin";
+import Layout from "components/Layout";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
-
+import StudentWidget from "components/Student";
+import { ModuleProps } from "components/Module";
 type Props = {
-  item: ItemProps;
+  module: ModuleProps;
   admins: string[];
 };
-
-const ItemPage: React.FC<Props> = (props) => {
+const ModulePage: React.FC<Props> = (props) => {
   // session
   const { data: session } = useSession();
-  // delete modal
+  //modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
     try {
-      const body = { id: props.item.id };
+      const body = { id: props.module.id };
       console.log(body);
-      const res = await fetch("/api/delete-item", {
+      const res = await fetch("/api/delete-module", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      await Router.push({ pathname: "/view-items" });
+      await Router.push({ pathname: "/view-modules" });
     } catch (error) {
       console.error(error);
     }
   };
-  // ret
+
   return (
     <Layout admins={props.admins}>
       <Center>
         <Flex>
-          <Heading>{props.item.name}</Heading>
+          <Heading>{props.module.name}</Heading>
           {session && props.admins.includes(session!.user!.email!) && (
             <>
               <IconButton
@@ -60,8 +56,8 @@ const ItemPage: React.FC<Props> = (props) => {
                 icon={<EditIcon />}
                 onClick={() =>
                   Router.push({
-                    pathname: "/upsert-item",
-                    query: { id: props.item.id },
+                    pathname: "/upsert-module",
+                    query: { id: props.module.id },
                   })
                 }
               />
@@ -71,22 +67,33 @@ const ItemPage: React.FC<Props> = (props) => {
                 aria-label="delete"
                 icon={<DeleteIcon />}
               />
+              <ConfirmDeleteModal
+                onClose={onClose}
+                name={" the module: " + props.module.name}
+                handleDelete={handleDelete}
+                isOpen={isOpen}
+              />
+              <IconButton
+                ml={2}
+                mr={2}
+                colorScheme="teal"
+                aria-label="edit"
+                icon={<Icon as={SlPrinter} />}
+                onClick={() =>
+                  Router.push({
+                    pathname: "/print/" + props.module.id,
+                  })
+                }
+              />
             </>
           )}
-
-          <ConfirmDeleteModal
-            isOpen={isOpen}
-            onClose={onClose}
-            name={" the item: " + props.item.name}
-            handleDelete={handleDelete}
-          />
         </Flex>
       </Center>
       <Box h="4vh"></Box>
       <SearchView
-        set={props.item.storages.map((storage) => ({
-          name: storage.name,
-          widget: <StorageWidget storage={storage} key={storage.id} />,
+        set={props.module.students.map((student) => ({
+          name: student.name,
+          widget: <StudentWidget student={student} key={student.id} />,
         }))}
       />
     </Layout>
@@ -94,21 +101,21 @@ const ItemPage: React.FC<Props> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const item = await prisma.item.findUnique({
+  const module = await prisma.module.findUnique({
     where: {
-      id: Number(context.params?.itemId),
+      id: Number(context.params?.moduleId),
     },
     include: {
-      storages: true,
+      students: true,
     },
   });
   const admins = await prisma.admin.findMany();
   return {
     props: {
-      item: item,
+      module: module,
       admins: admins.map((admin) => admin.email),
     },
   };
 };
 
-export default ItemPage;
+export default ModulePage;

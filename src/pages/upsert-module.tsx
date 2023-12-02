@@ -3,11 +3,19 @@ import Router from "next/router";
 
 import { MultiValue, Select } from "chakra-react-select";
 
-import { FormControl, Input, Button, Box, useToast } from "@chakra-ui/react";
+import {
+  FormControl,
+  Input,
+  Button,
+  Box,
+  Stack,
+  useToast,
+} from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
-import { StorageProps } from "components/Storage";
+import { ModuleProps } from "components/Module";
+import Header from "components/Header";
 import { GetServerSideProps } from "next";
-import { ItemProps } from "components/Item";
+import { StudentProps } from "components/Student";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
 import { errorToast } from "services/toasty";
@@ -17,49 +25,51 @@ enum FormState {
   Submitting,
 }
 type Props = {
-  allStorages: StorageProps[];
-  oldItem: ItemProps;
+  allStudents: StudentProps[];
+  oldModule: ModuleProps;
   admins: string[];
 };
 type RelateProps = {
   id: number;
 };
-const ItemDraft: React.FC<Props> = (props) => {
+const ModuleDraft: React.FC<Props> = (props) => {
   const toaster = useToast();
-  const allOptions = props.allStorages.map((storage) => ({
-    value: storage.id,
-    label: storage.name,
+  const allOptions = props.allStudents.map((student) => ({
+    value: student.id,
+    label: student.name,
   }));
-  const prefillOptions = props.oldItem.storages.map((storage) => ({
-    value: storage.id,
-    label: storage.name,
+  const prefillOptions = props.oldModule.students.map((student) => ({
+    value: student.id,
+    label: student.name,
   }));
-  const id = props.oldItem.id;
+  const id = props.oldModule.id;
   const isNew = id == -1;
-  const [name, setName] = useState<string>(isNew ? "" : props.oldItem.name);
+  const [name, setName] = useState<string>(isNew ? "" : props.oldModule.name);
   const [formState, setFormState] = useState(FormState.Input);
-  const [storages, setStorages] = useState<
+  const [students, setStudents] = useState<
     MultiValue<{ value: number; label: string }>
   >(isNew ? [] : prefillOptions);
+  console.log("upsert buffer:");
+  console.log("name:", name);
+  console.log("students:", students);
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setFormState(FormState.Submitting);
     try {
-      const storageIds: RelateProps[] = [];
-      storages.map((obj) => storageIds.push({ id: obj.value }));
-      const body = { id, name, storageIds };
-      console.log(body);
-      const res = await fetch("/api/upsert-item", {
+      const studentIds: RelateProps[] = [];
+      students.map((obj) => studentIds.push({ id: obj.value }));
+      const body = { id, name, studentIds };
+      const res = await fetch("/api/upsert-module", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       if (res.status == 500) {
         setFormState(FormState.Input);
-        errorToast(toaster, "Item " + name + " already exists.");
+        errorToast(toaster, "Module " + name + " already exists.");
       } else {
         setFormState(FormState.Input);
-        await Router.push(isNew ? "view-items" : "item/" + id);
+        await Router.push(isNew ? "view-modules" : "module/" + id);
       }
     } catch (error) {
       setFormState(FormState.Input);
@@ -70,25 +80,25 @@ const ItemDraft: React.FC<Props> = (props) => {
   return (
     <Layout admins={props.admins}>
       <Box h="calc(100vh)">
-        <div className="add-item-form">
+        <div className="add-student-form">
           <form onSubmit={submitData}>
             <FormControl>
               <Input
                 value={name}
                 variant="filled"
                 marginTop={10}
-                placeholder="Item name"
+                placeholder="Module name"
                 isDisabled={formState === FormState.Input ? false : true}
                 onChange={(e) => setName(e.target.value)}
               ></Input>
               <Select
                 isMulti
-                name="storages"
+                name="students"
                 options={allOptions}
-                value={storages}
-                placeholder="Select storages"
+                value={students}
+                placeholder="Select students"
                 closeMenuOnSelect={false}
-                onChange={(e) => setStorages(e)}
+                onChange={(e) => setStudents(e)}
                 size="lg"
               />
               <Button
@@ -98,7 +108,7 @@ const ItemDraft: React.FC<Props> = (props) => {
                 type="submit"
                 isLoading={formState == FormState.Input ? false : true}
               >
-                {isNew ? "Add Item" : "Update Item"}
+                {isNew ? "Add Module" : "Update Module"}
               </Button>
             </FormControl>
           </form>
@@ -110,27 +120,27 @@ const ItemDraft: React.FC<Props> = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //prisma
-  const allStorages = await prisma.storage.findMany();
+  const allStudents = await prisma.student.findMany();
   const admins = await prisma.admin.findMany();
   const { id } = context.query;
   const realId = id == undefined ? -1 : Number(id);
-  const find = await prisma.item.findUnique({
+  const find = await prisma.module.findUnique({
     where: {
       id: realId,
     },
     include: {
-      storages: true,
+      students: true,
     },
   });
-  const oldItem = find == null ? { id: -1, name: "", storages: [] } : find;
+  const oldModule = find == null ? { id: -1, name: "", students: [] } : find;
   //ret
   return {
     props: {
-      allStorages: allStorages,
-      oldItem: oldItem,
+      allStudents: allStudents,
+      oldModule: oldModule,
       admins: admins.map((admin) => admin.email),
     },
   };
 };
 
-export default ItemDraft;
+export default ModuleDraft;

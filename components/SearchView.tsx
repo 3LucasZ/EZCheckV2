@@ -1,4 +1,13 @@
-import { Box, Center, HStack, Input, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  HStack,
+  Input,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { ReactNode, useState } from "react";
 
 type SearchViewProps = {
@@ -38,7 +47,7 @@ export default function ConfirmDeleteModal(props: SearchViewProps) {
   };
   return (
     <div>
-      <Box pl="25vw" pr="25vw">
+      <Flex pl="25vw" pr="25vw" gap={2}>
         <Input
           variant="filled"
           placeholder="Search"
@@ -46,7 +55,10 @@ export default function ConfirmDeleteModal(props: SearchViewProps) {
           value={state.query}
           onChange={handleSearchQueryChange}
         />
-      </Box>
+        <Button colorScheme="teal" fontSize="3xl">
+          +
+        </Button>
+      </Flex>
       <Box h="4vh"></Box>
 
       <HStack h="50vh">

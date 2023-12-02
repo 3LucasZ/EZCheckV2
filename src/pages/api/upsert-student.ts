@@ -5,25 +5,25 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id, name, itemIds } = req.body;
-  const op = await prisma.storage.upsert({
+  const { id, name, moduleIds } = req.body;
+  const op = await prisma.student.upsert({
     where: {
       id: id,
     },
     update: {
       name: name,
-      items: {
-        set: itemIds,
+      modules: {
+        set: moduleIds,
       },
     },
     create: {
       name: name,
-      items: {
-        connect: itemIds,
+      modules: {
+        connect: moduleIds,
       },
     },
     include: {
-      items: true,
+      modules: true,
     },
   });
 

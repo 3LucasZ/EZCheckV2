@@ -11,16 +11,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Item {
+model Student {
   id       Int    @id @default(autoincrement())
   name     String    @unique @db.VarChar(255)
-  storages Storage[]
+  modules Module[]
 }
 
-model Storage {
+model Module {
   id    Int @id @default(autoincrement())
   name  String @unique @db.VarChar(255)
-  items Item[]
+  students Student[]
 }
 
 model Admin {

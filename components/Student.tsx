@@ -1,19 +1,19 @@
 import { Box, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { StorageProps } from "./Storage";
+import { ModuleProps } from "./Module";
 
-export type ItemProps = {
+export type StudentProps = {
   id: number;
   name: string;
-  storages: StorageProps[];
+  modules: ModuleProps[];
 };
 
-const ItemWidget: React.FC<{ item: ItemProps }> = ({ item }) => {
+const StudentWidget: React.FC<{ student: StudentProps }> = ({ student }) => {
   let hoverState = {
     bg: "teal.400",
   };
   return (
-    <Link href={"/item/" + item.id} style={{ textDecoration: "none" }}>
+    <Link href={"/student/" + student.id} style={{ textDecoration: "none" }}>
       <Box
         borderRadius="md"
         bg="teal.300"
@@ -22,10 +22,10 @@ const ItemWidget: React.FC<{ item: ItemProps }> = ({ item }) => {
         h={8}
         _hover={hoverState}
       >
-        {item.name}
+        {student.name}
       </Box>
     </Link>
   );
 };
 
-export default ItemWidget;
+export default StudentWidget;

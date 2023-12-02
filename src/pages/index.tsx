@@ -1,7 +1,6 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { RouteButton } from "components/RouteButton";
 import Layout from "components/Layout";
-import { PrismaClient } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
@@ -16,29 +15,29 @@ export default function Home({ admins }: Props) {
       <SimpleGrid columns={2} spacing={10}>
         {session && admins.includes(session!.user!.email!) && (
           <RouteButton
-            route={"upsert-item"}
-            text={"Add item"}
+            route={""}
+            text={"Module Status"}
             imageUrl={"images/add-item.png"}
             color={"red.200"}
           ></RouteButton>
         )}
         <RouteButton
-          route={"view-items"}
-          text={"Find item"}
+          route={"manage-students"}
+          text={"Manage Students"}
           imageUrl={"images/find-item.png"}
           color={"teal.200"}
         ></RouteButton>
         {session && admins.includes(session!.user!.email!) && (
           <RouteButton
-            route={"upsert-storage"}
-            text={"Add storage"}
+            route={""}
+            text={"View Logs"}
             imageUrl={"images/add-item.png"}
             color={"orange.200"}
           ></RouteButton>
         )}
         <RouteButton
-          route={"view-storages"}
-          text={"View storages"}
+          route={"manage-modules"}
+          text={"Manage Modules"}
           imageUrl={"images/find-item.png"}
           color={"blue.200"}
         ></RouteButton>
