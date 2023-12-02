@@ -12,18 +12,22 @@ datasource db {
 }
 
 model Student {
-  id       Int    @id @default(autoincrement())
-  name     String    @unique @db.VarChar(255)
-  modules Module[]
+  id        Int         @id @default(autoincrement())
+  name      String      @unique @db.VarChar(255)
+  PIN       String      @unique @db.VarChar(255)
+  modules   Module[]
 }
 
 model Module {
-  id    Int @id @default(autoincrement())
-  name  String @unique @db.VarChar(255)
-  students Student[]
+  id        Int         @id @default(autoincrement())
+  name      String      @unique @db.VarChar(255)
+  students  Student[]
+  lastSeen  DateTime? 
+  usedBy    String?     @db.VarChar(255)
+  IP        String?     @db.VarChar(255)
 }
 
 model Admin {
-  id Int @id @default(autoincrement())
-  email String @unique @db.VarChar(255)
+  id        Int         @id @default(autoincrement())
+  email     String      @unique @db.VarChar(255)
 }

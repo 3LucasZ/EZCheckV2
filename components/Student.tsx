@@ -5,6 +5,7 @@ import { ModuleProps } from "./Module";
 export type StudentProps = {
   id: number;
   name: string;
+  PIN: string;
   modules: ModuleProps[];
 };
 

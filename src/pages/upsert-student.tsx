@@ -3,7 +3,17 @@ import Router from "next/router";
 
 import { MultiValue, Select } from "chakra-react-select";
 
-import { FormControl, Input, Button, Box, useToast } from "@chakra-ui/react";
+import {
+  FormControl,
+  Input,
+  Button,
+  Box,
+  useToast,
+  HStack,
+  PinInput,
+  PinInputField,
+  VStack,
+} from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import { ModuleProps } from "components/Module";
 import { GetServerSideProps } from "next";
@@ -34,20 +44,23 @@ const StudentDraft: React.FC<Props> = (props) => {
     value: module.id,
     label: module.name,
   }));
+
   const id = props.oldStudent.id;
   const isNew = id == -1;
-  const [name, setName] = useState<string>(isNew ? "" : props.oldStudent.name);
+  const PINLen = 10;
+  const [name, setName] = useState(props.oldStudent.name);
+  const [PIN, setPIN] = useState(props.oldStudent.PIN);
+  const [modules, setModules] =
+    useState<MultiValue<{ value: number; label: string }>>(prefillOptions);
   const [formState, setFormState] = useState(FormState.Input);
-  const [modules, setModules] = useState<
-    MultiValue<{ value: number; label: string }>
-  >(isNew ? [] : prefillOptions);
+
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setFormState(FormState.Submitting);
     try {
       const moduleIds: RelateProps[] = [];
       modules.map((obj) => moduleIds.push({ id: obj.value }));
-      const body = { id, name, moduleIds };
+      const body = { id, name, PIN, moduleIds };
       console.log(body);
       const res = await fetch("/api/upsert-student", {
         method: "POST",
@@ -69,10 +82,10 @@ const StudentDraft: React.FC<Props> = (props) => {
 
   return (
     <Layout admins={props.admins}>
-      <Box h="calc(100vh)">
-        <div className="add-student-form">
-          <form onSubmit={submitData}>
-            <FormControl>
+      <div className="add-student-form">
+        <form onSubmit={submitData}>
+          <FormControl>
+            <VStack spacing="24px">
               <Input
                 value={name}
                 variant="filled"
@@ -81,6 +94,13 @@ const StudentDraft: React.FC<Props> = (props) => {
                 isDisabled={formState === FormState.Input ? false : true}
                 onChange={(e) => setName(e.target.value)}
               ></Input>
+              <HStack>
+                <PinInput onChange={(e) => setPIN(e)} value={PIN}>
+                  {Array.from(Array(PINLen).keys()).map((key) => (
+                    <PinInputField key={key}></PinInputField>
+                  ))}
+                </PinInput>
+              </HStack>
               <Select
                 isMulti
                 name="modules"
@@ -92,7 +112,6 @@ const StudentDraft: React.FC<Props> = (props) => {
                 size="lg"
               />
               <Button
-                mt={4}
                 size="lg"
                 colorScheme="teal"
                 type="submit"
@@ -100,10 +119,10 @@ const StudentDraft: React.FC<Props> = (props) => {
               >
                 {isNew ? "Add Student" : "Update Student"}
               </Button>
-            </FormControl>
-          </form>
-        </div>
-      </Box>
+            </VStack>
+          </FormControl>
+        </form>
+      </div>
     </Layout>
   );
 };
@@ -122,7 +141,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       modules: true,
     },
   });
-  const oldStudent = find == null ? { id: -1, name: "", modules: [] } : find;
+  const oldStudent =
+    find == null ? { id: -1, name: "", PIN: "", modules: [] } : find;
   //ret
   return {
     props: {

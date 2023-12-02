@@ -5,19 +5,21 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id, name, moduleIds } = req.body;
+  const { id, name, PIN, moduleIds } = req.body;
   const op = await prisma.student.upsert({
     where: {
       id: id,
     },
     update: {
       name: name,
+      PIN: PIN,
       modules: {
         set: moduleIds,
       },
     },
     create: {
       name: name,
+      PIN: PIN,
       modules: {
         connect: moduleIds,
       },

@@ -6,6 +6,9 @@ export type ModuleProps = {
   id: number;
   name: string;
   students: StudentProps[];
+  lastSeen?: Date;
+  usedBy?: string;
+  IP?: string;
 };
 
 const ModuleWidget: React.FC<{ module: ModuleProps }> = ({ module }) => {
