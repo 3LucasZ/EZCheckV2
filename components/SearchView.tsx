@@ -59,18 +59,20 @@ export default function ConfirmDeleteModal(props: SearchViewProps) {
           value={state.query}
           onChange={handleSearchQueryChange}
         />
-        <IconButton
-          ml={2}
-          mr={2}
-          colorScheme="teal"
-          aria-label="edit"
-          icon={<AddIcon />}
-          onClick={() =>
-            Router.push({
-              pathname: props.url,
-            })
-          }
-        />
+        {props.url != null && (
+          <IconButton
+            ml={2}
+            mr={2}
+            colorScheme="teal"
+            aria-label="edit"
+            icon={<AddIcon />}
+            onClick={() =>
+              Router.push({
+                pathname: props.url,
+              })
+            }
+          />
+        )}
       </Flex>
       <Box h="4vh"></Box>
 
