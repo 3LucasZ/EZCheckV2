@@ -59,7 +59,7 @@ const StudentDraft: React.FC<Props> = (props) => {
         errorToast(toaster, "Student " + name + " already exists.");
       } else {
         setFormState(FormState.Input);
-        await Router.push(isNew ? "view-students" : "student/" + id);
+        await Router.push(isNew ? "manage-students" : "student/" + id);
       }
     } catch (error) {
       setFormState(FormState.Input);

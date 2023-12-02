@@ -1,17 +1,21 @@
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Center,
   Flex,
   HStack,
+  IconButton,
   Input,
   Stack,
   Text,
 } from "@chakra-ui/react";
+import Router from "next/router";
 import { ReactNode, useState } from "react";
 
 type SearchViewProps = {
   set: PairProps[];
+  url?: string;
 };
 type PairProps = {
   name: string;
@@ -55,9 +59,18 @@ export default function ConfirmDeleteModal(props: SearchViewProps) {
           value={state.query}
           onChange={handleSearchQueryChange}
         />
-        <Button colorScheme="teal" fontSize="3xl">
-          +
-        </Button>
+        <IconButton
+          ml={2}
+          mr={2}
+          colorScheme="teal"
+          aria-label="edit"
+          icon={<AddIcon />}
+          onClick={() =>
+            Router.push({
+              pathname: props.url,
+            })
+          }
+        />
       </Flex>
       <Box h="4vh"></Box>
 

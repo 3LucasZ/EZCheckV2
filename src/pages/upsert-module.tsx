@@ -69,7 +69,7 @@ const ModuleDraft: React.FC<Props> = (props) => {
         errorToast(toaster, "Module " + name + " already exists.");
       } else {
         setFormState(FormState.Input);
-        await Router.push(isNew ? "view-modules" : "module/" + id);
+        await Router.push(isNew ? "manage-modules" : "module/" + id);
       }
     } catch (error) {
       setFormState(FormState.Input);

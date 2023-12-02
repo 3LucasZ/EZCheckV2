@@ -18,6 +18,7 @@ const Modules: React.FC<Props> = (props) => {
           name: module.name,
           widget: <ModuleWidget module={module} key={module.id} />,
         }))}
+        url={"upsert-module"}
       />
     </Layout>
   );

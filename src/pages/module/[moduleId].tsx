@@ -73,18 +73,6 @@ const ModulePage: React.FC<Props> = (props) => {
                 handleDelete={handleDelete}
                 isOpen={isOpen}
               />
-              <IconButton
-                ml={2}
-                mr={2}
-                colorScheme="teal"
-                aria-label="edit"
-                icon={<Icon as={SlPrinter} />}
-                onClick={() =>
-                  Router.push({
-                    pathname: "/print/" + props.module.id,
-                  })
-                }
-              />
             </>
           )}
         </Flex>

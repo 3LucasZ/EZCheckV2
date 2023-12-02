@@ -70,7 +70,7 @@ export default function Header({ admins = [] }: HeaderProps) {
           <Center>
             <Link href={"/"} style={{ textDecoration: "none" }}>
               <Heading as="h1" size="4xl" color="teal.500">
-                EZ-Find
+                EZ-Check
               </Heading>
             </Link>
           </Center>

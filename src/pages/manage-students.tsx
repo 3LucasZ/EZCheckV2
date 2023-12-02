@@ -18,6 +18,7 @@ const Students: React.FC<Props> = (props) => {
           name: student.name,
           widget: <StudentWidget student={student} key={student.id} />,
         }))}
+        url={"upsert-student"}
       />
     </Layout>
   );
