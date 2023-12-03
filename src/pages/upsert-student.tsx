@@ -13,6 +13,7 @@ import {
   PinInput,
   PinInputField,
   VStack,
+  FormLabel,
 } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import { ModuleProps } from "components/Module";
@@ -56,6 +57,10 @@ const StudentDraft: React.FC<Props> = (props) => {
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    if (name == "" || PIN == "") {
+      errorToast(toaster, "Incomplete form");
+      return;
+    }
     setFormState(FormState.Submitting);
     try {
       const moduleIds: RelateProps[] = [];
@@ -70,10 +75,10 @@ const StudentDraft: React.FC<Props> = (props) => {
       if (res.status == 500) {
         setFormState(FormState.Input);
         errorToast(toaster, "Student " + name + " already exists.");
-      } else {
-        setFormState(FormState.Input);
-        await Router.push(isNew ? "manage-students" : "student/" + id);
+        return;
       }
+      setFormState(FormState.Input);
+      await Router.push(isNew ? "manage-students" : "student/" + id);
     } catch (error) {
       setFormState(FormState.Input);
       console.error(error);
@@ -83,43 +88,55 @@ const StudentDraft: React.FC<Props> = (props) => {
   return (
     <Layout admins={props.admins}>
       <form onSubmit={submitData}>
-        <FormControl>
-          <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]}>
+        <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]}>
+          <FormControl isRequired>
+            <FormLabel>Student Name</FormLabel>
             <Input
+              required
               value={name}
               variant="filled"
-              marginTop={10}
-              placeholder="Student name"
+              placeholder="Name"
               isDisabled={formState === FormState.Input ? false : true}
               onChange={(e) => setName(e.target.value)}
-            ></Input>
+            />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>PIN</FormLabel>
             <HStack>
               <PinInput onChange={(e) => setPIN(e)} value={PIN}>
-                {Array.from(Array(PINLen).keys()).map((key) => (
-                  <PinInputField key={key}></PinInputField>
-                ))}
+                {Array.from(Array(PINLen).keys()).map((key) =>
+                  key == 0 ? (
+                    <PinInputField key={key} required />
+                  ) : (
+                    <PinInputField key={key} />
+                  )
+                )}
               </PinInput>
             </HStack>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Allowed Machines</FormLabel>
             <Select
               isMulti
               name="modules"
               options={allOptions}
               value={modules}
-              placeholder="Select modules"
+              placeholder="Select machines"
               closeMenuOnSelect={false}
               onChange={(e) => setModules(e)}
               size="lg"
+              menuPosition="fixed"
             />
-            <Button
-              size="lg"
-              colorScheme="teal"
-              type="submit"
-              isLoading={formState == FormState.Input ? false : true}
-            >
-              {isNew ? "Add Student" : "Update Student"}
-            </Button>
-          </VStack>
-        </FormControl>
+          </FormControl>
+          <Button
+            size="lg"
+            colorScheme="teal"
+            type="submit"
+            isLoading={formState == FormState.Input ? false : true}
+          >
+            {isNew ? "Add Student" : "Update Student"}
+          </Button>
+        </VStack>
       </form>
     </Layout>
   );
