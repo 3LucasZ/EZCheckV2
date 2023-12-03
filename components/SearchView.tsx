@@ -50,8 +50,8 @@ export default function ConfirmDeleteModal(props: SearchViewProps) {
     });
   };
   return (
-    <div>
-      <Flex pl="25vw" pr="25vw" gap={2}>
+    <Flex px={[2, "5vw", "10vw", "15vw"]} flexDir={"column"}>
+      <Flex gap={2}>
         <Input
           variant="filled"
           placeholder="Search"
@@ -74,21 +74,15 @@ export default function ConfirmDeleteModal(props: SearchViewProps) {
           />
         )}
       </Flex>
-      <Box h="4vh"></Box>
+      <Box h={8}></Box>
 
-      <HStack h="50vh">
-        <Box w="100%" />
-        <Box overflowY="auto" h="100%" w="100%">
-          <Stack w="100%">
-            {props.set.length == 0 ? (
-              <Center>No data available to display.</Center>
-            ) : (
-              state.subset.map((pair) => pair.widget)
-            )}
-          </Stack>
-        </Box>
-        <Box w="100%" />
-      </HStack>
-    </div>
+      <Stack w="100%" h="calc(100vh - 180px)" overflowY="auto">
+        {props.set.length == 0 ? (
+          <Center>No data available to display.</Center>
+        ) : (
+          state.subset.map((pair) => pair.widget)
+        )}
+      </Stack>
+    </Flex>
   );
 }
