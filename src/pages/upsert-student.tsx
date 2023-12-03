@@ -82,47 +82,45 @@ const StudentDraft: React.FC<Props> = (props) => {
 
   return (
     <Layout admins={props.admins}>
-      <div className="add-student-form">
-        <form onSubmit={submitData}>
-          <FormControl>
-            <VStack spacing="24px">
-              <Input
-                value={name}
-                variant="filled"
-                marginTop={10}
-                placeholder="Student name"
-                isDisabled={formState === FormState.Input ? false : true}
-                onChange={(e) => setName(e.target.value)}
-              ></Input>
-              <HStack>
-                <PinInput onChange={(e) => setPIN(e)} value={PIN}>
-                  {Array.from(Array(PINLen).keys()).map((key) => (
-                    <PinInputField key={key}></PinInputField>
-                  ))}
-                </PinInput>
-              </HStack>
-              <Select
-                isMulti
-                name="modules"
-                options={allOptions}
-                value={modules}
-                placeholder="Select modules"
-                closeMenuOnSelect={false}
-                onChange={(e) => setModules(e)}
-                size="lg"
-              />
-              <Button
-                size="lg"
-                colorScheme="teal"
-                type="submit"
-                isLoading={formState == FormState.Input ? false : true}
-              >
-                {isNew ? "Add Student" : "Update Student"}
-              </Button>
-            </VStack>
-          </FormControl>
-        </form>
-      </div>
+      <form onSubmit={submitData}>
+        <FormControl>
+          <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]}>
+            <Input
+              value={name}
+              variant="filled"
+              marginTop={10}
+              placeholder="Student name"
+              isDisabled={formState === FormState.Input ? false : true}
+              onChange={(e) => setName(e.target.value)}
+            ></Input>
+            <HStack>
+              <PinInput onChange={(e) => setPIN(e)} value={PIN}>
+                {Array.from(Array(PINLen).keys()).map((key) => (
+                  <PinInputField key={key}></PinInputField>
+                ))}
+              </PinInput>
+            </HStack>
+            <Select
+              isMulti
+              name="modules"
+              options={allOptions}
+              value={modules}
+              placeholder="Select modules"
+              closeMenuOnSelect={false}
+              onChange={(e) => setModules(e)}
+              size="lg"
+            />
+            <Button
+              size="lg"
+              colorScheme="teal"
+              type="submit"
+              isLoading={formState == FormState.Input ? false : true}
+            >
+              {isNew ? "Add Student" : "Update Student"}
+            </Button>
+          </VStack>
+        </FormControl>
+      </form>
     </Layout>
   );
 };
