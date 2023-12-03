@@ -22,22 +22,23 @@ export const RouteButton = ({
     <Center>
       <Link href={route}>
         <Card
-          maxW="sm"
           border="1px"
           borderColor={color}
           borderRadius="20px"
-          width="20vw"
           _hover={hoverState}
         >
           <CardBody>
             <Center>
-              <Heading size="md">{text}</Heading>
+              <Heading size="md" noOfLines={1}>
+                {text}
+              </Heading>
             </Center>
             <Center>
               <Image
                 src={imageUrl}
                 borderRadius="lg"
-                height="20vh"
+                height="150px"
+                w="150px"
                 alt="button"
               />
             </Center>
