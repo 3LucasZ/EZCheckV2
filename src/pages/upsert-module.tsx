@@ -10,6 +10,8 @@ import {
   Box,
   Stack,
   useToast,
+  VStack,
+  FormLabel,
 } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import { ModuleProps } from "components/Module";
@@ -79,41 +81,43 @@ const ModuleDraft: React.FC<Props> = (props) => {
 
   return (
     <Layout admins={props.admins}>
-      <Box h="calc(100vh)">
-        <div className="add-student-form">
-          <form onSubmit={submitData}>
-            <FormControl>
-              <Input
-                value={name}
-                variant="filled"
-                marginTop={10}
-                placeholder="Module name"
-                isDisabled={formState === FormState.Input ? false : true}
-                onChange={(e) => setName(e.target.value)}
-              ></Input>
-              <Select
-                isMulti
-                name="students"
-                options={allOptions}
-                value={students}
-                placeholder="Select students"
-                closeMenuOnSelect={false}
-                onChange={(e) => setStudents(e)}
-                size="lg"
-              />
-              <Button
-                mt={4}
-                size="lg"
-                colorScheme="teal"
-                type="submit"
-                isLoading={formState == FormState.Input ? false : true}
-              >
-                {isNew ? "Add Module" : "Update Module"}
-              </Button>
-            </FormControl>
-          </form>
-        </div>
-      </Box>
+      <form onSubmit={submitData}>
+        <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]}>
+          <FormControl isRequired>
+            <FormLabel>Student Name</FormLabel>
+            <Input
+              value={name}
+              variant="filled"
+              placeholder="Module name"
+              isDisabled={formState === FormState.Input ? false : true}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Authorized Students</FormLabel>
+            <Select
+              isMulti
+              name="students"
+              options={allOptions}
+              value={students}
+              placeholder="Select students"
+              closeMenuOnSelect={false}
+              onChange={(e) => setStudents(e)}
+              size="lg"
+              menuPosition="fixed"
+            />
+          </FormControl>
+          <Button
+            mt={4}
+            size="lg"
+            colorScheme="teal"
+            type="submit"
+            isLoading={formState == FormState.Input ? false : true}
+          >
+            {isNew ? "Add Module" : "Update Module"}
+          </Button>
+        </VStack>
+      </form>
     </Layout>
   );
 };
