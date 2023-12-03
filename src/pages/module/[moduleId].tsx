@@ -40,10 +40,10 @@ const ModulePage: React.FC<Props> = (props) => {
       console.error(error);
     }
   };
-
+  //ret
   return (
     <Layout admins={props.admins}>
-      <Center>
+      <Center pb={3}>
         <Flex>
           <Heading>{props.module.name}</Heading>
           {session && props.admins.includes(session!.user!.email!) && (
@@ -68,16 +68,15 @@ const ModulePage: React.FC<Props> = (props) => {
                 icon={<DeleteIcon />}
               />
               <ConfirmDeleteModal
+                isOpen={isOpen}
                 onClose={onClose}
                 name={" the module: " + props.module.name}
                 handleDelete={handleDelete}
-                isOpen={isOpen}
               />
             </>
           )}
         </Flex>
       </Center>
-      <Box h="5"></Box>
       <SearchView
         set={props.module.students.map((student) => ({
           name: student.name,

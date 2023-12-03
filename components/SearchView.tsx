@@ -84,7 +84,6 @@ export default function SearchView(props: SearchViewProps) {
       <Stack
         ref={elementRef}
         overflowY="auto"
-        pb="10"
         h={"calc(100dvh - " + (yOffset + 10) + "px)"}
       >
         {props.set.length == 0 ? (

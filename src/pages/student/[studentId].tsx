@@ -71,15 +71,14 @@ const StudentPage: React.FC<Props> = (props) => {
                 aria-label="delete"
                 icon={<DeleteIcon />}
               />
+              <ConfirmDeleteModal
+                isOpen={isOpen}
+                onClose={onClose}
+                name={" the student: " + props.student.name}
+                handleDelete={handleDelete}
+              />
             </>
           )}
-
-          <ConfirmDeleteModal
-            isOpen={isOpen}
-            onClose={onClose}
-            name={" the student: " + props.student.name}
-            handleDelete={handleDelete}
-          />
         </Flex>
       </Center>
       <SearchView
