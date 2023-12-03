@@ -61,22 +61,18 @@ export default function Header({ admins = [] }: HeaderProps) {
     </Stack>
   );
   return (
-    <div>
-      <Box h="1"></Box>
-      <HStack spacing={10}>
-        <Box w={"33%"}></Box>
-        <Box w={"33%"}>
-          <Center>
-            <Link href={"/"} style={{ textDecoration: "none" }}>
-              <Heading size={["xl", "2xl", "3xl"]} color="teal.500">
-                EZCheck
-              </Heading>
-            </Link>
-          </Center>
-        </Box>
-        <Box>{loginUI}</Box>
-      </HStack>
-      <Box h="5"></Box>
-    </div>
+    <HStack spacing={10} pb={5} pt={1}>
+      <Box w={"33%"}></Box>
+      <Box w={"33%"}>
+        <Center>
+          <Link href={"/"} style={{ textDecoration: "none" }}>
+            <Heading size={["xl", "2xl", "3xl"]} color="teal.500">
+              EZCheck
+            </Heading>
+          </Link>
+        </Center>
+      </Box>
+      <Box>{loginUI}</Box>
+    </HStack>
   );
 }
