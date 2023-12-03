@@ -77,7 +77,7 @@ const ModulePage: React.FC<Props> = (props) => {
           )}
         </Flex>
       </Center>
-      <Box h="4vh"></Box>
+      <Box h="5"></Box>
       <SearchView
         set={props.module.students.map((student) => ({
           name: student.name,
