@@ -1,4 +1,12 @@
-import { Box, Button, HStack, Input, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  IconButton,
+  Input,
+  useToast,
+} from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import Admin, { AdminProps } from "components/Admin";
 import { GetServerSideProps } from "next";
@@ -8,6 +16,7 @@ import Layout from "components/Layout";
 import SearchView from "components/SearchView";
 import { errorToast, successToast } from "services/toasty";
 import prisma from "services/prisma";
+import { AddIcon } from "@chakra-ui/icons";
 
 type PageProps = {
   admins: AdminProps[];
@@ -40,16 +49,24 @@ const Admins: React.FC<PageProps> = (props) => {
   };
   return (
     <Layout admins={props.admins.map((admin) => admin.email)}>
-      <HStack pl="25vw" pr="25vw">
+      <Flex px={[2, "5vw", "10vw", "15vw"]} gap={2}>
         <Input
           variant="filled"
           placeholder="Admin email"
           value={email}
           onChange={handleCreateChange}
         />
-        <Button onClick={submitData}>Create Admin</Button>
-      </HStack>
-      <Box h="2" />
+        <IconButton
+          p={0}
+          ml={2}
+          mr={2}
+          colorScheme="teal"
+          aria-label="edit"
+          icon={<AddIcon />}
+          onClick={submitData}
+        />
+      </Flex>
+      <Box h={2} />
       <SearchView
         set={props.admins.map((admin) => ({
           name: admin.email,
