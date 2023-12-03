@@ -36,6 +36,10 @@ export default function Layout({
             touchAction: "none",
             overscrollBehavior: "none",
             WebkitOverflowScrolling: "touch",
+            WebkitUserSelect: "none",
+            WebkitTouchCallout: "none",
+            WebkitUserDrag: "none",
+            WebkitTapHighlightColor: "rgba(0,0,0,0)",
           }}
         >
           <Header admins={admins} />

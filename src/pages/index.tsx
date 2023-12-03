@@ -5,6 +5,10 @@ import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 
+import { MdManageAccounts } from "react-icons/md";
+import { IoDocumentText } from "react-icons/io5";
+import { GiSewingMachine } from "react-icons/gi";
+
 type Props = {
   admins: string[];
 };
@@ -12,34 +16,46 @@ export default function Home({ admins }: Props) {
   const { data: session } = useSession();
   return (
     <Layout admins={admins}>
-      <SimpleGrid columns={[1, 2]} spacing={10} pb="10" overflowY="auto">
-        {session && admins.includes(session!.user!.email!) && (
+      <SimpleGrid
+        columns={[1, 2]}
+        spacing={10}
+        overflowY="auto"
+        w="100svw"
+        h={"100%"}
+        top={"50%"}
+        pb="10"
+      >
+        {/* {session && admins.includes(session!.user!.email!) && (
           <RouteButton
             route={""}
             text={"Module Status"}
-            imageUrl={"images/add-item.png"}
-            color={"red.200"}
+            icon={MdManageAccounts}
+            color={"red.400"}
+            hoverColor={"red.100"}
           ></RouteButton>
-        )}
+        )} */}
         <RouteButton
           route={"manage-students"}
           text={"Manage Students"}
-          imageUrl={"images/find-item.png"}
-          color={"teal.200"}
+          icon={MdManageAccounts}
+          color={"teal.300"}
+          hoverColor={"teal.100"}
         ></RouteButton>
-        {session && admins.includes(session!.user!.email!) && (
+        {/* {session && admins.includes(session!.user!.email!) && (
           <RouteButton
             route={""}
             text={"View Logs"}
-            imageUrl={"images/add-item.png"}
-            color={"orange.200"}
+            icon={IoDocumentText}
+            color={"orange.400"}
+            hoverColor={"orange.100"}
           ></RouteButton>
-        )}
+        )} */}
         <RouteButton
           route={"manage-modules"}
           text={"Manage Modules"}
-          imageUrl={"images/find-item.png"}
-          color={"blue.200"}
+          icon={GiSewingMachine}
+          color={"blue.300"}
+          hoverColor={"blue.100"}
         ></RouteButton>
       </SimpleGrid>
     </Layout>

@@ -1,5 +1,5 @@
-import { Box } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box, Link } from "@chakra-ui/react";
+
 import { StudentProps } from "./Student";
 
 export type ModuleProps = {
@@ -16,7 +16,13 @@ const ModuleWidget: React.FC<{ module: ModuleProps }> = ({ module }) => {
     bg: "blue.400",
   };
   return (
-    <Link href={"/module/" + module.id} style={{ textDecoration: "none" }}>
+    <Link
+      href={"/module/" + module.id}
+      style={{ textDecoration: "none" }}
+      sx={{
+        WebkitUserDrag: "none",
+      }}
+    >
       <Box
         borderRadius="md"
         bg="blue.300"
