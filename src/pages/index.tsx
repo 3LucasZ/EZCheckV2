@@ -12,7 +12,7 @@ export default function Home({ admins }: Props) {
   const { data: session } = useSession();
   return (
     <Layout admins={admins}>
-      <SimpleGrid columns={2} spacing={10}>
+      <SimpleGrid columns={[1, 2]} spacing={10}>
         {session && admins.includes(session!.user!.email!) && (
           <RouteButton
             route={""}
