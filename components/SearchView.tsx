@@ -84,7 +84,7 @@ export default function SearchView(props: SearchViewProps) {
       <Stack
         ref={elementRef}
         overflowY="auto"
-        h={"calc(100dvh - " + (yOffset + 10) + "px)"}
+        h={"calc(100svh - " + (yOffset + 10) + "px)"}
       >
         {props.set.length == 0 ? (
           <Center>No data available to display.</Center>

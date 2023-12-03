@@ -28,7 +28,7 @@ export default function Layout({
           flexDir="column"
           overflow="hidden"
           overscrollY="none"
-          height={"100vh"}
+          height={"100svh"}
           width={"100%"}
           position={"fixed"}
           sx={{
