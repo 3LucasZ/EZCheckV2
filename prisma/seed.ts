@@ -1,23 +1,28 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 async function main() {
-  const admin1 = await prisma.admin.create({
-    data: {
+  const admin1 = await prisma.admin.upsert({
+    create: {
+      email: "lucas.zheng@warriorlife.net",
+    },
+    update: {},
+    where: {
       email: "lucas.zheng@warriorlife.net",
     },
   });
-  const admin2 = await prisma.admin.create({
-    data: {
-      email: "lucas.j.zheng@gmail.com",
-    },
-  });
-  const module1 = await prisma.module.create({
-    data: {
-      name: "CNC Mill",
-    },
-  });
-  const student1 = await prisma.student.create({
-    data: { name: "Lucas Zheng", PIN: "123456" },
+  for (let i = 0; i < 50; i++) {
+    await prisma.module.upsert({
+      create: {
+        name: "Module #" + i,
+      },
+      update: {},
+      where: { name: "Module #" + i },
+    });
+  }
+  const student1 = await prisma.student.upsert({
+    create: { name: "Lucas Zheng", PIN: "123456" },
+    update: {},
+    where: { name: "Lucas Zheng", PIN: "123456" },
   });
 }
 main()
