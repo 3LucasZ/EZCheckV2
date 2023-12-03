@@ -18,8 +18,7 @@ export default async function handle(
       name: moduleName,
     },
     data: {
-      lastSeen: Date(),
-      usedBy: "N/A",
+      usedById: null,
     },
   });
   return res.status(200).json("Success");
