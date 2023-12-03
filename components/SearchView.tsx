@@ -57,7 +57,7 @@ export default function SearchView(props: SearchViewProps) {
   };
   return (
     <Flex px={[2, "5vw", "10vw", "15vw"]} flexDir={"column"}>
-      <Flex gap={2}>
+      <Flex gap={2} pb={10}>
         <Input
           variant="filled"
           placeholder="Search"
@@ -80,13 +80,12 @@ export default function SearchView(props: SearchViewProps) {
           />
         )}
       </Flex>
-      <Box h={8}></Box>
 
       <Stack
         ref={elementRef}
-        w="100%"
-        h={"calc(100vh - " + (yOffset + 10) + "px)"}
         overflowY="auto"
+        pb="10"
+        h={"calc(100dvh - " + (yOffset + 10) + "px)"}
       >
         {props.set.length == 0 ? (
           <Center>No data available to display.</Center>
