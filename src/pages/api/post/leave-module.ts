@@ -5,8 +5,10 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { moduleName } = req.body;
-
+  const { moduleName, moduleSecret } = req.body;
+  if (moduleSecret != process.env.EZCHECK_SECRET) {
+    return res.status(403).json("Unauthorized module. Denied Access");
+  }
   const module = await prisma.module.findUnique({
     where: {
       name: moduleName,

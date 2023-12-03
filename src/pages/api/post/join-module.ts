@@ -1,12 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/prisma";
+import { SHA256 } from "services/sha256";
 import { getIPFromReq } from "services/utils";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { moduleName, studentPIN } = req.body;
+  const { moduleName, studentPIN, moduleSecret } = req.body;
+  if (moduleSecret != process.env.EZCHECK_SECRET) {
+    return res.status(403).json("Unauthorized module. Denied Access");
+  }
   const IP = getIPFromReq(req);
   //find student
   const student = await prisma.student.findUnique({
@@ -25,7 +29,7 @@ export default async function handle(
     },
   });
   if (module == null)
-    return res.status(500).json("Module " + moduleName + " does not exist");
+    return res.status(404).json("Module " + moduleName + " does not exist");
   //Can student use module?
   const modulesStr = student.modules.map((module) => module.name);
   if (modulesStr.includes(moduleName)) {
@@ -41,13 +45,7 @@ export default async function handle(
     return res.status(200).json("Welcome, " + student.name + "!");
   } else {
     return res
-      .status(500)
-      .json(
-        student.name +
-          " does not have access to " +
-          moduleName +
-          ". They have access to only: " +
-          modulesStr
-      );
+      .status(403)
+      .json(student.name + " does not have access to " + moduleName);
   }
 }
