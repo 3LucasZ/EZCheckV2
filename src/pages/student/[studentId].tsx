@@ -47,7 +47,7 @@ const StudentPage: React.FC<Props> = (props) => {
   // ret
   return (
     <Layout admins={props.admins}>
-      <Center>
+      <Center pb={3}>
         <Flex>
           <Heading>{props.student.name}</Heading>
           {session && props.admins.includes(session!.user!.email!) && (
@@ -82,7 +82,6 @@ const StudentPage: React.FC<Props> = (props) => {
           />
         </Flex>
       </Center>
-      <Box h="4vh"></Box>
       <SearchView
         set={props.student.modules.map((module) => ({
           name: module.name,
