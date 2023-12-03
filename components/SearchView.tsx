@@ -9,9 +9,10 @@ import {
   Input,
   Stack,
   Text,
+  useDimensions,
 } from "@chakra-ui/react";
 import Router from "next/router";
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useRef } from "react";
 
 type SearchViewProps = {
   set: PairProps[];
@@ -25,7 +26,12 @@ type StateProps = {
   query: string;
   subset: PairProps[];
 };
-export default function ConfirmDeleteModal(props: SearchViewProps) {
+export default function SearchView(props: SearchViewProps) {
+  const elementRef = useRef<HTMLDivElement>(null);
+  const dimensions = useDimensions(elementRef, true);
+  const yOffset = dimensions == null ? 0 : dimensions.borderBox.y;
+  console.log(yOffset);
+
   props.set.sort(function (a, b) {
     if (a.name < b.name) {
       return -1;
@@ -76,7 +82,12 @@ export default function ConfirmDeleteModal(props: SearchViewProps) {
       </Flex>
       <Box h={8}></Box>
 
-      <Stack w="100%" h="calc(100vh - 180px)" overflowY="auto">
+      <Stack
+        ref={elementRef}
+        w="100%"
+        h={"calc(100vh - " + (yOffset + 10) + "px)"}
+        overflowY="auto"
+      >
         {props.set.length == 0 ? (
           <Center>No data available to display.</Center>
         ) : (
