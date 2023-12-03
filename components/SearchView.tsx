@@ -56,8 +56,8 @@ export default function SearchView(props: SearchViewProps) {
     });
   };
   return (
-    <Flex px={[2, "5vw", "10vw", "15vw"]} flexDir={"column"}>
-      <Flex gap={2} pb={10}>
+    <>
+      <Flex gap={2} pb={10} px={[2, "5vw", "10vw", "15vw"]}>
         <Input
           variant="filled"
           placeholder="Search"
@@ -81,17 +81,19 @@ export default function SearchView(props: SearchViewProps) {
         )}
       </Flex>
 
-      <Stack
+      <Flex
         ref={elementRef}
+        flexDir="column"
+        gap="2"
         overflowY="auto"
-        h={"calc(100svh - " + (yOffset + 10) + "px)"}
+        px={[2, "5vw", "10vw", "15vw"]}
       >
         {props.set.length == 0 ? (
           <Center>No data available to display.</Center>
         ) : (
           state.subset.map((pair) => pair.widget)
         )}
-      </Stack>
-    </Flex>
+      </Flex>
+    </>
   );
 }
