@@ -7,6 +7,7 @@ export type StudentProps = {
   name: string;
   PIN: string;
   modules: ModuleProps[];
+  using: ModuleProps;
 };
 
 const StudentWidget: React.FC<{ student: StudentProps }> = ({ student }) => {

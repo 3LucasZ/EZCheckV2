@@ -15,15 +15,17 @@ model Student {
   id        Int         @id @default(autoincrement())
   name      String      @unique @db.VarChar(255)
   PIN       String      @unique @db.VarChar(255)
-  modules   Module[]
+  modules   Module[]    @relation("authorized")
+  using     Module?     @relation("using")
 }
 
 model Module {
   id        Int         @id @default(autoincrement())
   name      String      @unique @db.VarChar(255)
-  students  Student[]
-  lastSeen  DateTime? 
-  usedBy    String?     @db.VarChar(255)
+  students  Student[]   @relation("authorized")
+  lastSeen  String?     @db.VarChar(255)
+  usedBy    Student?    @relation("using", fields: [usedById], references: [id])
+  usedById  Int?        @unique
   IP        String?     @db.VarChar(255)
 }
 

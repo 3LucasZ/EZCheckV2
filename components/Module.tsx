@@ -6,8 +6,8 @@ export type ModuleProps = {
   id: number;
   name: string;
   students: StudentProps[];
-  lastSeen?: Date;
-  usedBy?: string;
+  lastSeen?: string;
+  usedBy?: StudentProps;
   IP?: string;
 };
 
