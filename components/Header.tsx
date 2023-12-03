@@ -6,11 +6,15 @@ import {
   Flex,
   Heading,
   HStack,
+  Icon,
+  IconButton,
   Link,
   SimpleGrid,
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { PiSignInBold, PiSignOutBold } from "react-icons/pi";
+import { RiAdminLine } from "react-icons/ri";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Router from "next/router";
 import { useState } from "react";
@@ -24,13 +28,9 @@ export default function Header({ admins = [] }: HeaderProps) {
 
   const loginUI = (
     <Stack>
-      <Text>
-        {session
-          ? "Signed in as " + session.user!.email
-          : "You are not signed in"}
-      </Text>
+      <Text>{session ? session.user!.email : "You are not signed in"}</Text>
       <Flex>
-        <Button
+        <IconButton
           isLoading={loading}
           colorScheme="teal"
           variant="solid"
@@ -39,22 +39,22 @@ export default function Header({ admins = [] }: HeaderProps) {
             setLoading(true);
             session ? signOut() : signIn("google");
           }}
-        >
-          {session ? "Sign out" : "Sign in"}
-        </Button>
+          aria-label={session ? "Sign out" : "Sign in"}
+          icon={<Icon as={session ? PiSignOutBold : PiSignInBold} />}
+        />
         {session &&
           (admins.includes(session!.user!.email!) ||
             session!.user!.email == "lucas.j.zheng@gmail.com") && (
             <>
               <Box w="2"></Box>
-              <Button
+              <IconButton
                 colorScheme="teal"
                 onClick={() => {
                   Router.push("/manage-admin");
                 }}
-              >
-                Admin Dashboard
-              </Button>
+                aria-label="Admin Dashboard"
+                icon={<Icon as={RiAdminLine} />}
+              />
             </>
           )}
       </Flex>
@@ -63,20 +63,19 @@ export default function Header({ admins = [] }: HeaderProps) {
   return (
     <div>
       <Box h="1"></Box>
-
-      <SimpleGrid columns={3} spacing={10}>
-        <Box></Box>
-        <Box>
+      <HStack spacing={10}>
+        <Box w={"33%"}></Box>
+        <Box w={"33%"}>
           <Center>
             <Link href={"/"} style={{ textDecoration: "none" }}>
-              <Heading as="h1" size="4xl" color="teal.500">
-                EZ-Check
+              <Heading size={["xl", "2xl", "3xl"]} color="teal.500">
+                EZCheck
               </Heading>
             </Link>
           </Center>
         </Box>
         <Box>{loginUI}</Box>
-      </SimpleGrid>
+      </HStack>
       <Box h="5"></Box>
     </div>
   );
