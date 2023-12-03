@@ -1,11 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/prisma";
+import { getIPFromReq } from "services/utils";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { moduleName, studentPIN } = req.body;
+  const IP = getIPFromReq(req);
   //find student
   const student = await prisma.student.findUnique({
     where: {
@@ -33,6 +35,7 @@ export default async function handle(
       },
       data: {
         usedById: student.id,
+        IP: IP,
       },
     });
     return res.status(200).json("Welcome, " + student.name + "!");

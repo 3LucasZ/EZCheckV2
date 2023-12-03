@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/prisma";
+import { getIPFromReq } from "services/utils";
 
 export default async function handle(
   req: NextApiRequest,

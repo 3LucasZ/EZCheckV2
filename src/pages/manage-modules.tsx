@@ -25,7 +25,7 @@ const Modules: React.FC<Props> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const modules = await prisma.module.findMany();
+  const modules = await prisma.module.findMany({ include: { usedBy: true } });
   const admins = await prisma.admin.findMany();
   return {
     props: { modules: modules, admins: admins.map((admin) => admin.email) },

@@ -14,6 +14,7 @@ type Props = {
 };
 export default function Home({ admins }: Props) {
   const { data: session } = useSession();
+
   return (
     <Layout admins={admins}>
       <SimpleGrid
