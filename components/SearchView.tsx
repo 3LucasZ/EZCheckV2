@@ -57,7 +57,7 @@ export default function SearchView(props: SearchViewProps) {
   };
   return (
     <>
-      <Flex gap={2} pb={10} px={[2, "5vw", "10vw", "15vw"]}>
+      <Flex gap={2} pb={5} px={[2, "5vw", "10vw", "15vw"]}>
         <Input
           variant="filled"
           placeholder="Search"
@@ -80,7 +80,6 @@ export default function SearchView(props: SearchViewProps) {
           />
         )}
       </Flex>
-
       <Flex
         ref={elementRef}
         flexDir="column"
@@ -94,6 +93,7 @@ export default function SearchView(props: SearchViewProps) {
           state.subset.map((pair) => pair.widget)
         )}
       </Flex>
+      <Box h={5}></Box>
     </>
   );
 }
