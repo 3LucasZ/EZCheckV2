@@ -115,13 +115,13 @@ const StudentDraft: React.FC<Props> = (props) => {
             </HStack>
           </FormControl>
           <FormControl>
-            <FormLabel>Allowed Machines</FormLabel>
+            <FormLabel>Allowed Modules</FormLabel>
             <Select
               isMulti
               name="modules"
               options={allOptions}
               value={modules}
-              placeholder="Select machines"
+              placeholder="Select Modules"
               closeMenuOnSelect={false}
               onChange={(e) => setModules(e)}
               size="lg"

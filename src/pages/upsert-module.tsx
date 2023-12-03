@@ -84,23 +84,23 @@ const ModuleDraft: React.FC<Props> = (props) => {
       <form onSubmit={submitData}>
         <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]}>
           <FormControl isRequired>
-            <FormLabel>Student Name</FormLabel>
+            <FormLabel>Module Name</FormLabel>
             <Input
               value={name}
               variant="filled"
-              placeholder="Module name"
+              placeholder="Name"
               isDisabled={formState === FormState.Input ? false : true}
               onChange={(e) => setName(e.target.value)}
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Authorized Students</FormLabel>
             <Select
               isMulti
               name="students"
               options={allOptions}
               value={students}
-              placeholder="Select students"
+              placeholder="Select Students"
               closeMenuOnSelect={false}
               onChange={(e) => setStudents(e)}
               size="lg"
