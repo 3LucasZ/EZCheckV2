@@ -63,13 +63,15 @@ export default function ManageAdmin({ admins }: PageProps) {
         )}
       </Flex>
       <Box h={2} />
-      <SearchView
-        set={admins.map((admin) => ({
-          name: admin.email,
-          widget: <Admin admin={admin} key={admin.id} />,
-        }))}
-        isAdmin={isAdmin}
-      />
+      {isAdmin && (
+        <SearchView
+          set={admins.map((admin) => ({
+            name: admin.email,
+            widget: <Admin admin={admin} key={admin.id} />,
+          }))}
+          isAdmin={isAdmin}
+        />
+      )}
     </Layout>
   );
 }
