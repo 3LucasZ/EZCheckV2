@@ -1,15 +1,12 @@
 import {
   Box,
-  Button,
   Center,
-  Divider,
   Flex,
   Heading,
   HStack,
   Icon,
   IconButton,
   Link,
-  SimpleGrid,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -35,12 +32,12 @@ export default function Header({ isAdmin }: HeaderProps) {
           colorScheme="teal"
           variant="solid"
           onClick={(e) => {
+            console.log(e);
             e.preventDefault();
             setLoading(true);
-            Router.push({
-              pathname: "/",
-            });
-            session ? signOut() : signIn("google");
+            session
+              ? signOut({ callbackUrl: "/" })
+              : signIn("google", { callbackUrl: "/" });
           }}
           aria-label={session ? "Sign out" : "Sign in"}
           icon={<Icon as={session ? PiSignOutBold : PiSignInBold} />}
