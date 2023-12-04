@@ -28,7 +28,7 @@ export default function ManageStudents({ students, admins }: PageProps) {
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {
-  const students = await prisma.student.findMany();
+  const students = await prisma.student.findMany({ include: { using: true } });
   const admins = await prisma.admin.findMany();
   return {
     props: { students: students, admins: admins.map((admin) => admin.email) },
