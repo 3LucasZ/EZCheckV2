@@ -1,5 +1,4 @@
 import {
-  Box,
   Center,
   Flex,
   Heading,
@@ -7,7 +6,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { PrismaClient } from "@prisma/client";
 import { StudentProps } from "components/Student";
 import { GetServerSideProps } from "next";
 import ModuleWidget from "components/Module";
@@ -15,24 +13,25 @@ import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import Router from "next/router";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
-import Protect from "components/Protect";
-import { AdminProps } from "components/Admin";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
+import { checkAdmin } from "services/checkAdmin";
+import { AdminProps } from "components/Admin";
 
-type Props = {
+type PageProps = {
   student: StudentProps;
-  admins: string[];
+  admins: AdminProps[];
 };
 
-const StudentPage: React.FC<Props> = (props) => {
-  // session
+export default function StudentPage({ student, admins }: PageProps) {
+  console.log(student);
   const { data: session } = useSession();
+  const isAdmin = checkAdmin(session, admins);
   // delete modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
     try {
-      const body = { id: props.student.id };
+      const body = { id: student.id };
       console.log(body);
       const res = await fetch("/api/delete-student", {
         method: "DELETE",
@@ -46,11 +45,11 @@ const StudentPage: React.FC<Props> = (props) => {
   };
   // ret
   return (
-    <Layout admins={props.admins}>
+    <Layout isAdmin={isAdmin}>
       <Center pb={3}>
         <Flex>
-          <Heading>{props.student.name}</Heading>
-          {session && props.admins.includes(session!.user!.email!) && (
+          <Heading>{student.name}</Heading>
+          {isAdmin && (
             <>
               <IconButton
                 ml={2}
@@ -61,7 +60,7 @@ const StudentPage: React.FC<Props> = (props) => {
                 onClick={() =>
                   Router.push({
                     pathname: "/upsert-student",
-                    query: { id: props.student.id },
+                    query: { id: student.id },
                   })
                 }
               />
@@ -74,7 +73,7 @@ const StudentPage: React.FC<Props> = (props) => {
               <ConfirmDeleteModal
                 isOpen={isOpen}
                 onClose={onClose}
-                name={" the student: " + props.student.name}
+                name={" the student: " + student.name}
                 handleDelete={handleDelete}
               />
             </>
@@ -82,14 +81,15 @@ const StudentPage: React.FC<Props> = (props) => {
         </Flex>
       </Center>
       <SearchView
-        set={props.student.modules.map((module) => ({
+        set={student.modules.map((module) => ({
           name: module.name,
-          widget: <ModuleWidget module={module} key={module.id} />,
+          widget: <ModuleWidget module={module} bare={true} key={module.id} />,
         }))}
+        isAdmin={isAdmin}
       />
     </Layout>
   );
-};
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const student = await prisma.student.findUnique({
@@ -98,15 +98,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     include: {
       modules: true,
+      using: true,
     },
   });
   const admins = await prisma.admin.findMany();
   return {
     props: {
       student: student,
-      admins: admins.map((admin) => admin.email),
+      admins: admins,
     },
   };
 };
-
-export default StudentPage;

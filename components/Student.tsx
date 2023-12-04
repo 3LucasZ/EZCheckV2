@@ -8,8 +8,15 @@ export type StudentProps = {
   modules: ModuleProps[];
   using: ModuleProps;
 };
+type StudentWidgetProps = {
+  student: StudentProps;
+  bare?: boolean;
+};
 
-const StudentWidget: React.FC<{ student: StudentProps }> = ({ student }) => {
+export default function StudentWidgetProps({
+  student,
+  bare,
+}: StudentWidgetProps) {
   let hoverState = {};
   return (
     <Link
@@ -23,12 +30,20 @@ const StudentWidget: React.FC<{ student: StudentProps }> = ({ student }) => {
       position="relative"
     >
       <Grid templateColumns={["repeat(2, 1fr)"]} w="100%">
-        <GridItem bg="teal.300" color="white" px={4} h={8} colSpan={1}>
+        <GridItem
+          bg="teal.300"
+          color="white"
+          px={4}
+          h={8}
+          colSpan={!bare ? 1 : 2}
+        >
           {student.name}
         </GridItem>
-        <GridItem bg="orange.300" color="white" px={4} h={8} colSpan={1}>
-          {student.using ? student.using.name : "Offline"}
-        </GridItem>
+        {!bare && (
+          <GridItem bg="orange.300" color="white" px={4} h={8} colSpan={1}>
+            {student.using ? student.using.name : "Offline"}
+          </GridItem>
+        )}
       </Grid>
       <Box
         position="absolute"
@@ -40,6 +55,4 @@ const StudentWidget: React.FC<{ student: StudentProps }> = ({ student }) => {
       ></Box>
     </Link>
   );
-};
-
-export default StudentWidget;
+}

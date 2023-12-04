@@ -1,13 +1,11 @@
 import {
-  Box,
   Center,
   Flex,
   Heading,
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon, Icon } from "@chakra-ui/icons";
-import { SlPrinter } from "react-icons/sl";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { GetServerSideProps } from "next";
 import Router from "next/router";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
@@ -17,18 +15,21 @@ import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import StudentWidget from "components/Student";
 import { ModuleProps } from "components/Module";
-type Props = {
+import { checkAdmin } from "services/checkAdmin";
+import { AdminProps } from "components/Admin";
+type PageProps = {
   module: ModuleProps;
-  admins: string[];
+  admins: AdminProps[];
 };
-const ModulePage: React.FC<Props> = (props) => {
-  // session
+export default function ModulePage({ module, admins }: PageProps) {
+  console.log(module);
   const { data: session } = useSession();
+  const isAdmin = checkAdmin(session, admins);
   //modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
     try {
-      const body = { id: props.module.id };
+      const body = { id: module.id };
       console.log(body);
       const res = await fetch("/api/delete-module", {
         method: "DELETE",
@@ -42,11 +43,11 @@ const ModulePage: React.FC<Props> = (props) => {
   };
   //ret
   return (
-    <Layout admins={props.admins}>
+    <Layout isAdmin={isAdmin}>
       <Center pb={3}>
         <Flex>
-          <Heading>{props.module.name}</Heading>
-          {session && props.admins.includes(session!.user!.email!) && (
+          <Heading>{module.name}</Heading>
+          {isAdmin && (
             <>
               <IconButton
                 ml={2}
@@ -57,7 +58,7 @@ const ModulePage: React.FC<Props> = (props) => {
                 onClick={() =>
                   Router.push({
                     pathname: "/upsert-module",
-                    query: { id: props.module.id },
+                    query: { id: module.id },
                   })
                 }
               />
@@ -70,7 +71,7 @@ const ModulePage: React.FC<Props> = (props) => {
               <ConfirmDeleteModal
                 isOpen={isOpen}
                 onClose={onClose}
-                name={" the module: " + props.module.name}
+                name={" the module: " + module.name}
                 handleDelete={handleDelete}
               />
             </>
@@ -78,14 +79,17 @@ const ModulePage: React.FC<Props> = (props) => {
         </Flex>
       </Center>
       <SearchView
-        set={props.module.students.map((student) => ({
+        set={module.students.map((student) => ({
           name: student.name,
-          widget: <StudentWidget student={student} key={student.id} />,
+          widget: (
+            <StudentWidget student={student} bare={true} key={student.id} />
+          ),
         }))}
+        isAdmin={isAdmin}
       />
     </Layout>
   );
-};
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const module = await prisma.module.findUnique({
@@ -94,15 +98,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     include: {
       students: true,
+      usedBy: true,
     },
   });
   const admins = await prisma.admin.findMany();
   return {
     props: {
       module: module,
-      admins: admins.map((admin) => admin.email),
+      admins: admins,
     },
   };
 };
-
-export default ModulePage;

@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem, Link } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Link } from "@chakra-ui/react";
 
 import { StudentProps } from "./Student";
 
@@ -10,8 +10,12 @@ export type ModuleProps = {
   usedBy?: StudentProps;
   IP?: string;
 };
+type ModuleWidgetProps = {
+  module: ModuleProps;
+  bare?: boolean;
+};
 
-const ModuleWidget: React.FC<{ module: ModuleProps }> = ({ module }) => {
+export default function ModuleWidget({ module, bare }: ModuleWidgetProps) {
   let hoverState = {};
   return (
     <Link
@@ -25,15 +29,25 @@ const ModuleWidget: React.FC<{ module: ModuleProps }> = ({ module }) => {
       position="relative"
     >
       <Grid templateColumns={["repeat(2, 1fr)", "repeat(4, 1fr)"]} w="100%">
-        <GridItem bg="blue.300" color="white" px={4} h={8} colSpan={2}>
+        <GridItem
+          bg="blue.300"
+          color="white"
+          px={4}
+          h={8}
+          colSpan={!bare ? 2 : 4}
+        >
           {module.name}
         </GridItem>
-        <GridItem bg="orange.300" color="white" px={4} h={8} colSpan={1}>
-          {module.usedBy?.name}
-        </GridItem>
-        <GridItem bg="red.300" color="white" px={4} h={8} colSpan={1}>
-          {module.IP}
-        </GridItem>
+        {!bare && (
+          <>
+            <GridItem bg="orange.300" color="white" px={4} h={8} colSpan={1}>
+              {module.usedBy?.name}
+            </GridItem>
+            <GridItem bg="red.300" color="white" px={4} h={8} colSpan={1}>
+              {module.IP}
+            </GridItem>
+          </>
+        )}
       </Grid>
       <Box
         position="absolute"
@@ -45,6 +59,4 @@ const ModuleWidget: React.FC<{ module: ModuleProps }> = ({ module }) => {
       ></Box>
     </Link>
   );
-};
-
-export default ModuleWidget;
+}
