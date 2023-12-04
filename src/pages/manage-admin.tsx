@@ -50,15 +50,17 @@ export default function ManageAdmin({ admins }: PageProps) {
           value={email}
           onChange={handleCreateChange}
         />
-        <IconButton
-          p={0}
-          ml={2}
-          mr={2}
-          colorScheme="teal"
-          aria-label="edit"
-          icon={<AddIcon />}
-          onClick={submitData}
-        />
+        {isAdmin && (
+          <IconButton
+            p={0}
+            ml={2}
+            mr={2}
+            colorScheme="teal"
+            aria-label="edit"
+            icon={<AddIcon />}
+            onClick={submitData}
+          />
+        )}
       </Flex>
       <Box h={2} />
       <SearchView
