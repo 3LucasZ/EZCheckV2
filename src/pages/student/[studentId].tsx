@@ -1,4 +1,5 @@
 import {
+  Badge,
   Center,
   Flex,
   Heading,
@@ -46,7 +47,7 @@ export default function StudentPage({ student, admins }: PageProps) {
   // ret
   return (
     <Layout isAdmin={isAdmin}>
-      <Center pb={3}>
+      <Center pb={3} flexDir={"column"}>
         <Flex>
           <Heading>{student.name}</Heading>
           {isAdmin && (
@@ -79,7 +80,13 @@ export default function StudentPage({ student, admins }: PageProps) {
             </>
           )}
         </Flex>
+        {
+          <Badge colorScheme={student.using ? "green" : "red"}>
+            {student.using ? student.using.name : "Offline"}
+          </Badge>
+        }
       </Center>
+
       <SearchView
         set={student.modules.map((module) => ({
           name: module.name,
