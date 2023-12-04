@@ -1,4 +1,4 @@
-import { Box, Link } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Link } from "@chakra-ui/react";
 import { ModuleProps } from "./Module";
 
 export type StudentProps = {
@@ -10,9 +10,7 @@ export type StudentProps = {
 };
 
 const StudentWidget: React.FC<{ student: StudentProps }> = ({ student }) => {
-  let hoverState = {
-    bg: "teal.400",
-  };
+  let hoverState = {};
   return (
     <Link
       href={"/student/" + student.id}
@@ -20,17 +18,26 @@ const StudentWidget: React.FC<{ student: StudentProps }> = ({ student }) => {
       sx={{
         WebkitUserDrag: "none",
       }}
+      _hover={hoverState}
+      display="flex"
+      position="relative"
     >
+      <Grid templateColumns={["repeat(2, 1fr)"]} w="100%">
+        <GridItem bg="teal.300" color="white" px={4} h={8} colSpan={1}>
+          {student.name}
+        </GridItem>
+        <GridItem bg="orange.300" color="white" px={4} h={8} colSpan={1}>
+          {student.using ? student.using.name : "Offline"}
+        </GridItem>
+      </Grid>
       <Box
-        borderRadius="md"
-        bg="teal.300"
-        color="white"
-        px={4}
-        h={8}
-        _hover={hoverState}
-      >
-        {student.name}
-      </Box>
+        position="absolute"
+        w="100%"
+        h="100%"
+        border="1px solid white"
+        borderRadius={"md"}
+        outline="2px solid white"
+      ></Box>
     </Link>
   );
 };
