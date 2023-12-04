@@ -1,35 +1,36 @@
-import { PrismaClient } from "@prisma/client";
 import ModuleWidget, { ModuleProps } from "components/Module";
 import Layout from "components/Layout";
 import { GetServerSideProps } from "next";
 import SearchView from "components/SearchView";
 import prisma from "services/prisma";
+import { AdminProps } from "components/Admin";
+import { useSession } from "next-auth/react";
+import { checkAdmin } from "services/checkAdmin";
 
-type Props = {
+type PageProps = {
   modules: ModuleProps[];
-  admins: string[];
+  admins: AdminProps[];
 };
-
-const Modules: React.FC<Props> = (props) => {
+export default function ManageModules({ modules, admins }: PageProps) {
+  const { data: session } = useSession();
+  const isAdmin = checkAdmin(session, admins);
   return (
-    <Layout admins={props.admins}>
+    <Layout isAdmin={isAdmin}>
       <SearchView
-        set={props.modules.map((module) => ({
+        set={modules.map((module) => ({
           name: module.name,
           widget: <ModuleWidget module={module} key={module.id} />,
         }))}
         url={"upsert-module"}
+        isAdmin={isAdmin}
       />
     </Layout>
   );
-};
-
+}
 export const getServerSideProps: GetServerSideProps = async () => {
   const modules = await prisma.module.findMany({ include: { usedBy: true } });
   const admins = await prisma.admin.findMany();
   return {
-    props: { modules: modules, admins: admins.map((admin) => admin.email) },
+    props: { modules: modules, admins: admins },
   };
 };
-
-export default Modules;

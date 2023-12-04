@@ -1,28 +1,22 @@
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  IconButton,
-  Input,
-  useToast,
-} from "@chakra-ui/react";
-import { PrismaClient } from "@prisma/client";
+import { Box, Flex, IconButton, Input, useToast } from "@chakra-ui/react";
 import Admin, { AdminProps } from "components/Admin";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
 import Router from "next/router";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
-import { errorToast, successToast } from "services/toasty";
+import { errorToast } from "services/toasty";
 import prisma from "services/prisma";
 import { AddIcon } from "@chakra-ui/icons";
+import { useSession } from "next-auth/react";
+import { checkAdmin } from "services/checkAdmin";
 
 type PageProps = {
   admins: AdminProps[];
 };
-
-const Admins: React.FC<PageProps> = (props) => {
+export default function ManageAdmin({ admins }: PageProps) {
+  const { data: session } = useSession();
+  const isAdmin = checkAdmin(session, admins);
   const [email, setEmail] = useState("");
   const toaster = useToast();
 
@@ -48,7 +42,7 @@ const Admins: React.FC<PageProps> = (props) => {
     }
   };
   return (
-    <Layout admins={props.admins.map((admin) => admin.email)}>
+    <Layout isAdmin={isAdmin}>
       <Flex px={[2, "5vw", "10vw", "15vw"]} gap={2}>
         <Input
           variant="filled"
@@ -68,20 +62,18 @@ const Admins: React.FC<PageProps> = (props) => {
       </Flex>
       <Box h={2} />
       <SearchView
-        set={props.admins.map((admin) => ({
+        set={admins.map((admin) => ({
           name: admin.email,
           widget: <Admin admin={admin} key={admin.id} />,
         }))}
+        isAdmin={isAdmin}
       />
     </Layout>
   );
-};
-
+}
 export const getServerSideProps: GetServerSideProps = async () => {
   const admins = await prisma.admin.findMany();
   return {
     props: { admins: admins },
   };
 };
-
-export default Admins;

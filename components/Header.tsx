@@ -20,9 +20,9 @@ import Router from "next/router";
 import { useState } from "react";
 
 type HeaderProps = {
-  admins: string[];
+  isAdmin: boolean;
 };
-export default function Header({ admins = [] }: HeaderProps) {
+export default function Header({ isAdmin }: HeaderProps) {
   const { data: session } = useSession();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -37,26 +37,27 @@ export default function Header({ admins = [] }: HeaderProps) {
           onClick={(e) => {
             e.preventDefault();
             setLoading(true);
+            Router.push({
+              pathname: "/",
+            });
             session ? signOut() : signIn("google");
           }}
           aria-label={session ? "Sign out" : "Sign in"}
           icon={<Icon as={session ? PiSignOutBold : PiSignInBold} />}
         />
-        {session &&
-          (admins.includes(session!.user!.email!) ||
-            session!.user!.email == "lucas.j.zheng@gmail.com") && (
-            <>
-              <Box w="2"></Box>
-              <IconButton
-                colorScheme="teal"
-                onClick={() => {
-                  Router.push("/manage-admin");
-                }}
-                aria-label="Admin Dashboard"
-                icon={<Icon as={RiAdminLine} />}
-              />
-            </>
-          )}
+        {isAdmin && (
+          <>
+            <Box w="2"></Box>
+            <IconButton
+              colorScheme="teal"
+              onClick={() => {
+                Router.push("/manage-admin");
+              }}
+              aria-label="Admin Dashboard"
+              icon={<Icon as={RiAdminLine} />}
+            />
+          </>
+        )}
       </Flex>
     </Stack>
   );

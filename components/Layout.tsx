@@ -5,10 +5,10 @@ import { Flex } from "@chakra-ui/react";
 
 export default function Layout({
   children,
-  admins,
+  isAdmin,
 }: {
   children: ReactNode;
-  admins: string[];
+  isAdmin: boolean;
 }) {
   return (
     <>
@@ -42,7 +42,7 @@ export default function Layout({
             WebkitTapHighlightColor: "rgba(0,0,0,0)",
           }}
         >
-          <Header admins={admins} />
+          <Header isAdmin={isAdmin} />
           {children}
         </Flex>
       </main>

@@ -1,14 +1,10 @@
 import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Button,
   Center,
   Flex,
-  HStack,
   IconButton,
   Input,
-  Stack,
-  Text,
   useDimensions,
 } from "@chakra-ui/react";
 import Router from "next/router";
@@ -17,6 +13,7 @@ import { ReactNode, useState, useRef } from "react";
 type SearchViewProps = {
   set: PairProps[];
   url?: string;
+  isAdmin: boolean;
 };
 type PairProps = {
   name: string;
@@ -65,7 +62,7 @@ export default function SearchView(props: SearchViewProps) {
           value={state.query}
           onChange={handleSearchQueryChange}
         />
-        {props.url != null && (
+        {props.url != null && props.isAdmin && (
           <IconButton
             ml={2}
             mr={2}

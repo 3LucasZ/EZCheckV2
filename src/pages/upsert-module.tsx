@@ -1,52 +1,55 @@
 import React, { useState } from "react";
 import Router from "next/router";
-
 import { MultiValue, Select } from "chakra-react-select";
-
 import {
   FormControl,
   Input,
   Button,
-  Box,
-  Stack,
   useToast,
   VStack,
   FormLabel,
 } from "@chakra-ui/react";
-import { PrismaClient } from "@prisma/client";
 import { ModuleProps } from "components/Module";
-import Header from "components/Header";
 import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Student";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
 import { errorToast } from "services/toasty";
+import { AdminProps } from "components/Admin";
+import { useSession } from "next-auth/react";
+import { checkAdmin } from "services/checkAdmin";
 
 enum FormState {
   Input,
   Submitting,
 }
-type Props = {
+type PageProps = {
   allStudents: StudentProps[];
   oldModule: ModuleProps;
-  admins: string[];
+  admins: AdminProps[];
 };
 type RelateProps = {
   id: number;
 };
-const ModuleDraft: React.FC<Props> = (props) => {
+export default function UpsertModule({
+  allStudents,
+  oldModule,
+  admins,
+}: PageProps) {
+  const { data: session } = useSession();
+  const isAdmin = checkAdmin(session, admins);
   const toaster = useToast();
-  const allOptions = props.allStudents.map((student) => ({
+  const allOptions = allStudents.map((student) => ({
     value: student.id,
     label: student.name,
   }));
-  const prefillOptions = props.oldModule.students.map((student) => ({
+  const prefillOptions = oldModule.students.map((student) => ({
     value: student.id,
     label: student.name,
   }));
-  const id = props.oldModule.id;
+  const id = oldModule.id;
   const isNew = id == -1;
-  const [name, setName] = useState<string>(isNew ? "" : props.oldModule.name);
+  const [name, setName] = useState<string>(isNew ? "" : oldModule.name);
   const [formState, setFormState] = useState(FormState.Input);
   const [students, setStudents] = useState<
     MultiValue<{ value: number; label: string }>
@@ -78,9 +81,8 @@ const ModuleDraft: React.FC<Props> = (props) => {
       console.error(error);
     }
   };
-
   return (
-    <Layout admins={props.admins}>
+    <Layout isAdmin={isAdmin}>
       <form onSubmit={submitData}>
         <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]}>
           <FormControl isRequired>
@@ -120,8 +122,7 @@ const ModuleDraft: React.FC<Props> = (props) => {
       </form>
     </Layout>
   );
-};
-
+}
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //prisma
   const allStudents = await prisma.student.findMany();
@@ -142,9 +143,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       allStudents: allStudents,
       oldModule: oldModule,
-      admins: admins.map((admin) => admin.email),
+      admins: admins,
     },
   };
 };
-
-export default ModuleDraft;

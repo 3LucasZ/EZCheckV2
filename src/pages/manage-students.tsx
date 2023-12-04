@@ -1,29 +1,32 @@
-import { PrismaClient } from "@prisma/client";
 import StudentWidget, { StudentProps } from "components/Student";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
 import { GetServerSideProps } from "next";
 import prisma from "services/prisma";
+import { useSession } from "next-auth/react";
+import { checkAdmin } from "services/checkAdmin";
+import { AdminProps } from "components/Admin";
 
-type Props = {
+type PageProps = {
   students: StudentProps[];
-  admins: string[];
+  admins: AdminProps[];
 };
-
-const Students: React.FC<Props> = (props) => {
+export default function ManageStudents({ students, admins }: PageProps) {
+  const { data: session } = useSession();
+  const isAdmin = checkAdmin(session, admins);
   return (
-    <Layout admins={props.admins}>
+    <Layout isAdmin={isAdmin}>
       <SearchView
-        set={props.students.map((student) => ({
+        set={students.map((student) => ({
           name: student.name,
           widget: <StudentWidget student={student} key={student.id} />,
         }))}
         url={"upsert-student"}
+        isAdmin={isAdmin}
       />
     </Layout>
   );
-};
-
+}
 export const getServerSideProps: GetServerSideProps = async () => {
   const students = await prisma.student.findMany();
   const admins = await prisma.admin.findMany();
@@ -31,5 +34,3 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: { students: students, admins: admins.map((admin) => admin.email) },
   };
 };
-
-export default Students;

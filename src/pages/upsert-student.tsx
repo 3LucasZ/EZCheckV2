@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import Router from "next/router";
-
 import { MultiValue, Select } from "chakra-react-select";
-
 import {
   FormControl,
   Input,
   Button,
-  Box,
   useToast,
   HStack,
   PinInput,
@@ -15,42 +12,51 @@ import {
   VStack,
   FormLabel,
 } from "@chakra-ui/react";
-import { PrismaClient } from "@prisma/client";
 import { ModuleProps } from "components/Module";
 import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Student";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
 import { errorToast } from "services/toasty";
+import { AdminProps } from "components/Admin";
+import { useSession } from "next-auth/react";
+import { checkAdmin } from "services/checkAdmin";
 
 enum FormState {
   Input,
   Submitting,
 }
-type Props = {
+type PageProps = {
   allModules: ModuleProps[];
   oldStudent: StudentProps;
-  admins: string[];
+  admins: AdminProps[];
 };
 type RelateProps = {
   id: number;
 };
-const StudentDraft: React.FC<Props> = (props) => {
+
+export default function UpsertStudent({
+  allModules,
+  oldStudent,
+  admins,
+}: PageProps) {
+  const { data: session } = useSession();
+  const isAdmin = checkAdmin(session, admins);
   const toaster = useToast();
-  const allOptions = props.allModules.map((module) => ({
+  const allOptions = allModules.map((module) => ({
     value: module.id,
     label: module.name,
   }));
-  const prefillOptions = props.oldStudent.modules.map((module) => ({
+  const prefillOptions = oldStudent.modules.map((module) => ({
     value: module.id,
     label: module.name,
   }));
 
-  const id = props.oldStudent.id;
+  const id = oldStudent.id;
   const isNew = id == -1;
   const PINLen = 10;
-  const [name, setName] = useState(props.oldStudent.name);
-  const [PIN, setPIN] = useState(props.oldStudent.PIN);
+  const [name, setName] = useState(oldStudent.name);
+  const [PIN, setPIN] = useState(oldStudent.PIN);
   const [modules, setModules] =
     useState<MultiValue<{ value: number; label: string }>>(prefillOptions);
   const [formState, setFormState] = useState(FormState.Input);
@@ -86,7 +92,7 @@ const StudentDraft: React.FC<Props> = (props) => {
   };
 
   return (
-    <Layout admins={props.admins}>
+    <Layout isAdmin={isAdmin}>
       <form onSubmit={submitData}>
         <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]}>
           <FormControl isRequired>
@@ -140,7 +146,7 @@ const StudentDraft: React.FC<Props> = (props) => {
       </form>
     </Layout>
   );
-};
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //prisma
@@ -163,9 +169,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       allModules: allModules,
       oldStudent: oldStudent,
-      admins: admins.map((admin) => admin.email),
+      admins: admins,
     },
   };
 };
-
-export default StudentDraft;

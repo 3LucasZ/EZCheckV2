@@ -5,7 +5,10 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { email } = req.body;
+  const { email, clientSecret } = req.body;
+  if (clientSecret != process.env.EZCHECK_SECRET) {
+    return res.status(403).json("Unauthorized module. Denied Access");
+  }
   const op = await prisma.admin.create({
     data: {
       email: email,

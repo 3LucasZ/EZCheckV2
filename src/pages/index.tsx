@@ -8,15 +8,17 @@ import prisma from "services/prisma";
 import { MdManageAccounts } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
 import { GiSewingMachine } from "react-icons/gi";
+import { checkAdmin } from "services/checkAdmin";
+import { AdminProps } from "components/Admin";
 
-type Props = {
-  admins: string[];
+type PageProps = {
+  admins: AdminProps[];
 };
-export default function Home({ admins }: Props) {
+export default function Home({ admins }: PageProps) {
   const { data: session } = useSession();
-
+  const isAdmin = checkAdmin(session, admins);
   return (
-    <Layout admins={admins}>
+    <Layout isAdmin={isAdmin}>
       <SimpleGrid
         columns={[1, 2]}
         spacing={10}
@@ -67,7 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const admins = await prisma.admin.findMany();
   return {
     props: {
-      admins: admins.map((admin) => admin.email),
+      admins: admins,
     },
   };
 };
