@@ -27,7 +27,6 @@ export default function SearchView(props: SearchViewProps) {
   const elementRef = useRef<HTMLDivElement>(null);
   const dimensions = useDimensions(elementRef, true);
   const yOffset = dimensions == null ? 0 : dimensions.borderBox.y;
-  console.log(yOffset);
 
   props.set.sort(function (a, b) {
     if (a.name < b.name) {
