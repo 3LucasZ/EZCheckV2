@@ -40,11 +40,23 @@ export default function ModuleWidget({ module, bare }: ModuleWidgetProps) {
         </GridItem>
         {!bare && (
           <>
-            <GridItem bg="orange.300" color="white" px={4} h={8} colSpan={1}>
-              {module.usedBy?.name}
+            <GridItem
+              bg={module.usedBy ? "teal.300" : "red.300"}
+              color="white"
+              px={4}
+              h={8}
+              colSpan={1}
+            >
+              {module.usedBy ? module.usedBy.name : "Standby"}
             </GridItem>
-            <GridItem bg="red.300" color="white" px={4} h={8} colSpan={1}>
-              {module.IP}
+            <GridItem
+              bg={module.IP ? "orange.300" : "red.400"}
+              color="white"
+              px={4}
+              h={8}
+              colSpan={1}
+            >
+              {module.IP ? module.IP : "Not seen"}
             </GridItem>
           </>
         )}

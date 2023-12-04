@@ -40,7 +40,13 @@ export default function StudentWidgetProps({
           {student.name}
         </GridItem>
         {!bare && (
-          <GridItem bg="orange.300" color="white" px={4} h={8} colSpan={1}>
+          <GridItem
+            bg={student.using ? "blue.300" : "red.300"}
+            color="white"
+            px={4}
+            h={8}
+            colSpan={1}
+          >
             {student.using ? student.using.name : "Offline"}
           </GridItem>
         )}
