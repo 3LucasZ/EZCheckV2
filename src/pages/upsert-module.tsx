@@ -109,15 +109,17 @@ export default function UpsertModule({
               menuPosition="fixed"
             />
           </FormControl>
-          <Button
-            mt={4}
-            size="lg"
-            colorScheme="teal"
-            type="submit"
-            isLoading={formState == FormState.Input ? false : true}
-          >
-            {isNew ? "Add Module" : "Update Module"}
-          </Button>
+          {isAdmin && (
+            <Button
+              mt={4}
+              size="lg"
+              colorScheme="teal"
+              type="submit"
+              isLoading={formState == FormState.Input ? false : true}
+            >
+              {isNew ? "Add Module" : "Update Module"}
+            </Button>
+          )}
         </VStack>
       </form>
     </Layout>

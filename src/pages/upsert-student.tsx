@@ -134,14 +134,16 @@ export default function UpsertStudent({
               menuPosition="fixed"
             />
           </FormControl>
-          <Button
-            size="lg"
-            colorScheme="teal"
-            type="submit"
-            isLoading={formState == FormState.Input ? false : true}
-          >
-            {isNew ? "Add Student" : "Update Student"}
-          </Button>
+          {isAdmin && (
+            <Button
+              size="lg"
+              colorScheme="teal"
+              type="submit"
+              isLoading={formState == FormState.Input ? false : true}
+            >
+              {isNew ? "Add Student" : "Update Student"}
+            </Button>
+          )}
         </VStack>
       </form>
     </Layout>
