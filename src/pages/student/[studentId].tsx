@@ -37,7 +37,7 @@ export default function StudentPage({ student, admins }: PageProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      await Router.push({ pathname: "/view-students" });
+      await Router.push({ pathname: "/manage-students" });
     } catch (error) {
       console.error(error);
     }

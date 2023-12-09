@@ -35,7 +35,7 @@ export default function ModulePage({ module, admins }: PageProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      await Router.push({ pathname: "/view-modules" });
+      await Router.push({ pathname: "/manage-modules" });
     } catch (error) {
       console.error(error);
     }
