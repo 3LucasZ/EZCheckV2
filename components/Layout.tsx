@@ -2,6 +2,7 @@ import Head from "next/head";
 import type { ReactNode } from "react";
 import Header from "./Header";
 import { Flex } from "@chakra-ui/react";
+import AppBar from "./AppBar";
 
 export default function Layout({
   children,
@@ -44,6 +45,7 @@ export default function Layout({
         >
           <Header isAdmin={isAdmin} />
           {children}
+          <AppBar />
         </Flex>
       </main>
     </>

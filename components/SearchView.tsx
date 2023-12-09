@@ -82,6 +82,7 @@ export default function SearchView(props: SearchViewProps) {
         gap="2"
         overflowY="auto"
         px={[2, "5vw", "10vw", "15vw"]}
+        h="100%"
       >
         {props.set.length == 0 ? (
           <Center>No data available to display.</Center>
@@ -89,7 +90,7 @@ export default function SearchView(props: SearchViewProps) {
           state.subset.map((pair) => pair.widget)
         )}
       </Flex>
-      <Box h={5}></Box>
+      <Box h={"calc(100px + 2 * env(safe-area-inset-bottom))"}></Box>
     </>
   );
 }
