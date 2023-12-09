@@ -23,7 +23,6 @@ type PageProps = {
   admins: AdminProps[];
 };
 export default function ModulePage({ module, admins }: PageProps) {
-  console.log(module);
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   //modal
@@ -31,7 +30,6 @@ export default function ModulePage({ module, admins }: PageProps) {
   const handleDelete = async () => {
     try {
       const body = { id: module.id };
-      console.log(body);
       const res = await fetch("/api/delete-module", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },

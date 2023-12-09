@@ -13,7 +13,6 @@ export default function BaseWidget({
   bg,
   colSpan,
 }: BaseWidgetProps) {
-  let hoverState = {};
   return (
     <GridItem
       h={8}
@@ -36,7 +35,6 @@ export default function BaseWidget({
           WebkitUserDrag: "none",
         }}
         zIndex={1000}
-        _hover={hoverState}
       >
         <Text noOfLines={1} h={6}>
           {title}

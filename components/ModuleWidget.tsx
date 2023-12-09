@@ -35,7 +35,7 @@ export default function ModuleWidget({ module, bare }: ModuleWidgetProps) {
               colSpan={1}
             />
             <BaseWidget
-              href={module.IP ? module.IP : ""}
+              href={""}
               title={module.IP ? module.IP : "Not seen"}
               bg={module.IP ? "orange.300" : "red.400"}
               colSpan={1}

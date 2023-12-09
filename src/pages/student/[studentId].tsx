@@ -25,7 +25,6 @@ type PageProps = {
 };
 
 export default function StudentPage({ student, admins }: PageProps) {
-  console.log(student);
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   // delete modal
@@ -33,7 +32,6 @@ export default function StudentPage({ student, admins }: PageProps) {
   const handleDelete = async () => {
     try {
       const body = { id: student.id };
-      console.log(body);
       const res = await fetch("/api/delete-student", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },

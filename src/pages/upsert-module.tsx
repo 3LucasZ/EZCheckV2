@@ -54,9 +54,6 @@ export default function UpsertModule({
   const [students, setStudents] = useState<
     MultiValue<{ value: number; label: string }>
   >(isNew ? [] : prefillOptions);
-  console.log("upsert buffer:");
-  console.log("name:", name);
-  console.log("students:", students);
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setFormState(FormState.Submitting);

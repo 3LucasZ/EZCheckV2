@@ -72,7 +72,6 @@ export default function UpsertStudent({
       const moduleIds: RelateProps[] = [];
       modules.map((obj) => moduleIds.push({ id: obj.value }));
       const body = { id, name, PIN, moduleIds };
-      console.log(body);
       const res = await fetch("/api/upsert-student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
