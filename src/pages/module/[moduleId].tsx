@@ -17,7 +17,7 @@ import prisma from "services/prisma";
 import StudentWidget from "components/StudentWidget";
 import { ModuleProps } from "components/ModuleWidget";
 import { checkAdmin } from "services/checkAdmin";
-import { AdminProps } from "components/Admin";
+import { AdminProps } from "components/AdminWidget";
 type PageProps = {
   module: ModuleProps;
   admins: AdminProps[];

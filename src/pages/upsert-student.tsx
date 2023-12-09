@@ -18,7 +18,7 @@ import { StudentProps } from "components/StudentWidget";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
 import { errorToast } from "services/toasty";
-import { AdminProps } from "components/Admin";
+import { AdminProps } from "components/AdminWidget";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
 
@@ -93,7 +93,7 @@ export default function UpsertStudent({
   return (
     <Layout isAdmin={isAdmin}>
       <form onSubmit={submitData}>
-        <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]}>
+        <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]} overflowY="auto">
           <FormControl isRequired>
             <FormLabel>Student Name</FormLabel>
             <Input

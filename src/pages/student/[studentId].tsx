@@ -17,7 +17,7 @@ import SearchView from "components/SearchView";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import { checkAdmin } from "services/checkAdmin";
-import { AdminProps } from "components/Admin";
+import { AdminProps } from "components/AdminWidget";
 
 type PageProps = {
   student: StudentProps;

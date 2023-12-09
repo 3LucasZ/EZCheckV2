@@ -5,7 +5,7 @@ import { GetServerSideProps } from "next";
 import prisma from "services/prisma";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
-import { AdminProps } from "components/Admin";
+import { AdminProps } from "components/AdminWidget";
 
 type PageProps = {
   students: StudentProps[];
