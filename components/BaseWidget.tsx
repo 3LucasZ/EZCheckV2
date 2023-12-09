@@ -21,20 +21,20 @@ export default function BaseWidget({
       bg={bg}
       color="white"
       display="flex"
-      minW="100%"
-      minH="100%"
+      overflow={"hidden"}
     >
       <Link
         href={href}
         position="relative"
         display={"flex"}
-        minW="100%"
-        minH="100%"
         style={{ textDecoration: "none" }}
         sx={{
           WebkitUserDrag: "none",
         }}
         zIndex={1000}
+        w="100%"
+        h="100%"
+        pointerEvents={href ? "auto" : "none"}
       >
         <Text noOfLines={1} h={6}>
           {title}
