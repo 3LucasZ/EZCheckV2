@@ -1,4 +1,4 @@
-import ModuleWidget, { ModuleProps } from "components/Module";
+import ModuleWidget, { ModuleProps } from "components/ModuleWidget";
 import Layout from "components/Layout";
 import { GetServerSideProps } from "next";
 import SearchView from "components/SearchView";

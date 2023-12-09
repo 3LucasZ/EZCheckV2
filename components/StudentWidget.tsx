@@ -1,5 +1,5 @@
 import { Box, Grid, GridItem, Link } from "@chakra-ui/react";
-import { ModuleProps } from "./Module";
+import { ModuleProps } from "./ModuleWidget";
 
 export type StudentProps = {
   id: number;

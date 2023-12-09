@@ -7,9 +7,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { StudentProps } from "components/Student";
+import { StudentProps } from "components/StudentWidget";
 import { GetServerSideProps } from "next";
-import ModuleWidget from "components/Module";
+import ModuleWidget from "components/ModuleWidget";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import Router from "next/router";
 import Layout from "components/Layout";

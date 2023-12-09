@@ -9,9 +9,9 @@ import {
   VStack,
   FormLabel,
 } from "@chakra-ui/react";
-import { ModuleProps } from "components/Module";
+import { ModuleProps } from "components/ModuleWidget";
 import { GetServerSideProps } from "next";
-import { StudentProps } from "components/Student";
+import { StudentProps } from "components/StudentWidget";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
 import { errorToast } from "services/toasty";

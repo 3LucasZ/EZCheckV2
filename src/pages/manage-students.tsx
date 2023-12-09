@@ -1,4 +1,4 @@
-import StudentWidget, { StudentProps } from "components/Student";
+import StudentWidget, { StudentProps } from "components/StudentWidget";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
 import { GetServerSideProps } from "next";
