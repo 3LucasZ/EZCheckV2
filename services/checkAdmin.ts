@@ -1,4 +1,4 @@
-import { AdminProps } from "components/AdminWidget";
+import { AdminProps } from "components/Widget/AdminWidget";
 import { Session } from "next-auth";
 
 export function checkAdmin(

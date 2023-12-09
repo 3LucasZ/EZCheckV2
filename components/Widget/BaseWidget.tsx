@@ -5,6 +5,7 @@ type BaseWidgetProps = {
   title: string;
   bg: string;
   colSpan: number;
+  round?: boolean;
 };
 
 export default function BaseWidget({
@@ -12,6 +13,7 @@ export default function BaseWidget({
   title,
   bg,
   colSpan,
+  round,
 }: BaseWidgetProps) {
   return (
     <GridItem
@@ -22,6 +24,7 @@ export default function BaseWidget({
       color="white"
       display="flex"
       overflow={"hidden"}
+      borderRadius={round ? "md" : "none"}
     >
       <Link
         href={href}

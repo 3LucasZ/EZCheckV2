@@ -1,11 +1,11 @@
-import StudentWidget, { StudentProps } from "components/StudentWidget";
+import StudentWidget, { StudentProps } from "components/Widget/StudentWidget";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
 import { GetServerSideProps } from "next";
 import prisma from "services/prisma";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
-import { AdminProps } from "components/AdminWidget";
+import { AdminProps } from "components/Widget/AdminWidget";
 
 type PageProps = {
   students: StudentProps[];

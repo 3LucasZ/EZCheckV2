@@ -9,13 +9,13 @@ import {
   VStack,
   FormLabel,
 } from "@chakra-ui/react";
-import { ModuleProps } from "components/ModuleWidget";
+import { ModuleProps } from "components/Widget/ModuleWidget";
 import { GetServerSideProps } from "next";
-import { StudentProps } from "components/StudentWidget";
+import { StudentProps } from "components/Widget/StudentWidget";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
 import { errorToast } from "services/toasty";
-import { AdminProps } from "components/AdminWidget";
+import { AdminProps } from "components/Widget/AdminWidget";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
 

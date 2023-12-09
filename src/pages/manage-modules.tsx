@@ -1,9 +1,9 @@
-import ModuleWidget, { ModuleProps } from "components/ModuleWidget";
+import ModuleWidget, { ModuleProps } from "components/Widget/ModuleWidget";
 import Layout from "components/Layout";
 import { GetServerSideProps } from "next";
 import SearchView from "components/SearchView";
 import prisma from "services/prisma";
-import { AdminProps } from "components/AdminWidget";
+import { AdminProps } from "components/Widget/AdminWidget";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
 

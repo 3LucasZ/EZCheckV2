@@ -14,10 +14,10 @@ import SearchView from "components/SearchView";
 import Layout from "components/Layout";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
-import StudentWidget from "components/StudentWidget";
-import { ModuleProps } from "components/ModuleWidget";
+import StudentWidget from "components/Widget/StudentWidget";
+import { ModuleProps } from "components/Widget/ModuleWidget";
 import { checkAdmin } from "services/checkAdmin";
-import { AdminProps } from "components/AdminWidget";
+import { AdminProps } from "components/Widget/AdminWidget";
 type PageProps = {
   module: ModuleProps;
   admins: AdminProps[];
