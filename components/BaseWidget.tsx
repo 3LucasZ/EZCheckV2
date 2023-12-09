@@ -1,4 +1,4 @@
-import { GridItem, Link } from "@chakra-ui/react";
+import { GridItem, Link, Text } from "@chakra-ui/react";
 
 type BaseWidgetProps = {
   href: string;
@@ -15,20 +15,32 @@ export default function BaseWidget({
 }: BaseWidgetProps) {
   let hoverState = {};
   return (
-    <GridItem bg={bg} color="white" px={4} h={8} colSpan={colSpan}>
+    <GridItem
+      h={8}
+      colSpan={colSpan}
+      px={4}
+      bg={bg}
+      color="white"
+      display="flex"
+      minW="100%"
+      minH="100%"
+    >
       <Link
         href={href}
+        position="relative"
+        display={"flex"}
+        minW="100%"
+        minH="100%"
         style={{ textDecoration: "none" }}
         sx={{
           WebkitUserDrag: "none",
         }}
-        display={"flex"}
-        w="100%"
-        position="relative"
         zIndex={1000}
         _hover={hoverState}
       >
-        {title}
+        <Text noOfLines={1} h={6}>
+          {title}
+        </Text>
       </Link>
     </GridItem>
   );

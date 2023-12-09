@@ -24,7 +24,7 @@ export default function ModuleWidget({ module, bare }: ModuleWidgetProps) {
           href={"/module/" + module.id}
           title={module.name}
           bg={"blue.300"}
-          colSpan={!bare ? 2 : 4}
+          colSpan={bare ? 4 : 2}
         />
         {!bare && (
           <>
