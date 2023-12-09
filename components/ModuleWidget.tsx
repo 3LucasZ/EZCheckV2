@@ -1,6 +1,7 @@
 import { Box, Grid, GridItem, Link } from "@chakra-ui/react";
 
 import { StudentProps } from "./StudentWidget";
+import BaseWidget from "./BaseWidget";
 
 export type ModuleProps = {
   id: number;
@@ -16,48 +17,29 @@ type ModuleWidgetProps = {
 };
 
 export default function ModuleWidget({ module, bare }: ModuleWidgetProps) {
-  let hoverState = {};
   return (
-    <Link
-      href={"/module/" + module.id}
-      style={{ textDecoration: "none" }}
-      sx={{
-        WebkitUserDrag: "none",
-      }}
-      _hover={hoverState}
-      display="flex"
-      position="relative"
-    >
+    <Box display="flex" position="relative">
       <Grid templateColumns={["repeat(2, 1fr)", "repeat(4, 1fr)"]} w="100%">
-        <GridItem
-          bg="blue.300"
-          color="white"
-          px={4}
-          h={8}
+        <BaseWidget
+          href={"/module/" + module.id}
+          title={module.name}
+          bg={"blue.300"}
           colSpan={!bare ? 2 : 4}
-        >
-          {module.name}
-        </GridItem>
+        />
         {!bare && (
           <>
-            <GridItem
+            <BaseWidget
+              href={module.usedBy ? "/student/" + module.usedBy.id : ""}
+              title={module.usedBy ? module.usedBy.name : "Standby"}
               bg={module.usedBy ? "teal.300" : "red.300"}
-              color="white"
-              px={4}
-              h={8}
               colSpan={1}
-            >
-              {module.usedBy ? module.usedBy.name : "Standby"}
-            </GridItem>
-            <GridItem
+            />
+            <BaseWidget
+              href={module.IP ? module.IP : ""}
+              title={module.IP ? module.IP : "Not seen"}
               bg={module.IP ? "orange.300" : "red.400"}
-              color="white"
-              px={4}
-              h={8}
               colSpan={1}
-            >
-              {module.IP ? module.IP : "Not seen"}
-            </GridItem>
+            />
           </>
         )}
       </Grid>
@@ -69,6 +51,6 @@ export default function ModuleWidget({ module, bare }: ModuleWidgetProps) {
         borderRadius={"md"}
         outline="2px solid white"
       ></Box>
-    </Link>
+    </Box>
   );
 }

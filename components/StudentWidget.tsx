@@ -1,5 +1,6 @@
 import { Box, Grid, GridItem, Link } from "@chakra-ui/react";
 import { ModuleProps } from "./ModuleWidget";
+import BaseWidget from "./BaseWidget";
 
 export type StudentProps = {
   id: number;
@@ -17,38 +18,22 @@ export default function StudentWidgetProps({
   student,
   bare,
 }: StudentWidgetProps) {
-  let hoverState = {};
   return (
-    <Link
-      href={"/student/" + student.id}
-      style={{ textDecoration: "none" }}
-      sx={{
-        WebkitUserDrag: "none",
-      }}
-      _hover={hoverState}
-      display="flex"
-      position="relative"
-    >
+    <Box display="flex" position="relative">
       <Grid templateColumns={["repeat(2, 1fr)"]} w="100%">
-        <GridItem
-          bg="teal.300"
-          color="white"
-          px={4}
-          h={8}
-          colSpan={!bare ? 1 : 2}
-        >
-          {student.name}
-        </GridItem>
+        <BaseWidget
+          href={"/student/" + student.id}
+          title={student.name}
+          bg={"teal.300"}
+          colSpan={bare ? 2 : 1}
+        />
         {!bare && (
-          <GridItem
+          <BaseWidget
+            href={student.using ? "/module/" + student.using.id : ""}
+            title={student.using ? student.using.name : "Offline"}
             bg={student.using ? "blue.300" : "red.300"}
-            color="white"
-            px={4}
-            h={8}
             colSpan={1}
-          >
-            {student.using ? student.using.name : "Offline"}
-          </GridItem>
+          />
         )}
       </Grid>
       <Box
@@ -59,6 +44,6 @@ export default function StudentWidgetProps({
         borderRadius={"md"}
         outline="2px solid white"
       ></Box>
-    </Link>
+    </Box>
   );
 }
