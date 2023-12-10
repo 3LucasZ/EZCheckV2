@@ -1,23 +1,60 @@
-import Router from "next/router";
+import { ModuleProps } from "./ModuleWidget";
 import BaseWidget2 from "./BaseWidget2";
+import Router from "next/router";
 import { StudentProps } from "./StudentWidget";
 
 type StudentWidget2Props = {
   student: StudentProps;
+  targetModule: ModuleProps;
+  invert: boolean;
 };
 
-export default function StudentWidget2Props({ student }: StudentWidget2Props) {
-  const handleDelete = async () => {
+export default function StudentWidget2({
+  student,
+  targetModule,
+  invert,
+}: StudentWidget2Props) {
+  const handleRemove = async () => {
     try {
-      const body = { id: student.id, modules: student.modules.map(student) };
+      const body = {
+        id: targetModule.id,
+        name: targetModule.name,
+        studentIds: targetModule.students
+          .filter((item) => item.id != student.id)
+          .map((item) => ({ id: item.id })),
+      };
       console.log(body);
-      const res = await fetch("/api/upsert-student", {
+      const res = await fetch("/api/upsert-module", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       if (res.status == 500) {
-        alert("Error, id:" + student.id);
+        alert(res.statusText);
+      } else {
+        Router.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleAdd = async () => {
+    try {
+      const studentIds = targetModule.students.map((item) => ({ id: item.id }));
+      studentIds.push({ id: student.id });
+      const body = {
+        id: targetModule.id,
+        name: targetModule.name,
+        studentIds,
+      };
+      console.log(body);
+      const res = await fetch("/api/upsert-module", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.status == 500) {
+        alert(res.statusText);
       } else {
         Router.reload();
       }
@@ -27,13 +64,13 @@ export default function StudentWidget2Props({ student }: StudentWidget2Props) {
   };
   return (
     <BaseWidget2
-      href={"/student/" + student.id}
+      href={"/module/" + module.id}
       title={student.name}
-      bg={"teal.300"}
-      handleRemove={function (): void {
-        throw new Error("Function not implemented.");
-      }}
+      bg={"blue.300"}
+      handleRemove={handleRemove}
       safeRemove={false}
+      handleAdd={handleAdd}
+      invert={invert}
     />
   );
 }

@@ -34,10 +34,10 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   //inId and outId
-  const inId = student.modules.map((module) => module.id);
+  const inId = student.modules.map((item) => item.id);
   const outId = modules
-    .map((module) => module.id)
-    .filter((moduleId) => !inId.includes(moduleId));
+    .map((item) => item.id)
+    .filter((id) => !inId.includes(id));
   // delete modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
@@ -96,8 +96,8 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
         }
       </Center>
       <SearchView
-        setIn={inId.map((moduleId) => {
-          var module = modules.find((x) => x.id == moduleId);
+        setIn={inId.map((id) => {
+          var module = modules.find((x) => x.id == id);
           if (!module) module = modules[0];
           return {
             name: module.name,
@@ -111,8 +111,8 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
             ),
           };
         })}
-        setOut={outId.map((moduleId) => {
-          var module = modules.find((x) => x.id == moduleId);
+        setOut={outId.map((id) => {
+          var module = modules.find((x) => x.id == id);
           if (!module) module = modules[0];
           return {
             name: module.name,

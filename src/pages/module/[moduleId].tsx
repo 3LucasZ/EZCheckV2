@@ -14,17 +14,26 @@ import SearchView from "components/SearchView";
 import Layout from "components/Layout";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
-import StudentWidget from "components/Widget/StudentWidget";
+import StudentWidget, { StudentProps } from "components/Widget/StudentWidget";
 import { ModuleProps } from "components/Widget/ModuleWidget";
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
+import StudentWidget2 from "components/Widget/StudentWidget2";
+import ModuleWidget2 from "components/Widget/ModuleWidget2";
 type PageProps = {
   module: ModuleProps;
+  students: StudentProps[];
   admins: AdminProps[];
 };
-export default function ModulePage({ module, admins }: PageProps) {
+export default function ModulePage({ module, students, admins }: PageProps) {
+  //admin
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
+  //inId outId
+  const inId = module.students.map((item) => item.id);
+  const outId = students
+    .map((item) => item.id)
+    .filter((id) => !inId.includes(id));
   //modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
@@ -83,12 +92,36 @@ export default function ModulePage({ module, admins }: PageProps) {
         }
       </Center>
       <SearchView
-        setIn={module.students.map((student) => ({
-          name: student.name,
-          widget: (
-            <StudentWidget student={student} bare={true} key={student.id} />
-          ),
-        }))}
+        setIn={inId.map((id) => {
+          var student = students.find((x) => x.id == id);
+          if (!student) student = students[0];
+          return {
+            name: module.name,
+            widget: (
+              <StudentWidget2
+                student={student}
+                key={student.id}
+                targetModule={module}
+                invert={false}
+              />
+            ),
+          };
+        })}
+        setOut={outId.map((id) => {
+          var student = students.find((x) => x.id == id);
+          if (!student) student = students[0];
+          return {
+            name: module.name,
+            widget: (
+              <StudentWidget2
+                student={student}
+                key={student.id}
+                targetModule={module}
+                invert={true}
+              />
+            ),
+          };
+        })}
         isAdmin={isAdmin}
       />
     </Layout>
@@ -105,10 +138,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       usedBy: true,
     },
   });
+  const students = await prisma.student.findMany();
   const admins = await prisma.admin.findMany();
   return {
     props: {
       module: module,
+      students: students,
       admins: admins,
     },
   };
