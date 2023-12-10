@@ -13,7 +13,7 @@ type PageProps = {
   onClose: () => void;
   isOpen: boolean;
   name: string;
-  handleDelete: Function;
+  handleDelete: () => Promise<void>;
 };
 export default function ConfirmDeleteModal(props: PageProps) {
   return (

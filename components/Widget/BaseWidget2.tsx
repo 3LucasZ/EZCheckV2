@@ -16,6 +16,7 @@ type BaseWidgetProps = {
   bg: string;
   handleRemove: () => Promise<void>;
   safeRemove: boolean;
+  handleAdd: () => Promise<void>;
 };
 
 export default function BaseWidget({
@@ -24,6 +25,7 @@ export default function BaseWidget({
   bg,
   handleRemove,
   safeRemove,
+  handleAdd,
 }: BaseWidgetProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
