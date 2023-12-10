@@ -18,7 +18,7 @@ import SearchView from "components/SearchView";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import { checkAdmin } from "services/checkAdmin";
-import { AdminProps } from "components/Widget/AdminWidget";
+import { AdminProps } from "components/Widget/AdminWidget2";
 import { MultiValue, Select } from "chakra-react-select";
 import { useState } from "react";
 import ModuleWidget2 from "components/Widget/ModuleWidget2";
@@ -123,7 +123,13 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
       <SearchView
         set={student.modules.map((module) => ({
           name: module.name,
-          widget: <ModuleWidget2 module={module} key={module.id} />,
+          widget: (
+            <ModuleWidget2
+              module={module}
+              key={module.id}
+              targetStudent={student}
+            />
+          ),
         }))}
         isAdmin={isAdmin}
       />

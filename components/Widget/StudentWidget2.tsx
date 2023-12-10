@@ -1,25 +1,39 @@
-import { Box, Grid, GridItem, Link } from "@chakra-ui/react";
-import { ModuleProps } from "./ModuleWidget";
-import BaseWidget from "./BaseWidget";
+import Router from "next/router";
+import BaseWidget2 from "./BaseWidget2";
+import { StudentProps } from "./StudentWidget";
 
-export type StudentProps = {
-  id: number;
-  name: string;
-  PIN: string;
-  modules: ModuleProps[];
-  using: ModuleProps;
-};
-type StudentWidgetProps = {
+type StudentWidget2Props = {
   student: StudentProps;
 };
 
-export default function StudentWidgetProps({ student }: StudentWidgetProps) {
+export default function StudentWidget2Props({ student }: StudentWidget2Props) {
+  const handleDelete = async () => {
+    try {
+      const body = { id: student.id, modules: student.modules.map(student) };
+      console.log(body);
+      const res = await fetch("/api/upsert-student", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.status == 500) {
+        alert("Error, id:" + student.id);
+      } else {
+        Router.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
-    <BaseWidget
+    <BaseWidget2
       href={"/student/" + student.id}
       title={student.name}
       bg={"teal.300"}
-      colSpan={0}
+      handleRemove={function (): void {
+        throw new Error("Function not implemented.");
+      }}
+      safeRemove={false}
     />
   );
 }

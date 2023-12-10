@@ -9,7 +9,7 @@ import { MdManageAccounts } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
 import { GiSewingMachine } from "react-icons/gi";
 import { checkAdmin } from "services/checkAdmin";
-import { AdminProps } from "components/Widget/AdminWidget";
+import { AdminProps } from "components/Widget/AdminWidget2";
 
 type PageProps = {
   admins: AdminProps[];

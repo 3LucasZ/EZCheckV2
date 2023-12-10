@@ -15,7 +15,7 @@ import { StudentProps } from "components/Widget/StudentWidget";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
 import { errorToast } from "services/toasty";
-import { AdminProps } from "components/Widget/AdminWidget";
+import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
 

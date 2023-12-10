@@ -18,7 +18,7 @@ import { StudentProps } from "components/Widget/StudentWidget";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
 import { errorToast } from "services/toasty";
-import { AdminProps } from "components/Widget/AdminWidget";
+import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
 
@@ -72,6 +72,7 @@ export default function UpsertStudent({
       const moduleIds: RelateProps[] = [];
       modules.map((obj) => moduleIds.push({ id: obj.value }));
       const body = { id, name, PIN, moduleIds };
+      console.log(body);
       const res = await fetch("/api/upsert-student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
