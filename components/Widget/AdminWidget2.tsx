@@ -40,7 +40,7 @@ const AdminWidget: React.FC<{
         px={4}
         h={8}
         roundedRight="none"
-        minWidth="90%"
+        width="100%"
       >
         <Text width="100%">{admin.email}</Text>
       </Box>
@@ -52,7 +52,6 @@ const AdminWidget: React.FC<{
         h={8}
         roundedLeft="none"
         borderRadius="md"
-        minWidth="10%"
       />
       <ConfirmDeleteModal
         isOpen={isOpen}
