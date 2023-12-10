@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { debugMode } from "services/constants";
 import prisma from "services/prisma";
 import { getIPFromReq } from "services/utils";
 
@@ -8,7 +9,17 @@ export default async function handle(
 ) {
   const { machineName, studentPIN, machineSecret } = req.body;
   if (machineSecret != process.env.EZCHECK_SECRET) {
-    return res.status(403).json("Unauthorized machine. Denied Access");
+    return res
+      .status(403)
+      .json(
+        "Unauthorized machine. Denied Access." +
+          (debugMode
+            ? " Secret is: " +
+              process.env.EZCHECK_SECRET +
+              ". You entered: " +
+              machineSecret
+            : "")
+      );
   }
   const IP = getIPFromReq(req);
   //find student
@@ -28,7 +39,7 @@ export default async function handle(
     },
   });
   if (machine == null)
-    return res.status(404).json("machine " + machineName + " does not exist");
+    return res.status(404).json("Machine " + machineName + " does not exist");
   //Can student use machine?
   const machinesStr = student.machines.map((machine) => machine.name);
   if (machinesStr.includes(machineName)) {
