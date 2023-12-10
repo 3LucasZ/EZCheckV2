@@ -7,7 +7,7 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id, name, PIN, moduleIds } = req.body;
+  const { id, name, PIN, machineIds } = req.body;
   if (name == "" || PIN == "") {
     const prep = res.status(500);
     prep.json("form is incomplete");
@@ -21,19 +21,19 @@ export default async function handle(
       update: {
         name: name,
         PIN: PIN,
-        modules: {
-          set: moduleIds,
+        machines: {
+          set: machineIds,
         },
       },
       create: {
         name: name,
         PIN: PIN,
-        modules: {
-          connect: moduleIds,
+        machines: {
+          connect: machineIds,
         },
       },
       include: {
-        modules: true,
+        machines: true,
       },
     });
     return res.status(200).json(op);

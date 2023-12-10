@@ -11,7 +11,7 @@ import {
   Flex,
   Box,
 } from "@chakra-ui/react";
-import { ModuleProps } from "components/Widget/ModuleWidget";
+import { MachineProps } from "components/Widget/MachineWidget";
 import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Widget/StudentWidget";
 import Layout from "components/Layout";
@@ -28,15 +28,15 @@ enum FormState {
 }
 type PageProps = {
   allStudents: StudentProps[];
-  oldModule: ModuleProps;
+  oldmachine: MachineProps;
   admins: AdminProps[];
 };
 type RelateProps = {
   id: number;
 };
-export default function UpsertModule({
+export default function Upsertmachine({
   allStudents,
-  oldModule,
+  oldmachine,
   admins,
 }: PageProps) {
   const { data: session } = useSession();
@@ -46,13 +46,13 @@ export default function UpsertModule({
     value: student.id,
     label: student.name,
   }));
-  const prefillOptions = oldModule.students.map((student) => ({
+  const prefillOptions = oldmachine.students.map((student) => ({
     value: student.id,
     label: student.name,
   }));
-  const id = oldModule.id;
+  const id = oldmachine.id;
   const isNew = id == -1;
-  const [name, setName] = useState<string>(isNew ? "" : oldModule.name);
+  const [name, setName] = useState<string>(isNew ? "" : oldmachine.name);
   const [formState, setFormState] = useState(FormState.Input);
   const [students, setStudents] = useState<
     MultiValue<{ value: number; label: string }>
@@ -64,7 +64,7 @@ export default function UpsertModule({
       const studentIds: RelateProps[] = [];
       students.map((obj) => studentIds.push({ id: obj.value }));
       const body = { id, name, studentIds };
-      const res = await fetch("/api/upsert-module", {
+      const res = await fetch("/api/upsert-machine", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -75,7 +75,7 @@ export default function UpsertModule({
       } else {
         setFormState(FormState.Input);
         successToast(toaster, "Success!");
-        await Router.push(isNew ? "manage-modules" : "module/" + id);
+        await Router.push(isNew ? "manage-machines" : "machine/" + id);
       }
     } catch (error) {
       setFormState(FormState.Input);
@@ -92,7 +92,7 @@ export default function UpsertModule({
         h="100%"
       >
         <FormControl isRequired>
-          <FormLabel>Module Name</FormLabel>
+          <FormLabel>machine Name</FormLabel>
           <Input
             value={name}
             variant="filled"
@@ -123,7 +123,7 @@ export default function UpsertModule({
             isLoading={formState == FormState.Input ? false : true}
             onClick={submitData}
           >
-            {isNew ? "Add Module" : "Update Module"}
+            {isNew ? "Add machine" : "Update machine"}
           </Button>
         )}
       </Flex>
@@ -137,7 +137,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const admins = await prisma.admin.findMany();
   const { id } = context.query;
   const realId = id == undefined ? -1 : Number(id);
-  const find = await prisma.module.findUnique({
+  const find = await prisma.machine.findUnique({
     where: {
       id: realId,
     },
@@ -145,12 +145,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       students: true,
     },
   });
-  const oldModule = find == null ? { id: -1, name: "", students: [] } : find;
+  const oldmachine = find == null ? { id: -1, name: "", students: [] } : find;
   //ret
   return {
     props: {
       allStudents: allStudents,
-      oldModule: oldModule,
+      oldmachine: oldmachine,
       admins: admins,
     },
   };

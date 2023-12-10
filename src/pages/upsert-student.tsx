@@ -14,7 +14,7 @@ import {
   Box,
   Flex,
 } from "@chakra-ui/react";
-import { ModuleProps } from "components/Widget/ModuleWidget";
+import { MachineProps } from "components/Widget/MachineWidget";
 import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Widget/StudentWidget";
 import Layout from "components/Layout";
@@ -30,7 +30,7 @@ enum FormState {
   Submitting,
 }
 type PageProps = {
-  allModules: ModuleProps[];
+  allmachines: MachineProps[];
   oldStudent: StudentProps;
   admins: AdminProps[];
 };
@@ -39,20 +39,20 @@ type RelateProps = {
 };
 
 export default function UpsertStudent({
-  allModules,
+  allmachines,
   oldStudent,
   admins,
 }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   const toaster = useToast();
-  const allOptions = allModules.map((module) => ({
-    value: module.id,
-    label: module.name,
+  const allOptions = allmachines.map((machine) => ({
+    value: machine.id,
+    label: machine.name,
   }));
-  const prefillOptions = oldStudent.modules.map((module) => ({
-    value: module.id,
-    label: module.name,
+  const prefillOptions = oldStudent.machines.map((machine) => ({
+    value: machine.id,
+    label: machine.name,
   }));
 
   const id = oldStudent.id;
@@ -60,7 +60,7 @@ export default function UpsertStudent({
   const PINLen = 10;
   const [name, setName] = useState(oldStudent.name);
   const [PIN, setPIN] = useState(oldStudent.PIN);
-  const [modules, setModules] =
+  const [machines, setmachines] =
     useState<MultiValue<{ value: number; label: string }>>(prefillOptions);
   const [formState, setFormState] = useState(FormState.Input);
 
@@ -68,9 +68,9 @@ export default function UpsertStudent({
     e.preventDefault();
     setFormState(FormState.Submitting);
     try {
-      const moduleIds: RelateProps[] = [];
-      modules.map((obj) => moduleIds.push({ id: obj.value }));
-      const body = { id, name, PIN, moduleIds };
+      const machineIds: RelateProps[] = [];
+      machines.map((obj) => machineIds.push({ id: obj.value }));
+      const body = { id, name, PIN, machineIds };
       if (debugMode) console.log(body);
       const res = await fetch("/api/upsert-student", {
         method: "POST",
@@ -126,15 +126,15 @@ export default function UpsertStudent({
           </HStack>
         </FormControl>
         {/* <FormControl>
-          <FormLabel>Allowed Modules</FormLabel>
+          <FormLabel>Allowed machines</FormLabel>
           <Select
             isMulti
-            name="modules"
+            name="machines"
             options={allOptions}
-            value={modules}
-            placeholder="Select Modules"
+            value={machines}
+            placeholder="Select machines"
             closeMenuOnSelect={false}
-            onChange={(e) => setModules(e)}
+            onChange={(e) => setmachines(e)}
             size="lg"
             menuPosition="fixed"
             menuPlacement="top"
@@ -159,7 +159,7 @@ export default function UpsertStudent({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //prisma
-  const allModules = await prisma.module.findMany();
+  const allmachines = await prisma.machine.findMany();
   const admins = await prisma.admin.findMany();
   const { id } = context.query;
   const realId = id == undefined ? -1 : Number(id);
@@ -168,15 +168,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       id: realId,
     },
     include: {
-      modules: true,
+      machines: true,
     },
   });
   const oldStudent =
-    find == null ? { id: -1, name: "", PIN: "", modules: [] } : find;
+    find == null ? { id: -1, name: "", PIN: "", machines: [] } : find;
   //ret
   return {
     props: {
-      allModules: allModules,
+      allmachines: allmachines,
       oldStudent: oldStudent,
       admins: admins,
     },

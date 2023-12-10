@@ -16,25 +16,25 @@ import Layout from "components/Layout";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import StudentWidget, { StudentProps } from "components/Widget/StudentWidget";
-import { ModuleProps } from "components/Widget/ModuleWidget";
+import { MachineProps } from "components/Widget/MachineWidget";
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import StudentWidget2 from "components/Widget/StudentWidget2";
-import ModuleWidget2 from "components/Widget/ModuleWidget2";
+import MachineWidget2 from "components/Widget/MachineWidget2";
 import { debugMode } from "services/constants";
 type PageProps = {
-  module: ModuleProps;
+  machine: MachineProps;
   students: StudentProps[];
   admins: AdminProps[];
 };
-export default function ModulePage({ module, students, admins }: PageProps) {
+export default function machinePage({ machine, students, admins }: PageProps) {
   //admin
   const { data: session, status } = useSession();
   const isAdmin = checkAdmin(session, admins);
   //toaster
   const toaster = useToast();
   //inId outId
-  const inId = module.students.map((item) => item.id);
+  const inId = machine.students.map((item) => item.id);
   const outId = students
     .map((item) => item.id)
     .filter((id) => !inId.includes(id));
@@ -42,13 +42,13 @@ export default function ModulePage({ module, students, admins }: PageProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
     try {
-      const body = { id: module.id };
-      const res = await fetch("/api/delete-module", {
+      const body = { id: machine.id };
+      const res = await fetch("/api/delete-machine", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      await Router.push({ pathname: "/manage-modules" });
+      await Router.push({ pathname: "/manage-machines" });
     } catch (error) {
       if (debugMode) console.error(error);
     }
@@ -58,7 +58,7 @@ export default function ModulePage({ module, students, admins }: PageProps) {
     <Layout isAdmin={isAdmin}>
       <Center pb={3} flexDir={"column"}>
         <Flex>
-          <Heading>{module.name}</Heading>
+          <Heading>{machine.name}</Heading>
           {isAdmin && (
             <>
               <IconButton
@@ -69,8 +69,8 @@ export default function ModulePage({ module, students, admins }: PageProps) {
                 icon={<EditIcon />}
                 onClick={() =>
                   Router.push({
-                    pathname: "/upsert-module",
-                    query: { id: module.id },
+                    pathname: "/upsert-machine",
+                    query: { id: machine.id },
                   })
                 }
               />
@@ -83,15 +83,15 @@ export default function ModulePage({ module, students, admins }: PageProps) {
               <ConfirmDeleteModal
                 isOpen={isOpen}
                 onClose={onClose}
-                name={" the module: " + module.name}
+                name={" the machine: " + machine.name}
                 handleDelete={handleDelete}
               />
             </>
           )}
         </Flex>
         {
-          <Badge colorScheme={module.usedBy ? "green" : "red"}>
-            {module.usedBy ? module.usedBy.name : "Standby"}
+          <Badge colorScheme={machine.usedBy ? "green" : "red"}>
+            {machine.usedBy ? machine.usedBy.name : "Standby"}
           </Badge>
         }
       </Center>
@@ -106,7 +106,7 @@ export default function ModulePage({ module, students, admins }: PageProps) {
                 <StudentWidget2
                   student={student}
                   key={student.id}
-                  targetModule={module}
+                  targetmachine={machine}
                   invert={false}
                   isAdmin={isAdmin}
                 />
@@ -122,7 +122,7 @@ export default function ModulePage({ module, students, admins }: PageProps) {
                 <StudentWidget2
                   student={student}
                   key={student.id}
-                  targetModule={module}
+                  targetmachine={machine}
                   invert={true}
                   isAdmin={isAdmin}
                 />
@@ -137,9 +137,9 @@ export default function ModulePage({ module, students, admins }: PageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const module = await prisma.module.findUnique({
+  const machine = await prisma.machine.findUnique({
     where: {
-      id: Number(context.params?.moduleId),
+      id: Number(context.params?.machineId),
     },
     include: {
       students: true,
@@ -150,7 +150,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const admins = await prisma.admin.findMany();
   return {
     props: {
-      module: module,
+      machine: machine,
       students: students,
       admins: admins,
     },

@@ -1,4 +1,4 @@
-import ModuleWidget, { ModuleProps } from "components/Widget/ModuleWidget";
+import MachineWidget, { MachineProps } from "components/Widget/MachineWidget";
 import Layout from "components/Layout";
 import { GetServerSideProps } from "next";
 import SearchView from "components/SearchView";
@@ -8,29 +8,29 @@ import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
 
 type PageProps = {
-  modules: ModuleProps[];
+  machines: MachineProps[];
   admins: AdminProps[];
 };
-export default function ManageModules({ modules, admins }: PageProps) {
+export default function Managemachines({ machines, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   return (
     <Layout isAdmin={isAdmin}>
       <SearchView
-        setIn={modules.map((module) => ({
-          name: module.name,
-          widget: <ModuleWidget module={module} key={module.id} />,
+        setIn={machines.map((machine) => ({
+          name: machine.name,
+          widget: <MachineWidget machine={machine} key={machine.id} />,
         }))}
-        url={"upsert-module"}
+        url={"upsert-machine"}
         isAdmin={isAdmin}
       />
     </Layout>
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {
-  const modules = await prisma.module.findMany({ include: { usedBy: true } });
+  const machines = await prisma.machine.findMany({ include: { usedBy: true } });
   const admins = await prisma.admin.findMany();
   return {
-    props: { modules: modules, admins: admins },
+    props: { machines: machines, admins: admins },
   };
 };

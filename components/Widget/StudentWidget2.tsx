@@ -1,4 +1,4 @@
-import { ModuleProps } from "./ModuleWidget";
+import { MachineProps } from "./MachineWidget";
 import BaseWidget2 from "./BaseWidget2";
 import Router from "next/router";
 import { StudentProps } from "./StudentWidget";
@@ -8,14 +8,14 @@ import { errorToast, successToast } from "services/toasty";
 
 type StudentWidget2Props = {
   student: StudentProps;
-  targetModule: ModuleProps;
+  targetmachine: MachineProps;
   invert: boolean;
   isAdmin: boolean;
 };
 
 export default function StudentWidget2({
   student,
-  targetModule,
+  targetmachine,
   invert,
   isAdmin,
 }: StudentWidget2Props) {
@@ -23,14 +23,14 @@ export default function StudentWidget2({
   const handleRemove = async () => {
     try {
       const body = {
-        id: targetModule.id,
-        name: targetModule.name,
-        studentIds: targetModule.students
+        id: targetmachine.id,
+        name: targetmachine.name,
+        studentIds: targetmachine.students
           .filter((item) => item.id != student.id)
           .map((item) => ({ id: item.id })),
       };
       if (debugMode) console.log(body);
-      const res = await fetch("/api/upsert-module", {
+      const res = await fetch("/api/upsert-machine", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -47,15 +47,17 @@ export default function StudentWidget2({
   };
   const handleAdd = async () => {
     try {
-      const studentIds = targetModule.students.map((item) => ({ id: item.id }));
+      const studentIds = targetmachine.students.map((item) => ({
+        id: item.id,
+      }));
       studentIds.push({ id: student.id });
       const body = {
-        id: targetModule.id,
-        name: targetModule.name,
+        id: targetmachine.id,
+        name: targetmachine.name,
         studentIds,
       };
       if (debugMode) console.log(body);
-      const res = await fetch("/api/upsert-module", {
+      const res = await fetch("/api/upsert-machine", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

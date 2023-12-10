@@ -13,7 +13,7 @@ export default async function handle(
     return prep;
   }
   try {
-    const op = await prisma.module.upsert({
+    const op = await prisma.machine.upsert({
       where: {
         id: id,
       },

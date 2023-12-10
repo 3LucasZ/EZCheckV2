@@ -7,9 +7,9 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { moduleName, studentPIN, moduleSecret } = req.body;
-  if (moduleSecret != process.env.EZCHECK_SECRET) {
-    return res.status(403).json("Unauthorized module. Denied Access");
+  const { machineName, studentPIN, machineSecret } = req.body;
+  if (machineSecret != process.env.EZCHECK_SECRET) {
+    return res.status(403).json("Unauthorized machine. Denied Access");
   }
   const IP = getIPFromReq(req);
   //find student
@@ -18,24 +18,24 @@ export default async function handle(
       PIN: studentPIN,
     },
     include: {
-      modules: true,
+      machines: true,
     },
   });
   if (student == null) return res.status(500).json("PIN is incorrect");
-  //find module
-  const module = await prisma.module.findUnique({
+  //find machine
+  const machine = await prisma.machine.findUnique({
     where: {
-      name: moduleName,
+      name: machineName,
     },
   });
-  if (module == null)
-    return res.status(404).json("Module " + moduleName + " does not exist");
-  //Can student use module?
-  const modulesStr = student.modules.map((module) => module.name);
-  if (modulesStr.includes(moduleName)) {
-    await prisma.module.update({
+  if (machine == null)
+    return res.status(404).json("machine " + machineName + " does not exist");
+  //Can student use machine?
+  const machinesStr = student.machines.map((machine) => machine.name);
+  if (machinesStr.includes(machineName)) {
+    await prisma.machine.update({
       where: {
-        name: moduleName,
+        name: machineName,
       },
       data: {
         usedById: student.id,
@@ -46,6 +46,6 @@ export default async function handle(
   } else {
     return res
       .status(403)
-      .json(student.name + " does not have access to " + moduleName);
+      .json(student.name + " does not have access to " + machineName);
   }
 }

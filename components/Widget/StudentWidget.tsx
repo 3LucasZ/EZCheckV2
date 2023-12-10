@@ -1,13 +1,13 @@
 import { Box, Grid, GridItem, Link } from "@chakra-ui/react";
-import { ModuleProps } from "./ModuleWidget";
+import { MachineProps } from "./MachineWidget";
 import BaseWidget from "./BaseWidget";
 
 export type StudentProps = {
   id: number;
   name: string;
   PIN: string;
-  modules: ModuleProps[];
-  using: ModuleProps;
+  machines: MachineProps[];
+  using: MachineProps;
 };
 type StudentWidgetProps = {
   student: StudentProps;
@@ -29,7 +29,7 @@ export default function StudentWidgetProps({
         />
         {!bare && (
           <BaseWidget
-            href={student.using ? "/module/" + student.using.id : ""}
+            href={student.using ? "/machine/" + student.using.id : ""}
             title={student.using ? student.using.name : "Offline"}
             bg={student.using ? "blue.300" : "red.300"}
             colSpan={1}

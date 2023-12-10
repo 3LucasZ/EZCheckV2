@@ -11,7 +11,7 @@ import {
 import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { StudentProps } from "components/Widget/StudentWidget";
 import { GetServerSideProps } from "next";
-import ModuleWidget, { ModuleProps } from "components/Widget/ModuleWidget";
+import MachineWidget, { MachineProps } from "components/Widget/MachineWidget";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import Router from "next/router";
 import Layout from "components/Layout";
@@ -22,24 +22,24 @@ import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { MultiValue, Select } from "chakra-react-select";
 import { useState } from "react";
-import ModuleWidget2 from "components/Widget/ModuleWidget2";
+import MachineWidget2 from "components/Widget/MachineWidget2";
 import { debugMode } from "services/constants";
 
 type PageProps = {
   student: StudentProps;
-  modules: ModuleProps[];
+  machines: MachineProps[];
   admins: AdminProps[];
 };
 
-export default function StudentPage({ student, modules, admins }: PageProps) {
+export default function StudentPage({ student, machines, admins }: PageProps) {
   //admin
   const { data: session, status } = useSession();
   const isAdmin = checkAdmin(session, admins);
   //toaster
   const toaster = useToast();
   //inId and outId
-  const inId = student.modules.map((item) => item.id);
-  const outId = modules
+  const inId = student.machines.map((item) => item.id);
+  const outId = machines
     .map((item) => item.id)
     .filter((id) => !inId.includes(id));
   // delete modal
@@ -102,14 +102,14 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
       {status != "loading" && (
         <SearchView
           setIn={inId.map((id) => {
-            var module = modules.find((x) => x.id == id);
-            if (!module) module = modules[0];
+            var machine = machines.find((x) => x.id == id);
+            if (!machine) machine = machines[0];
             return {
-              name: module.name,
+              name: machine.name,
               widget: (
-                <ModuleWidget2
-                  module={module}
-                  key={module.id}
+                <MachineWidget2
+                  machine={machine}
+                  key={machine.id}
                   targetStudent={student}
                   invert={false}
                   isAdmin={isAdmin}
@@ -118,14 +118,14 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
             };
           })}
           setOut={outId.map((id) => {
-            var module = modules.find((x) => x.id == id);
-            if (!module) module = modules[0];
+            var machine = machines.find((x) => x.id == id);
+            if (!machine) machine = machines[0];
             return {
-              name: module.name,
+              name: machine.name,
               widget: (
-                <ModuleWidget2
-                  module={module}
-                  key={module.id}
+                <MachineWidget2
+                  machine={machine}
+                  key={machine.id}
                   targetStudent={student}
                   invert={true}
                   isAdmin={isAdmin}
@@ -146,16 +146,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       id: Number(context.params?.studentId),
     },
     include: {
-      modules: true,
+      machines: true,
       using: true,
     },
   });
-  const modules = await prisma.module.findMany();
+  const machines = await prisma.machine.findMany();
   const admins = await prisma.admin.findMany();
   return {
     props: {
       student: student,
-      modules: modules,
+      machines: machines,
       admins: admins,
     },
   };

@@ -16,7 +16,7 @@ export default function AppBar() {
     >
       <AppBarBtn icon={FaHome} href="/" />
       <AppBarBtn icon={MdManageAccounts} href="/manage-students" />
-      <AppBarBtn icon={GiSewingMachine} href="/manage-modules" />
+      <AppBarBtn icon={GiSewingMachine} href="/manage-machines" />
     </HStack>
   );
 }

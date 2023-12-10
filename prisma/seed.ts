@@ -11,12 +11,12 @@ async function main() {
     },
   });
   // for (let i = 0; i < 200; i++) {
-  //   await prisma.module.upsert({
+  //   await prisma.machine.upsert({
   //     create: {
-  //       name: "Module #" + i,
+  //       name: "machine #" + i,
   //     },
   //     update: {},
-  //     where: { name: "Module #" + i },
+  //     where: { name: "machine #" + i },
   //   });
   // }
   const student1 = await prisma.student.upsert({

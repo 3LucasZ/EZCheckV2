@@ -31,7 +31,7 @@ export default function Home({ admins }: PageProps) {
         {/* {session && admins.includes(session!.user!.email!) && (
           <RouteButton
             route={""}
-            text={"Module Status"}
+            text={"machine Status"}
             icon={MdManageAccounts}
             color={"red.400"}
             hoverColor={"red.100"}
@@ -54,8 +54,8 @@ export default function Home({ admins }: PageProps) {
           ></RouteButton>
         )} */}
         <RouteButton
-          route={"manage-modules"}
-          text={"Manage Modules"}
+          route={"manage-machines"}
+          text={"Manage Machines"}
           icon={GiSewingMachine}
           color={"blue.300"}
           hoverColor={"blue.100"}

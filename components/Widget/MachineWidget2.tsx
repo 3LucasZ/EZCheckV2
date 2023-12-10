@@ -1,4 +1,4 @@
-import { ModuleProps } from "./ModuleWidget";
+import { MachineProps } from "./MachineWidget";
 import BaseWidget2 from "./BaseWidget2";
 import Router from "next/router";
 import { StudentProps } from "./StudentWidget";
@@ -6,19 +6,19 @@ import { debugMode } from "services/constants";
 import { useToast } from "@chakra-ui/react";
 import { errorToast, successToast } from "services/toasty";
 
-type ModuleWidget2Props = {
-  module: ModuleProps;
+type MachineWidget2Props = {
+  machine: MachineProps;
   targetStudent: StudentProps;
   invert: boolean;
   isAdmin: boolean;
 };
 
-export default function ModuleWidget2({
-  module,
+export default function MachineWidget2({
+  machine,
   targetStudent,
   invert,
   isAdmin,
-}: ModuleWidget2Props) {
+}: MachineWidget2Props) {
   const toaster = useToast();
   const handleRemove = async () => {
     try {
@@ -26,8 +26,8 @@ export default function ModuleWidget2({
         id: targetStudent.id,
         name: targetStudent.name,
         PIN: targetStudent.PIN,
-        moduleIds: targetStudent.modules
-          .filter((item) => item.id != module.id)
+        machineIds: targetStudent.machines
+          .filter((item) => item.id != machine.id)
           .map((item) => ({ id: item.id })),
       };
       if (debugMode) console.log(body);
@@ -37,7 +37,7 @@ export default function ModuleWidget2({
         body: JSON.stringify(body),
       });
       if (res.status != 200) {
-        errorToast(toaster, "Unknown error on id: " + module.id);
+        errorToast(toaster, "Unknown error on id: " + machine.id);
       } else {
         successToast(toaster, "Success!");
         Router.reload();
@@ -48,13 +48,15 @@ export default function ModuleWidget2({
   };
   const handleAdd = async () => {
     try {
-      const moduleIds = targetStudent.modules.map((item) => ({ id: item.id }));
-      moduleIds.push({ id: module.id });
+      const machineIds = targetStudent.machines.map((item) => ({
+        id: item.id,
+      }));
+      machineIds.push({ id: machine.id });
       const body = {
         id: targetStudent.id,
         name: targetStudent.name,
         PIN: targetStudent.PIN,
-        moduleIds,
+        machineIds,
       };
       if (debugMode) console.log(body);
       const res = await fetch("/api/upsert-student", {
@@ -63,7 +65,7 @@ export default function ModuleWidget2({
         body: JSON.stringify(body),
       });
       if (res.status != 200) {
-        errorToast(toaster, "Unknown error on id: " + module.id);
+        errorToast(toaster, "Unknown error on id: " + machine.id);
       } else {
         successToast(toaster, "Success!");
         Router.reload();
@@ -74,8 +76,8 @@ export default function ModuleWidget2({
   };
   return (
     <BaseWidget2
-      href={"/module/" + module.id}
-      title={module.name}
+      href={"/machine/" + machine.id}
+      title={machine.name}
       bg={"blue.300"}
       handleRemove={handleRemove}
       safeRemove={false}
