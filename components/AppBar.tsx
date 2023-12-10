@@ -2,6 +2,7 @@ import { HStack, Icon, IconButton } from "@chakra-ui/react";
 import { FaHome } from "react-icons/fa";
 import { MdManageAccounts } from "react-icons/md";
 import { GiSewingMachine } from "react-icons/gi";
+import AppBarBtn from "./AppBarBtn";
 
 export default function AppBar() {
   return (
@@ -11,37 +12,11 @@ export default function AppBar() {
       w="100%"
       bg="teal.300"
       h={"calc(50px + env(safe-area-inset-bottom))"}
+      p={0}
     >
-      <IconButton
-        w={"33%"}
-        rounded="unset"
-        aria-label={""}
-        icon={<Icon as={FaHome} boxSize="23" />}
-        bg="teal.300"
-        _hover={{ bg: "teal.400" }}
-        color="white"
-        pb="env(safe-area-inset-bottom)"
-      />
-      <IconButton
-        w={"33%"}
-        rounded="unset"
-        aria-label={""}
-        icon={<Icon as={MdManageAccounts} boxSize="30" />}
-        bg="teal.300"
-        _hover={{ bg: "teal.400" }}
-        color="white"
-        pb="env(safe-area-inset-bottom)"
-      />
-      <IconButton
-        w={"33%"}
-        rounded="unset"
-        aria-label={""}
-        icon={<Icon as={GiSewingMachine} boxSize="30" />}
-        bg="teal.300"
-        _hover={{ bg: "teal.400" }}
-        color="white"
-        pb="env(safe-area-inset-bottom)"
-      />
+      <AppBarBtn icon={FaHome} href="/" />
+      <AppBarBtn icon={MdManageAccounts} href="/manage-students" />
+      <AppBarBtn icon={GiSewingMachine} href="/manage-modules" />
     </HStack>
   );
 }
