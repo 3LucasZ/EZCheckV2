@@ -5,7 +5,7 @@ import { useState } from "react";
 import Router from "next/router";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
-import { errorToast } from "services/toasty";
+import { errorToast, successToast } from "services/toasty";
 import prisma from "services/prisma";
 import { AddIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
@@ -33,13 +33,14 @@ export default function ManageAdmin({ admins }: PageProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      if (res.status == 500) {
-        errorToast(toaster, "Admin " + email + " already exists.");
+      if (res.status != 200) {
+        errorToast(toaster, await res.json());
       } else {
+        successToast(toaster, "Success!");
         Router.reload();
       }
     } catch (error) {
-      if (debugMode) console.error(error);
+      errorToast(toaster, "" + error);
     }
   };
   return (
