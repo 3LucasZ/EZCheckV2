@@ -64,7 +64,7 @@ export default function StudentWidget2({
   };
   return (
     <BaseWidget2
-      href={"/module/" + module.id}
+      href={"/student/" + student.id}
       title={student.name}
       bg={"blue.300"}
       handleRemove={handleRemove}
