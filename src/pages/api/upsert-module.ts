@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/prisma";
 
@@ -6,25 +7,37 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const { id, name, studentIds } = req.body;
-  const op = await prisma.module.upsert({
-    where: {
-      id: id,
-    },
-    update: {
-      name: name,
-      students: {
-        set: studentIds,
+  if (name == "") {
+    const prep = res.status(500);
+    prep.json("form is incomplete");
+    return prep;
+  }
+  try {
+    const op = await prisma.module.upsert({
+      where: {
+        id: id,
       },
-    },
-    create: {
-      name: name,
-      students: {
-        connect: studentIds,
+      update: {
+        name: name,
+        students: {
+          set: studentIds,
+        },
       },
-    },
-    include: {
-      students: true,
-    },
-  });
-  return res.status(200).json(op);
+      create: {
+        name: name,
+        students: {
+          connect: studentIds,
+        },
+      },
+      include: {
+        students: true,
+      },
+    });
+    return res.status(200).json(op);
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      return res.status(500).json(e.meta?.target + " must be unique");
+    }
+  }
+  return res.status(500).json("unkown error");
 }

@@ -39,10 +39,7 @@ export default async function handle(
     return res.status(200).json(op);
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const prep = res.status(500);
-      // prep.json(e.message);
-      prep.json(e.meta?.target + " must be unique");
-      return prep;
+      return res.status(500).json(e.meta?.target + " must be unique");
     }
   }
   return res.status(500).json("unkown error");
