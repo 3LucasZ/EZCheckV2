@@ -11,6 +11,8 @@ import {
   PinInputField,
   VStack,
   FormLabel,
+  Box,
+  Flex,
 } from "@chakra-ui/react";
 import { ModuleProps } from "components/Widget/ModuleWidget";
 import { GetServerSideProps } from "next";
@@ -93,59 +95,67 @@ export default function UpsertStudent({
 
   return (
     <Layout isAdmin={isAdmin}>
-      <form onSubmit={submitData}>
-        <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]} overflowY="auto">
-          <FormControl isRequired>
-            <FormLabel>Student Name</FormLabel>
-            <Input
-              required
-              value={name}
-              variant="filled"
-              placeholder="Name"
-              isDisabled={formState === FormState.Input ? false : true}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>PIN</FormLabel>
-            <HStack>
-              <PinInput onChange={(e) => setPIN(e)} value={PIN}>
-                {Array.from(Array(PINLen).keys()).map((key) =>
-                  key == 0 ? (
-                    <PinInputField key={key} required />
-                  ) : (
-                    <PinInputField key={key} />
-                  )
-                )}
-              </PinInput>
-            </HStack>
-          </FormControl>
-          <FormControl>
-            <FormLabel>Allowed Modules</FormLabel>
-            <Select
-              isMulti
-              name="modules"
-              options={allOptions}
-              value={modules}
-              placeholder="Select Modules"
-              closeMenuOnSelect={false}
-              onChange={(e) => setModules(e)}
-              size="lg"
-              menuPosition="fixed"
-            />
-          </FormControl>
-          {isAdmin && (
-            <Button
-              size="lg"
-              colorScheme="teal"
-              type="submit"
-              isLoading={formState == FormState.Input ? false : true}
-            >
-              {isNew ? "Add Student" : "Update Student"}
-            </Button>
-          )}
-        </VStack>
-      </form>
+      <Flex
+        flexDir="column"
+        gap="2"
+        overflowY="auto"
+        px={[2, "5vw", "10vw", "15vw"]}
+        h="100%"
+      >
+        <FormControl isRequired>
+          <FormLabel>Student Name</FormLabel>
+          <Input
+            required
+            value={name}
+            variant="filled"
+            placeholder="Name"
+            isDisabled={formState === FormState.Input ? false : true}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </FormControl>
+        <FormControl isRequired>
+          <FormLabel>PIN</FormLabel>
+          <HStack>
+            <PinInput onChange={(e) => setPIN(e)} value={PIN}>
+              {Array.from(Array(PINLen).keys()).map((key) =>
+                key == 0 ? (
+                  <PinInputField key={key} required />
+                ) : (
+                  <PinInputField key={key} />
+                )
+              )}
+            </PinInput>
+          </HStack>
+        </FormControl>
+        <FormControl>
+          <FormLabel>Allowed Modules</FormLabel>
+          <Select
+            isMulti
+            name="modules"
+            options={allOptions}
+            value={modules}
+            placeholder="Select Modules"
+            closeMenuOnSelect={false}
+            onChange={(e) => setModules(e)}
+            size="lg"
+            menuPosition="fixed"
+            menuPlacement="top"
+          />
+        </FormControl>
+        {isAdmin && (
+          <Button
+            size="lg"
+            colorScheme="teal"
+            type="submit"
+            isLoading={formState == FormState.Input ? false : true}
+            onClick={submitData}
+            minH="50px"
+          >
+            {isNew ? "Add Student" : "Update Student"}
+          </Button>
+        )}
+      </Flex>
+      <Box h={"150px"}></Box>
     </Layout>
   );
 }
