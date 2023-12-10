@@ -6,6 +6,7 @@ import {
   Heading,
   IconButton,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { StudentProps } from "components/Widget/StudentWidget";
@@ -34,6 +35,8 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
   //admin
   const { data: session, status } = useSession();
   const isAdmin = checkAdmin(session, admins);
+  //toaster
+  const toaster = useToast();
   //inId and outId
   const inId = student.modules.map((item) => item.id);
   const outId = modules

@@ -3,6 +3,8 @@ import BaseWidget2 from "./BaseWidget2";
 import Router from "next/router";
 import { StudentProps } from "./StudentWidget";
 import { debugMode } from "services/constants";
+import { useToast } from "@chakra-ui/react";
+import { errorToast, successToast } from "services/toasty";
 
 type ModuleWidget2Props = {
   module: ModuleProps;
@@ -17,6 +19,7 @@ export default function ModuleWidget2({
   invert,
   isAdmin,
 }: ModuleWidget2Props) {
+  const toaster = useToast();
   const handleRemove = async () => {
     try {
       const body = {
@@ -33,13 +36,14 @@ export default function ModuleWidget2({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      if (res.status == 500) {
-        alert("Error, id:" + module.id);
+      if (res.status != 200) {
+        errorToast(toaster, "Unknown error on id: " + module.id);
       } else {
+        successToast(toaster, "Success!");
         Router.reload();
       }
     } catch (error) {
-      if (debugMode) console.error(error);
+      errorToast(toaster, "" + error);
     }
   };
   const handleAdd = async () => {
@@ -58,13 +62,14 @@ export default function ModuleWidget2({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      if (res.status == 500) {
-        alert("Error, id:" + module.id);
+      if (res.status != 200) {
+        errorToast(toaster, "Unknown error on id: " + module.id);
       } else {
+        successToast(toaster, "Success!");
         Router.reload();
       }
     } catch (error) {
-      if (debugMode) console.error(error);
+      errorToast(toaster, "" + error);
     }
   };
   return (
