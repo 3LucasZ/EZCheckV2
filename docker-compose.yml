@@ -47,6 +47,7 @@ services:
       - GOOGLE_ID=${GOOGLE_ID}
       - GOOGLE_SECRET=${GOOGLE_SECRET}
       - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - EZCHECK_SECRET=${EZCHECK_SECRET}
 volumes:
   db:
     driver: local
