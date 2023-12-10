@@ -23,5 +23,5 @@ export default async function handle(
       usedById: null,
     },
   });
-  return res.status(200).json("Success");
+  return res.status(200).json("Successfully left.");
 }

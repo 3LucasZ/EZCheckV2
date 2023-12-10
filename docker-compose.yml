@@ -40,7 +40,7 @@ services:
       - "host.docker.internal:host-gateway"
     working_dir: /app
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment: #change @ezcheck-db to container name of db
       - DATABASE_URL=postgresql://${CMP_PG_USER}:${CMP_PG_PW}@ezcheck-db:5432/${CMP_PG_DB}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
