@@ -36,6 +36,10 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
     value: module.id,
     label: module.name,
   }));
+  const inId = student.modules.map((module) => module.id);
+  const outId = modules
+    .map((module) => module.id)
+    .filter((moduleId) => !inId.includes(moduleId));
 
   // add item
   const [module, setModule] =
@@ -122,16 +126,34 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
       </Flex>
 
       <SearchView
-        setIn={student.modules.map((module) => ({
-          name: module.name,
-          widget: (
-            <ModuleWidget2
-              module={module}
-              key={module.id}
-              targetStudent={student}
-            />
-          ),
-        }))}
+        setIn={inId.map((moduleId) => {
+          var module = modules.find((x) => x.id == moduleId);
+          if (!module) module = modules[0];
+          return {
+            name: module.name,
+            widget: (
+              <ModuleWidget2
+                module={module}
+                key={module.id}
+                targetStudent={student}
+              />
+            ),
+          };
+        })}
+        setOut={outId.map((moduleId) => {
+          var module = modules.find((x) => x.id == moduleId);
+          if (!module) module = modules[0];
+          return {
+            name: module.name,
+            widget: (
+              <ModuleWidget2
+                module={module}
+                key={module.id}
+                targetStudent={student}
+              />
+            ),
+          };
+        })}
         isAdmin={isAdmin}
       />
     </Layout>

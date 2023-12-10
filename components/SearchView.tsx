@@ -2,6 +2,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Center,
+  Checkbox,
   Flex,
   IconButton,
   Input,
@@ -12,6 +13,7 @@ import { ReactNode, useState, useRef } from "react";
 
 type SearchViewProps = {
   setIn: PairProps[];
+  setOut?: PairProps[];
   url?: string;
   isAdmin: boolean;
 };
@@ -19,16 +21,8 @@ type PairProps = {
   name: string;
   widget: ReactNode;
 };
-type StateProps = {
-  query: string;
-  subset: PairProps[];
-};
 export default function SearchView(props: SearchViewProps) {
-  const elementRef = useRef<HTMLDivElement>(null);
-  const dimensions = useDimensions(elementRef, true);
-  const yOffset = dimensions == null ? 0 : dimensions.borderBox.y;
-
-  props.setIn.sort(function (a, b) {
+  const setIn = props.setIn.sort(function (a, b) {
     if (a.name < b.name) {
       return -1;
     }
@@ -37,19 +31,37 @@ export default function SearchView(props: SearchViewProps) {
     }
     return 0;
   });
-  const [state, setState] = useState<StateProps>({
-    query: "",
-    subset: props.setIn,
-  });
+  const setOut = props.setOut
+    ? props.setOut.sort(function (a, b) {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      })
+    : [];
+
+  const elementRef = useRef<HTMLDivElement>(null);
+  const dimensions = useDimensions(elementRef, true);
+  const yOffset = dimensions == null ? 0 : dimensions.borderBox.y;
+  const [checked, setChecked] = useState(false);
+  const [query, setQuery] = useState("");
+  const [subset, setSubset] = useState(checked ? setOut : setIn);
+
+  function filtered(pairset: PairProps[], query: string) {
+    return pairset.filter((pair) => {
+      if (query === "") return pairset;
+      return pair.name.toLowerCase().includes(query.toLowerCase());
+    });
+  }
+
   const handleSearchQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const res = props.setIn.filter((pair) => {
-      if (e.target.value === "") return props.setIn;
-      return pair.name.toLowerCase().includes(e.target.value.toLowerCase());
-    });
-    setState({
-      query: e.target.value,
-      subset: res,
-    });
+    setQuery(e.target.value);
+    checked
+      ? setSubset(filtered(setOut, e.target.value))
+      : setSubset(filtered(setIn, e.target.value));
   };
   return (
     <>
@@ -58,10 +70,10 @@ export default function SearchView(props: SearchViewProps) {
           variant="filled"
           placeholder="Search"
           type="search"
-          value={state.query}
+          value={query}
           onChange={handleSearchQueryChange}
         />
-        {props.url != null && props.isAdmin && (
+        {props.url && props.isAdmin && (
           <IconButton
             ml={2}
             mr={2}
@@ -75,6 +87,19 @@ export default function SearchView(props: SearchViewProps) {
             }
           />
         )}
+        {props.setOut && (
+          <Checkbox
+            isChecked={checked}
+            onChange={(e) => {
+              setChecked(e.target.checked);
+              e.target.checked
+                ? setSubset(filtered(setOut, query))
+                : setSubset(filtered(setIn, query));
+            }}
+          >
+            Invert
+          </Checkbox>
+        )}
       </Flex>
       <Flex
         ref={elementRef}
@@ -84,10 +109,10 @@ export default function SearchView(props: SearchViewProps) {
         px={[2, "5vw", "10vw", "15vw"]}
         h="100%"
       >
-        {props.setIn.length == 0 ? (
+        {subset.length == 0 ? (
           <Center>No data available to display.</Center>
         ) : (
-          state.subset.map((pair) => pair.widget)
+          subset.map((pair) => pair.widget)
         )}
       </Flex>
       <Box h={"calc(100px + 2 * env(safe-area-inset-bottom))"}></Box>
