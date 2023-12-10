@@ -22,6 +22,7 @@ import { AdminProps } from "components/Widget/AdminWidget2";
 import { MultiValue, Select } from "chakra-react-select";
 import { useState } from "react";
 import ModuleWidget2 from "components/Widget/ModuleWidget2";
+import { debugMode } from "services/constants";
 
 type PageProps = {
   student: StudentProps;

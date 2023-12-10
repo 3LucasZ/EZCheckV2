@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { debugMode } from "./constants";
 
 export function getIPFromReq(req: NextApiRequest) {
   var ip = req.socket.remoteAddress;

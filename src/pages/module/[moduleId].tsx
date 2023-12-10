@@ -20,6 +20,7 @@ import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import StudentWidget2 from "components/Widget/StudentWidget2";
 import ModuleWidget2 from "components/Widget/ModuleWidget2";
+import { debugMode } from "services/constants";
 type PageProps = {
   module: ModuleProps;
   students: StudentProps[];

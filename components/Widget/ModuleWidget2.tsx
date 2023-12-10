@@ -2,6 +2,7 @@ import { ModuleProps } from "./ModuleWidget";
 import BaseWidget2 from "./BaseWidget2";
 import Router from "next/router";
 import { StudentProps } from "./StudentWidget";
+import { debugMode } from "services/constants";
 
 type ModuleWidget2Props = {
   module: ModuleProps;
