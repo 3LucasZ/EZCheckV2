@@ -3,6 +3,8 @@ import BaseWidget2 from "./BaseWidget2";
 import Router from "next/router";
 import { StudentProps } from "./StudentWidget";
 import { debugMode } from "services/constants";
+import { useToast } from "@chakra-ui/react";
+import { errorToast, successToast } from "services/toasty";
 
 type StudentWidget2Props = {
   student: StudentProps;
@@ -17,6 +19,7 @@ export default function StudentWidget2({
   invert,
   isAdmin,
 }: StudentWidget2Props) {
+  const toaster = useToast();
   const handleRemove = async () => {
     try {
       const body = {
@@ -32,13 +35,14 @@ export default function StudentWidget2({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      if (res.status == 500) {
-        alert(res.statusText);
+      if (res.status != 200) {
+        errorToast(toaster, "Unknown error on id: " + student.id);
       } else {
+        successToast(toaster, "Success!");
         Router.reload();
       }
     } catch (error) {
-      if (debugMode) console.error(error);
+      errorToast(toaster, "" + error);
     }
   };
   const handleAdd = async () => {
@@ -57,12 +61,13 @@ export default function StudentWidget2({
         body: JSON.stringify(body),
       });
       if (res.status == 500) {
-        alert(res.statusText);
+        errorToast(toaster, "Unknown error on id: " + student.id);
       } else {
+        successToast(toaster, "Success!");
         Router.reload();
       }
     } catch (error) {
-      if (debugMode) console.error(error);
+      errorToast(toaster, "" + error);
     }
   };
   return (
