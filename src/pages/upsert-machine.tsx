@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import Router from "next/router";
-import { MultiValue, Select } from "chakra-react-select";
+import { MultiValue } from "chakra-react-select";
 import {
   FormControl,
   Input,
   Button,
   useToast,
-  VStack,
   FormLabel,
   Flex,
   Box,
@@ -20,7 +19,6 @@ import { errorToast, successToast } from "services/toasty";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
-import { debugMode } from "services/constants";
 
 enum FormState {
   Input,
@@ -34,7 +32,7 @@ type PageProps = {
 type RelateProps = {
   id: number;
 };
-export default function Upsertmachine({
+export default function UpsertMachine({
   allStudents,
   oldmachine,
   admins,

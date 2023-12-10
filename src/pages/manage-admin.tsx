@@ -10,7 +10,6 @@ import prisma from "services/prisma";
 import { AddIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
-import { debugMode } from "services/constants";
 
 type PageProps = {
   admins: AdminProps[];

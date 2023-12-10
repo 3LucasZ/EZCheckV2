@@ -1,6 +1,5 @@
 import { Prisma } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prependListener } from "process";
 import prisma from "services/prisma";
 
 export default async function handle(

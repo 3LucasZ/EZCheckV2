@@ -15,19 +15,18 @@ import SearchView from "components/SearchView";
 import Layout from "components/Layout";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
-import StudentWidget, { StudentProps } from "components/Widget/StudentWidget";
+import { StudentProps } from "components/Widget/StudentWidget";
 import { MachineProps } from "components/Widget/MachineWidget";
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import StudentWidget2 from "components/Widget/StudentWidget2";
-import MachineWidget2 from "components/Widget/MachineWidget2";
 import { debugMode } from "services/constants";
 type PageProps = {
   machine: MachineProps;
   students: StudentProps[];
   admins: AdminProps[];
 };
-export default function machinePage({ machine, students, admins }: PageProps) {
+export default function MachinePage({ machine, students, admins }: PageProps) {
   //admin
   const { data: session, status } = useSession();
   const isAdmin = checkAdmin(session, admins);

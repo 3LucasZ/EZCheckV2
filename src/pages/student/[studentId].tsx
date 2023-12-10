@@ -1,6 +1,5 @@
 import {
   Badge,
-  Button,
   Center,
   Flex,
   Heading,
@@ -8,10 +7,10 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { StudentProps } from "components/Widget/StudentWidget";
 import { GetServerSideProps } from "next";
-import MachineWidget, { MachineProps } from "components/Widget/MachineWidget";
+import { MachineProps } from "components/Widget/MachineWidget";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import Router from "next/router";
 import Layout from "components/Layout";
@@ -20,8 +19,6 @@ import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
-import { MultiValue, Select } from "chakra-react-select";
-import { useState } from "react";
 import MachineWidget2 from "components/Widget/MachineWidget2";
 import { debugMode } from "services/constants";
 

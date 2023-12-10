@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Router from "next/router";
-import { MultiValue, Select } from "chakra-react-select";
+import { MultiValue } from "chakra-react-select";
 import {
   FormControl,
   Input,
@@ -9,7 +9,6 @@ import {
   HStack,
   PinInput,
   PinInputField,
-  VStack,
   FormLabel,
   Box,
   Flex,

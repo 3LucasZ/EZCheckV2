@@ -1,4 +1,4 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import { RouteButton } from "components/RouteButton";
 import Layout from "components/Layout";
 import { GetServerSideProps } from "next";
@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 
 import { MdManageAccounts } from "react-icons/md";
-import { IoDocumentText } from "react-icons/io5";
 import { GiSewingMachine } from "react-icons/gi";
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";

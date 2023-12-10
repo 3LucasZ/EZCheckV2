@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/prisma";
-import { SHA256 } from "services/sha256";
 import { getIPFromReq } from "services/utils";
 
 export default async function handle(

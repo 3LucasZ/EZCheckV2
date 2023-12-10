@@ -11,7 +11,7 @@ type PageProps = {
   machines: MachineProps[];
   admins: AdminProps[];
 };
-export default function Managemachines({ machines, admins }: PageProps) {
+export default function ManageMachines({ machines, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   return (
