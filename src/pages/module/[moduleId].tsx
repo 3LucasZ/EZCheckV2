@@ -101,7 +101,7 @@ export default function ModulePage({ module, students, admins }: PageProps) {
             var student = students.find((x) => x.id == id);
             if (!student) student = students[0];
             return {
-              name: module.name,
+              name: student.name,
               widget: (
                 <StudentWidget2
                   student={student}
@@ -117,7 +117,7 @@ export default function ModulePage({ module, students, admins }: PageProps) {
             var student = students.find((x) => x.id == id);
             if (!student) student = students[0];
             return {
-              name: module.name,
+              name: student.name,
               widget: (
                 <StudentWidget2
                   student={student}
