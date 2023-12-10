@@ -54,7 +54,7 @@ export default function BaseWidget({
         pointerEvents={href ? "auto" : "none"}
         px={5}
         borderRadius={"md"}
-        borderRight={isAdmin ? "none" : "auto"}
+        roundedRight={isAdmin ? "none" : "auto"}
       >
         <Text noOfLines={1} h={6}>
           {title}
