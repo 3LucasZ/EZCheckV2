@@ -11,7 +11,7 @@ import Router from "next/router";
 import { ReactNode, useState, useRef } from "react";
 
 type SearchViewProps = {
-  set: PairProps[];
+  setIn: PairProps[];
   url?: string;
   isAdmin: boolean;
 };
@@ -28,7 +28,7 @@ export default function SearchView(props: SearchViewProps) {
   const dimensions = useDimensions(elementRef, true);
   const yOffset = dimensions == null ? 0 : dimensions.borderBox.y;
 
-  props.set.sort(function (a, b) {
+  props.setIn.sort(function (a, b) {
     if (a.name < b.name) {
       return -1;
     }
@@ -39,11 +39,11 @@ export default function SearchView(props: SearchViewProps) {
   });
   const [state, setState] = useState<StateProps>({
     query: "",
-    subset: props.set,
+    subset: props.setIn,
   });
   const handleSearchQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const res = props.set.filter((pair) => {
-      if (e.target.value === "") return props.set;
+    const res = props.setIn.filter((pair) => {
+      if (e.target.value === "") return props.setIn;
       return pair.name.toLowerCase().includes(e.target.value.toLowerCase());
     });
     setState({
@@ -84,7 +84,7 @@ export default function SearchView(props: SearchViewProps) {
         px={[2, "5vw", "10vw", "15vw"]}
         h="100%"
       >
-        {props.set.length == 0 ? (
+        {props.setIn.length == 0 ? (
           <Center>No data available to display.</Center>
         ) : (
           state.subset.map((pair) => pair.widget)

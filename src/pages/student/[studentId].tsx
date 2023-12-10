@@ -99,6 +99,7 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
       </Center>
       <Flex px={[2, "5vw", "10vw", "15vw"]} gap={2} w="100%">
         <Select
+          isMulti
           name="modules"
           options={allOptions}
           value={module}
@@ -121,7 +122,7 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
       </Flex>
 
       <SearchView
-        set={student.modules.map((module) => ({
+        setIn={student.modules.map((module) => ({
           name: module.name,
           widget: (
             <ModuleWidget2

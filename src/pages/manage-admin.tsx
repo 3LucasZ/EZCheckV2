@@ -65,7 +65,7 @@ export default function ManageAdmin({ admins }: PageProps) {
       <Box h={2} />
       {isAdmin && (
         <SearchView
-          set={admins.map((admin) => ({
+          setIn={admins.map((admin) => ({
             name: admin.email,
             widget: <Admin admin={admin} key={admin.id} />,
           }))}

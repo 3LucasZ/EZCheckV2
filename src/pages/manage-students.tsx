@@ -17,7 +17,7 @@ export default function ManageStudents({ students, admins }: PageProps) {
   return (
     <Layout isAdmin={isAdmin}>
       <SearchView
-        set={students.map((student) => ({
+        setIn={students.map((student) => ({
           name: student.name,
           widget: <StudentWidget student={student} key={student.id} />,
         }))}

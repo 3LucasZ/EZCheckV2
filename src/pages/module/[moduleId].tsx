@@ -83,7 +83,7 @@ export default function ModulePage({ module, admins }: PageProps) {
         }
       </Center>
       <SearchView
-        set={module.students.map((student) => ({
+        setIn={module.students.map((student) => ({
           name: student.name,
           widget: (
             <StudentWidget student={student} bare={true} key={student.id} />

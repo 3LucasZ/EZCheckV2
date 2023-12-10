@@ -17,7 +17,7 @@ export default function ManageModules({ modules, admins }: PageProps) {
   return (
     <Layout isAdmin={isAdmin}>
       <SearchView
-        set={modules.map((module) => ({
+        setIn={modules.map((module) => ({
           name: module.name,
           widget: <ModuleWidget module={module} key={module.id} />,
         }))}
