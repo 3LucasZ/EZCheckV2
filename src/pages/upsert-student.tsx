@@ -66,10 +66,6 @@ export default function UpsertStudent({
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (name == "" || PIN == "") {
-      errorToast(toaster, "Incomplete form");
-      return;
-    }
     setFormState(FormState.Submitting);
     try {
       const moduleIds: RelateProps[] = [];
@@ -81,16 +77,16 @@ export default function UpsertStudent({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      if (res.status == 500) {
+      if (res.status != 200) {
         setFormState(FormState.Input);
-        errorToast(toaster, "Student " + name + " already exists.");
+        errorToast(toaster, await res.json());
         return;
       }
       setFormState(FormState.Input);
       await Router.push(isNew ? "manage-students" : "student/" + id);
     } catch (error) {
       setFormState(FormState.Input);
-      if (debugMode) console.error(error);
+      errorToast(toaster, "" + error);
     }
   };
   return (
