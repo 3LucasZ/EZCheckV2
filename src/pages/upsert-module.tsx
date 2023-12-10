@@ -8,6 +8,8 @@ import {
   useToast,
   VStack,
   FormLabel,
+  Flex,
+  Box,
 } from "@chakra-ui/react";
 import { ModuleProps } from "components/Widget/ModuleWidget";
 import { GetServerSideProps } from "next";
@@ -80,19 +82,24 @@ export default function UpsertModule({
   };
   return (
     <Layout isAdmin={isAdmin}>
-      <form onSubmit={submitData}>
-        <VStack spacing="24px" px={[2, "5vw", "10vw", "15vw"]}>
-          <FormControl isRequired>
-            <FormLabel>Module Name</FormLabel>
-            <Input
-              value={name}
-              variant="filled"
-              placeholder="Name"
-              isDisabled={formState === FormState.Input ? false : true}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
+      <Flex
+        flexDir="column"
+        gap="10"
+        overflowY="auto"
+        px={[2, "5vw", "10vw", "15vw"]}
+        h="100%"
+      >
+        <FormControl isRequired>
+          <FormLabel>Module Name</FormLabel>
+          <Input
+            value={name}
+            variant="filled"
+            placeholder="Name"
+            isDisabled={formState === FormState.Input ? false : true}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </FormControl>
+        {/* <FormControl>
             <FormLabel>Authorized Students</FormLabel>
             <Select
               isMulti
@@ -105,20 +112,20 @@ export default function UpsertModule({
               size="lg"
               menuPosition="fixed"
             />
-          </FormControl>
-          {isAdmin && (
-            <Button
-              mt={4}
-              size="lg"
-              colorScheme="teal"
-              type="submit"
-              isLoading={formState == FormState.Input ? false : true}
-            >
-              {isNew ? "Add Module" : "Update Module"}
-            </Button>
-          )}
-        </VStack>
-      </form>
+          </FormControl> */}
+        {isAdmin && (
+          <Button
+            size="lg"
+            colorScheme="teal"
+            type="submit"
+            isLoading={formState == FormState.Input ? false : true}
+            onClick={submitData}
+          >
+            {isNew ? "Add Module" : "Update Module"}
+          </Button>
+        )}
+      </Flex>
+      <Box h={"150px"}></Box>
     </Layout>
   );
 }

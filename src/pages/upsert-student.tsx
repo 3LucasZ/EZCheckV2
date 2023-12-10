@@ -92,12 +92,11 @@ export default function UpsertStudent({
       console.error(error);
     }
   };
-
   return (
     <Layout isAdmin={isAdmin}>
       <Flex
         flexDir="column"
-        gap="2"
+        gap="10"
         overflowY="auto"
         px={[2, "5vw", "10vw", "15vw"]}
         h="100%"
@@ -127,7 +126,7 @@ export default function UpsertStudent({
             </PinInput>
           </HStack>
         </FormControl>
-        <FormControl>
+        {/* <FormControl>
           <FormLabel>Allowed Modules</FormLabel>
           <Select
             isMulti
@@ -141,7 +140,7 @@ export default function UpsertStudent({
             menuPosition="fixed"
             menuPlacement="top"
           />
-        </FormControl>
+        </FormControl> */}
         {isAdmin && (
           <Button
             size="lg"
@@ -149,7 +148,6 @@ export default function UpsertStudent({
             type="submit"
             isLoading={formState == FormState.Input ? false : true}
             onClick={submitData}
-            minH="50px"
           >
             {isNew ? "Add Student" : "Update Student"}
           </Button>
