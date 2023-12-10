@@ -7,12 +7,14 @@ type StudentWidget2Props = {
   student: StudentProps;
   targetModule: ModuleProps;
   invert: boolean;
+  isAdmin: boolean;
 };
 
 export default function StudentWidget2({
   student,
   targetModule,
   invert,
+  isAdmin,
 }: StudentWidget2Props) {
   const handleRemove = async () => {
     try {
@@ -71,6 +73,7 @@ export default function StudentWidget2({
       safeRemove={false}
       handleAdd={handleAdd}
       invert={invert}
+      isAdmin={isAdmin}
     />
   );
 }

@@ -24,6 +24,7 @@ type BaseWidgetProps = {
   safeRemove: boolean;
   handleAdd: () => Promise<void>;
   invert: boolean;
+  isAdmin: boolean;
 };
 
 export default function BaseWidget({
@@ -34,6 +35,7 @@ export default function BaseWidget({
   safeRemove,
   handleAdd,
   invert,
+  isAdmin,
 }: BaseWidgetProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -52,24 +54,26 @@ export default function BaseWidget({
         pointerEvents={href ? "auto" : "none"}
         px={5}
         borderRadius={"md"}
-        roundedRight="none"
+        borderRight={isAdmin ? "none" : "auto"}
       >
         <Text noOfLines={1} h={6}>
           {title}
         </Text>
       </Link>
-      <IconButton
-        onClick={invert ? handleAdd : safeRemove ? onOpen : handleRemove}
-        bg={invert ? "green.300" : "red.300"}
-        _hover={{ bg: invert ? "green.400" : "red.400" }}
-        color="white"
-        aria-label={invert ? "add" : "delete"}
-        icon={invert ? <SmallAddIcon /> : <SmallCloseIcon />}
-        h={8}
-        w={8}
-        roundedLeft="none"
-        borderRadius="md"
-      />
+      {isAdmin && (
+        <IconButton
+          onClick={invert ? handleAdd : safeRemove ? onOpen : handleRemove}
+          bg={invert ? "green.300" : "red.300"}
+          _hover={{ bg: invert ? "green.400" : "red.400" }}
+          color="white"
+          aria-label={invert ? "add" : "delete"}
+          icon={invert ? <SmallAddIcon /> : <SmallCloseIcon />}
+          h={8}
+          w={8}
+          roundedLeft="none"
+          borderRadius="md"
+        />
+      )}
       <ConfirmDeleteModal
         isOpen={isOpen}
         onClose={onClose}

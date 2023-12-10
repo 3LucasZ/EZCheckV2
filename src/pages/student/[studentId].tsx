@@ -107,6 +107,7 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
                 key={module.id}
                 targetStudent={student}
                 invert={false}
+                isAdmin={isAdmin}
               />
             ),
           };
@@ -122,6 +123,7 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
                 key={module.id}
                 targetStudent={student}
                 invert={true}
+                isAdmin={isAdmin}
               />
             ),
           };
