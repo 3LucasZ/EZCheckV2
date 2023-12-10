@@ -27,7 +27,7 @@ type PageProps = {
 };
 export default function ModulePage({ module, students, admins }: PageProps) {
   //admin
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const isAdmin = checkAdmin(session, admins);
   //inId outId
   const inId = module.students.map((item) => item.id);
@@ -91,39 +91,43 @@ export default function ModulePage({ module, students, admins }: PageProps) {
           </Badge>
         }
       </Center>
-      <SearchView
-        setIn={inId.map((id) => {
-          var student = students.find((x) => x.id == id);
-          if (!student) student = students[0];
-          return {
-            name: module.name,
-            widget: (
-              <StudentWidget2
-                student={student}
-                key={student.id}
-                targetModule={module}
-                invert={false}
-              />
-            ),
-          };
-        })}
-        setOut={outId.map((id) => {
-          var student = students.find((x) => x.id == id);
-          if (!student) student = students[0];
-          return {
-            name: module.name,
-            widget: (
-              <StudentWidget2
-                student={student}
-                key={student.id}
-                targetModule={module}
-                invert={true}
-              />
-            ),
-          };
-        })}
-        isAdmin={isAdmin}
-      />
+      {status != "loading" && (
+        <SearchView
+          setIn={inId.map((id) => {
+            var student = students.find((x) => x.id == id);
+            if (!student) student = students[0];
+            return {
+              name: module.name,
+              widget: (
+                <StudentWidget2
+                  student={student}
+                  key={student.id}
+                  targetModule={module}
+                  invert={false}
+                  isAdmin={isAdmin}
+                />
+              ),
+            };
+          })}
+          setOut={outId.map((id) => {
+            var student = students.find((x) => x.id == id);
+            if (!student) student = students[0];
+            return {
+              name: module.name,
+              widget: (
+                <StudentWidget2
+                  student={student}
+                  key={student.id}
+                  targetModule={module}
+                  invert={true}
+                  isAdmin={isAdmin}
+                />
+              ),
+            };
+          })}
+          isAdmin={isAdmin}
+        />
+      )}
     </Layout>
   );
 }
