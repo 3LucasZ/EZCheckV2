@@ -10,7 +10,7 @@ async function main() {
       email: "lucas.zheng@warriorlife.net",
     },
   });
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 200; i++) {
     await prisma.module.upsert({
       create: {
         name: "Module #" + i,
