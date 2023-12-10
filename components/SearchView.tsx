@@ -89,6 +89,7 @@ export default function SearchView(props: SearchViewProps) {
         )}
         {props.setOut && (
           <Checkbox
+            colorScheme="red"
             isChecked={checked}
             onChange={(e) => {
               setChecked(e.target.checked);
