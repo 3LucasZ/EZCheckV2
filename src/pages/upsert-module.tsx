@@ -16,7 +16,7 @@ import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Widget/StudentWidget";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
-import { errorToast } from "services/toasty";
+import { errorToast, successToast } from "services/toasty";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
@@ -69,16 +69,17 @@ export default function UpsertModule({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      if (res.status == 500) {
+      if (res.status != 200) {
         setFormState(FormState.Input);
-        errorToast(toaster, "Module " + name + " already exists.");
+        errorToast(toaster, await res.json());
       } else {
         setFormState(FormState.Input);
+        successToast(toaster, "Success!");
         await Router.push(isNew ? "manage-modules" : "module/" + id);
       }
     } catch (error) {
       setFormState(FormState.Input);
-      if (debugMode) console.error(error);
+      errorToast(toaster, "" + error);
     }
   };
   return (

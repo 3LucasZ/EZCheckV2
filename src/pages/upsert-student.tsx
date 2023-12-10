@@ -19,7 +19,7 @@ import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Widget/StudentWidget";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
-import { errorToast } from "services/toasty";
+import { errorToast, successToast } from "services/toasty";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
@@ -81,9 +81,11 @@ export default function UpsertStudent({
         setFormState(FormState.Input);
         errorToast(toaster, await res.json());
         return;
+      } else {
+        setFormState(FormState.Input);
+        successToast(toaster, "Success!");
+        await Router.push(isNew ? "manage-students" : "student/" + id);
       }
-      setFormState(FormState.Input);
-      await Router.push(isNew ? "manage-students" : "student/" + id);
     } catch (error) {
       setFormState(FormState.Input);
       errorToast(toaster, "" + error);
