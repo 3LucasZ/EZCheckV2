@@ -6,11 +6,13 @@ import { StudentProps } from "./StudentWidget";
 type ModuleWidget2Props = {
   module: ModuleProps;
   targetStudent: StudentProps;
+  invert: boolean;
 };
 
 export default function ModuleWidget2({
   module,
   targetStudent,
+  invert,
 }: ModuleWidget2Props) {
   const handleRemove = async () => {
     try {
@@ -37,6 +39,31 @@ export default function ModuleWidget2({
       console.error(error);
     }
   };
+  const handleAdd = async () => {
+    try {
+      const moduleIds = targetStudent.modules.map((item) => ({ id: item.id }));
+      moduleIds.push({ id: module.id });
+      const body = {
+        id: targetStudent.id,
+        name: targetStudent.name,
+        PIN: targetStudent.PIN,
+        moduleIds,
+      };
+      console.log(body);
+      const res = await fetch("/api/upsert-student", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.status == 500) {
+        alert("Error, id:" + module.id);
+      } else {
+        Router.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <BaseWidget2
       href={"/module/" + module.id}
@@ -44,6 +71,8 @@ export default function ModuleWidget2({
       bg={"blue.300"}
       handleRemove={handleRemove}
       safeRemove={false}
+      handleAdd={handleAdd}
+      invert={invert}
     />
   );
 }

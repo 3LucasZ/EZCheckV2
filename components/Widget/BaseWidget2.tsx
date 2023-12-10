@@ -1,4 +1,10 @@
-import { DeleteIcon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  CloseIcon,
+  DeleteIcon,
+  SmallAddIcon,
+  SmallCloseIcon,
+} from "@chakra-ui/icons";
 import {
   Box,
   Flex,
@@ -17,6 +23,7 @@ type BaseWidgetProps = {
   handleRemove: () => Promise<void>;
   safeRemove: boolean;
   handleAdd: () => Promise<void>;
+  invert: boolean;
 };
 
 export default function BaseWidget({
@@ -26,6 +33,7 @@ export default function BaseWidget({
   handleRemove,
   safeRemove,
   handleAdd,
+  invert,
 }: BaseWidgetProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -51,14 +59,16 @@ export default function BaseWidget({
         </Text>
       </Link>
       <IconButton
-        onClick={safeRemove ? onOpen : handleRemove}
-        colorScheme="red"
-        aria-label="delete"
-        icon={<DeleteIcon />}
+        onClick={invert ? handleAdd : safeRemove ? onOpen : handleRemove}
+        bg={invert ? "green.300" : "red.300"}
+        _hover={{ bg: invert ? "green.400" : "red.400" }}
+        color="white"
+        aria-label={invert ? "add" : "delete"}
+        icon={invert ? <SmallAddIcon /> : <SmallCloseIcon />}
         h={8}
+        w={8}
         roundedLeft="none"
         borderRadius="md"
-        w={8}
       />
       <ConfirmDeleteModal
         isOpen={isOpen}

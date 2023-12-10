@@ -30,20 +30,14 @@ type PageProps = {
 };
 
 export default function StudentPage({ student, modules, admins }: PageProps) {
+  //admin
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
-  const allOptions = modules.map((module) => ({
-    value: module.id,
-    label: module.name,
-  }));
+  //inId and outId
   const inId = student.modules.map((module) => module.id);
   const outId = modules
     .map((module) => module.id)
     .filter((moduleId) => !inId.includes(moduleId));
-
-  // add item
-  const [module, setModule] =
-    useState<MultiValue<{ value: number; label: string }>>();
   // delete modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
@@ -101,30 +95,6 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
           </Badge>
         }
       </Center>
-      <Flex px={[2, "5vw", "10vw", "15vw"]} gap={2} w="100%">
-        <Select
-          isMulti
-          name="modules"
-          options={allOptions}
-          value={module}
-          placeholder="Select Module"
-          // onChange={(e) => setModule(e)}
-          // menuPosition="fixed"
-          tabIndex={1000}
-        />
-        {isAdmin && (
-          <IconButton
-            p={0}
-            ml={2}
-            mr={2}
-            colorScheme="teal"
-            aria-label="edit"
-            icon={<AddIcon />}
-            // onClick={submitData}
-          />
-        )}
-      </Flex>
-
       <SearchView
         setIn={inId.map((moduleId) => {
           var module = modules.find((x) => x.id == moduleId);
@@ -136,6 +106,7 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
                 module={module}
                 key={module.id}
                 targetStudent={student}
+                invert={false}
               />
             ),
           };
@@ -150,6 +121,7 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
                 module={module}
                 key={module.id}
                 targetStudent={student}
+                invert={true}
               />
             ),
           };
