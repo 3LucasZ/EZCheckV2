@@ -10,15 +10,15 @@ async function main() {
       email: "lucas.zheng@warriorlife.net",
     },
   });
-  for (let i = 0; i < 200; i++) {
-    await prisma.module.upsert({
-      create: {
-        name: "Module #" + i,
-      },
-      update: {},
-      where: { name: "Module #" + i },
-    });
-  }
+  // for (let i = 0; i < 200; i++) {
+  //   await prisma.module.upsert({
+  //     create: {
+  //       name: "Module #" + i,
+  //     },
+  //     update: {},
+  //     where: { name: "Module #" + i },
+  //   });
+  // }
   const student1 = await prisma.student.upsert({
     create: { name: "Lucas Zheng", PIN: "123456" },
     update: {},
