@@ -26,7 +26,7 @@ export default function ModuleWidget2({
           .filter((item) => item.id != module.id)
           .map((item) => ({ id: item.id })),
       };
-      console.log(body);
+      if (debugMode) console.log(body);
       const res = await fetch("/api/upsert-student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -38,7 +38,7 @@ export default function ModuleWidget2({
         Router.reload();
       }
     } catch (error) {
-      console.error(error);
+      if (debugMode) console.error(error);
     }
   };
   const handleAdd = async () => {
@@ -51,7 +51,7 @@ export default function ModuleWidget2({
         PIN: targetStudent.PIN,
         moduleIds,
       };
-      console.log(body);
+      if (debugMode) console.log(body);
       const res = await fetch("/api/upsert-student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -63,7 +63,7 @@ export default function ModuleWidget2({
         Router.reload();
       }
     } catch (error) {
-      console.error(error);
+      if (debugMode) console.error(error);
     }
   };
   return (

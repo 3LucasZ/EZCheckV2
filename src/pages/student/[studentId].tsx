@@ -50,7 +50,7 @@ export default function StudentPage({ student, modules, admins }: PageProps) {
       });
       await Router.push({ pathname: "/manage-students" });
     } catch (error) {
-      console.error(error);
+      if (debugMode) console.error(error);
     }
   };
   // ret

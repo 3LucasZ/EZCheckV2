@@ -5,6 +5,6 @@ export function getIPFromReq(req: NextApiRequest) {
   if (ip?.substring(0, 7) == "::ffff:") {
     ip = ip.substring(7);
   }
-  console.log("IP:", ip);
+  if (debugMode) console.log("IP:", ip);
   return ip;
 }

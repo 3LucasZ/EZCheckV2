@@ -74,7 +74,7 @@ export default function UpsertStudent({
       const moduleIds: RelateProps[] = [];
       modules.map((obj) => moduleIds.push({ id: obj.value }));
       const body = { id, name, PIN, moduleIds };
-      console.log(body);
+      if (debugMode) console.log(body);
       const res = await fetch("/api/upsert-student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -89,7 +89,7 @@ export default function UpsertStudent({
       await Router.push(isNew ? "manage-students" : "student/" + id);
     } catch (error) {
       setFormState(FormState.Input);
-      console.error(error);
+      if (debugMode) console.error(error);
     }
   };
   return (

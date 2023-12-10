@@ -46,7 +46,7 @@ export default function ModulePage({ module, students, admins }: PageProps) {
       });
       await Router.push({ pathname: "/manage-modules" });
     } catch (error) {
-      console.error(error);
+      if (debugMode) console.error(error);
     }
   };
   //ret

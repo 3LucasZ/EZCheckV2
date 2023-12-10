@@ -15,7 +15,7 @@ const AdminWidget: React.FC<{
   const handleDelete = async () => {
     try {
       const body = { id: admin.id };
-      console.log(body);
+      if (debugMode) console.log(body);
       const res = await fetch("/api/delete-admin", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -28,7 +28,7 @@ const AdminWidget: React.FC<{
         Router.reload();
       }
     } catch (error) {
-      console.error(error);
+      if (debugMode) console.error(error);
     }
   };
   return (

@@ -77,7 +77,7 @@ export default function UpsertModule({
       }
     } catch (error) {
       setFormState(FormState.Input);
-      console.error(error);
+      if (debugMode) console.error(error);
     }
   };
   return (

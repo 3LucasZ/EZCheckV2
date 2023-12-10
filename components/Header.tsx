@@ -32,7 +32,7 @@ export default function Header({ isAdmin }: HeaderProps) {
           colorScheme="teal"
           variant="solid"
           onClick={(e) => {
-            console.log(e);
+            if (debugMode) console.log(e);
             e.preventDefault();
             setLoading(true);
             session

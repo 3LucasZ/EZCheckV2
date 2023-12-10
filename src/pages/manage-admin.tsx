@@ -38,7 +38,7 @@ export default function ManageAdmin({ admins }: PageProps) {
         Router.reload();
       }
     } catch (error) {
-      console.error(error);
+      if (debugMode) console.error(error);
     }
   };
   return (
