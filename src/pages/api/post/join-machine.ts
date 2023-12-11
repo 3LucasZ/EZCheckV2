@@ -1,14 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { debugMode } from "services/constants";
 import prisma from "services/prisma";
-import { getIPFromReq } from "services/utils";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { machineName, studentPIN, machineSecret } = req.body;
-  const IP = getIPFromReq(req);
+  const { machineName, studentPIN, machineSecret, IP } = req.body;
+
   if (machineSecret != process.env.EZCHECK_SECRET) {
     return res
       .status(403)
