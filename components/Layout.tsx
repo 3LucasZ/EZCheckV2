@@ -13,8 +13,10 @@ export default function Layout({
 }) {
   useEffect(() => {
     const html = document.querySelector("html") || new HTMLBodyElement();
+    const body = document.querySelector("body") || new HTMLBodyElement();
     html.style.overscrollBehavior = "none";
     html.style.touchAction = "none";
+    body.style.touchAction = "none";
   });
   return (
     <>
