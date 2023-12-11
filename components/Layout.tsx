@@ -1,5 +1,5 @@
 import Head from "next/head";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import Header from "./Header";
 import { Flex } from "@chakra-ui/react";
 import AppBar from "./AppBar";
@@ -11,6 +11,11 @@ export default function Layout({
   children: ReactNode;
   isAdmin: boolean;
 }) {
+  useEffect(() => {
+    const html = document.querySelector("html") || new HTMLBodyElement();
+    html.style.overscrollBehavior = "none";
+    html.style.touchAction = "none";
+  });
   return (
     <>
       <Head>
