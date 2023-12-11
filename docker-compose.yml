@@ -30,6 +30,7 @@ services:
     container_name: ezcheck-app
     depends_on: # wait for postgres to be installed before running prisma migrate
       - db
+      - nginx
     build:
       context: .
       dockerfile: Dockerfile
