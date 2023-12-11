@@ -8,6 +8,7 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const { machineName, studentPIN, machineSecret } = req.body;
+  const IP = getIPFromReq(req);
   if (machineSecret != process.env.EZCHECK_SECRET) {
     return res
       .status(403)
@@ -21,7 +22,7 @@ export default async function handle(
             : "")
       );
   }
-  const IP = getIPFromReq(req);
+
   //find student
   const student = await prisma.student.findUnique({
     where: {
