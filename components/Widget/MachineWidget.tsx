@@ -1,5 +1,4 @@
-import { Box, Grid, GridItem, Link } from "@chakra-ui/react";
-
+import { Box, Grid } from "@chakra-ui/react";
 import { StudentProps } from "./StudentWidget";
 import BaseWidget from "./BaseWidget";
 
@@ -13,10 +12,9 @@ export type MachineProps = {
 };
 type MachineWidgetProps = {
   machine: MachineProps;
-  bare?: boolean;
 };
 
-export default function MachineWidget({ machine, bare }: MachineWidgetProps) {
+export default function MachineWidget({ machine }: MachineWidgetProps) {
   return (
     <Box display="flex" position="relative">
       <Grid
@@ -30,26 +28,22 @@ export default function MachineWidget({ machine, bare }: MachineWidgetProps) {
           title={machine.name}
           bg={"blue.300"}
           bgHover="blue.400"
-          colSpan={bare ? 4 : 2}
+          colSpan={2}
         />
-        {!bare && (
-          <>
-            <BaseWidget
-              href={machine.usedBy ? "/student/" + machine.usedBy.id : ""}
-              title={machine.usedBy ? machine.usedBy.name : "Standby"}
-              bg={machine.usedBy ? "teal.300" : "red.300"}
-              bgHover={machine.usedBy ? "teal.400" : "red.300"}
-              colSpan={1}
-            />
-            <BaseWidget
-              href={""}
-              title={machine.IP ? machine.IP : "Not seen"}
-              bg={machine.IP ? "orange.300" : "red.400"}
-              bgHover={machine.IP ? "orange.400" : "red.400"}
-              colSpan={1}
-            />
-          </>
-        )}
+        <BaseWidget
+          href={machine.usedBy ? "/student/" + machine.usedBy.id : ""}
+          title={machine.usedBy ? machine.usedBy.name : "Standby"}
+          bg={machine.usedBy ? "teal.300" : "red.300"}
+          bgHover={machine.usedBy ? "teal.400" : "red.300"}
+          colSpan={1}
+        />
+        <BaseWidget
+          href={""}
+          title={machine.IP ? machine.IP : "Not seen"}
+          bg={machine.IP ? "orange.300" : "red.400"}
+          bgHover={machine.IP ? "orange.400" : "red.400"}
+          colSpan={1}
+        />
       </Grid>
     </Box>
   );

@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Link } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import { MachineProps } from "./MachineWidget";
 import BaseWidget from "./BaseWidget";
 
@@ -11,13 +11,9 @@ export type StudentProps = {
 };
 type StudentWidgetProps = {
   student: StudentProps;
-  bare?: boolean;
 };
 
-export default function StudentWidgetProps({
-  student,
-  bare,
-}: StudentWidgetProps) {
+export default function StudentWidget({ student }: StudentWidgetProps) {
   return (
     <Box display="flex">
       <Grid
@@ -31,17 +27,15 @@ export default function StudentWidgetProps({
           title={student.name}
           bg={"teal.300"}
           bgHover={"teal.400"}
-          colSpan={bare ? 2 : 1}
+          colSpan={1}
         />
-        {!bare && (
-          <BaseWidget
-            href={student.using ? "/machine/" + student.using.id : ""}
-            title={student.using ? student.using.name : "Offline"}
-            bg={student.using ? "blue.300" : "red.300"}
-            bgHover={student.using ? "blue.400" : "red.300"}
-            colSpan={1}
-          />
-        )}
+        <BaseWidget
+          href={student.using ? "/machine/" + student.using.id : ""}
+          title={student.using ? student.using.name : "Offline"}
+          bg={student.using ? "blue.300" : "red.300"}
+          bgHover={student.using ? "blue.400" : "red.300"}
+          colSpan={1}
+        />
       </Grid>
     </Box>
   );

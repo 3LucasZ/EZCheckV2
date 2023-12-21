@@ -1,7 +1,7 @@
 import { GridItem, Link, Text } from "@chakra-ui/react";
 
 type BaseWidgetProps = {
-  href: string;
+  href?: string;
   title: string;
   bg: string;
   bgHover?: string;
