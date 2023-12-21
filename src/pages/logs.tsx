@@ -30,7 +30,7 @@ export default function Home({ admins, logs }: PageProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const admins = await prisma.admin.findMany();
-  const logs = await prisma.log.findMany();
+  const logs = await prisma.log.findMany({ orderBy: [{ id: "desc" }] });
   return {
     props: {
       admins,
