@@ -81,7 +81,6 @@ export default function MachineWidget2({
       bg={"blue.300"}
       bgHover={"blue.400"}
       handleRemove={handleRemove}
-      safeRemove={false}
       handleAdd={handleAdd}
       invert={invert}
       isAdmin={isAdmin}

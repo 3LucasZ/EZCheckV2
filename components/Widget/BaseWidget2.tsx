@@ -3,13 +3,12 @@ import { Flex, IconButton, Link, Text, useDisclosure } from "@chakra-ui/react";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 
 type BaseWidgetProps = {
-  href: string;
+  href?: string;
   title: string;
   bg: string;
   bgHover: string;
   handleRemove: () => Promise<void>;
-  safeRemove: boolean;
-  handleAdd: () => Promise<void>;
+  handleAdd?: () => Promise<void>;
   invert: boolean;
   isAdmin: boolean;
 };
@@ -20,15 +19,12 @@ export default function BaseWidget({
   bg,
   bgHover,
   handleRemove,
-  safeRemove,
   handleAdd,
   invert,
   isAdmin,
 }: BaseWidgetProps) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
-    <Flex h={8}>
+    <Flex overflow="hidden" rounded="md">
       <Link
         bg={bg}
         _hover={{ bg: bgHover }}
@@ -38,12 +34,10 @@ export default function BaseWidget({
         sx={{
           WebkitUserDrag: "none",
         }}
-        w="100%"
-        h="100%"
+        w="calc(100% - 40px)"
+        h="8"
         pointerEvents={href ? "auto" : "none"}
         px={5}
-        borderRadius={"md"}
-        roundedRight={isAdmin ? "none" : "auto"}
       >
         <Text noOfLines={1} h={6}>
           {title}
@@ -51,24 +45,17 @@ export default function BaseWidget({
       </Link>
       {isAdmin && (
         <IconButton
-          onClick={invert ? handleAdd : safeRemove ? onOpen : handleRemove}
+          onClick={invert ? handleAdd : handleRemove}
           bg={invert ? "green.300" : "red.300"}
           _hover={{ bg: invert ? "green.400" : "red.400" }}
           color="white"
           aria-label={invert ? "add" : "delete"}
           icon={invert ? <SmallAddIcon /> : <SmallCloseIcon />}
           h={8}
-          w={8}
-          roundedLeft="none"
-          borderRadius="md"
+          w={"40px"}
+          rounded="none"
         />
       )}
-      <ConfirmDeleteModal
-        isOpen={isOpen}
-        onClose={onClose}
-        name={title}
-        handleDelete={handleRemove}
-      />
     </Flex>
   );
 }

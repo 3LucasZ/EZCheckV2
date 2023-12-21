@@ -79,7 +79,6 @@ export default function StudentWidget2({
       bg={"teal.300"}
       bgHover={"teal.400"}
       handleRemove={handleRemove}
-      safeRemove={false}
       handleAdd={handleAdd}
       invert={invert}
       isAdmin={isAdmin}
