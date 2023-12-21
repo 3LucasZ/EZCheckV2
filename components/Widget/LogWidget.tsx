@@ -17,9 +17,10 @@ export default function LogWidget({ log }: LogWidgetProps) {
       display="flex"
       flexDir="column"
       bg={
-        log.level == 0 ? "blue.300" : log.level == 1 ? "orange.200" : "red.300"
+        log.level == 0 ? "blue.300" : log.level == 1 ? "orange.300" : "red.300"
       }
       px="5"
+      color="white"
     >
       <Box>{log.timestamp}</Box>
       <Box>{log.message}</Box>
