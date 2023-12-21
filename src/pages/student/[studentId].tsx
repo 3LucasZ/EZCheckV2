@@ -49,8 +49,10 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
   };
   //student force log out
   const handleLeave = async () => {
-    const body = { id: student.id };
-    const res = await poster("/api/leave-student", body, toaster);
+    const body = {
+      machineName: student.using.name,
+    };
+    const res = await poster("/api/post/leave-machine", body, toaster);
     if (res.status == 200) Router.reload();
   };
   // ret
@@ -63,7 +65,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
             <>
               <IconButton
                 colorScheme="teal"
-                aria-label="edit"
+                aria-label=""
                 icon={<EditIcon />}
                 onClick={() =>
                   Router.push({
@@ -75,7 +77,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
               <IconButton
                 onClick={onOpen}
                 colorScheme="red"
-                aria-label="delete"
+                aria-label=""
                 icon={<DeleteIcon />}
               />
               <IconButton
