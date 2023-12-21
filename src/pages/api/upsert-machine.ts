@@ -1,17 +1,14 @@
 import { Prisma } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/prisma";
+import { prismaErrHandler } from "services/prismaErrHandler";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { id, name, studentIds } = req.body;
-  if (name == "") {
-    const prep = res.status(500);
-    prep.json("form is incomplete");
-    return prep;
-  }
+  if (name == "") return res.status(500).json("Name can not be empty.");
   try {
     const op = await prisma.machine.upsert({
       where: {
@@ -35,9 +32,6 @@ export default async function handle(
     });
     return res.status(200).json(op);
   } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      return res.status(500).json(e.meta?.target + " must be unique");
-    }
+    return res.status(500).json(prismaErrHandler(e));
   }
-  return res.status(500).json("unkown error");
 }
