@@ -29,7 +29,7 @@ enum FormState {
   Submitting,
 }
 type PageProps = {
-  allmachines: MachineProps[];
+  allMachines: MachineProps[];
   oldStudent: StudentProps;
   admins: AdminProps[];
 };
@@ -38,14 +38,14 @@ type RelateProps = {
 };
 
 export default function UpsertStudent({
-  allmachines,
+  allMachines,
   oldStudent,
   admins,
 }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   const toaster = useToast();
-  const allOptions = allmachines.map((machine) => ({
+  const allOptions = allMachines.map((machine) => ({
     value: machine.id,
     label: machine.name,
   }));
@@ -158,7 +158,7 @@ export default function UpsertStudent({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //prisma
-  const allmachines = await prisma.machine.findMany();
+  const allMachines = await prisma.machine.findMany();
   const admins = await prisma.admin.findMany();
   const { id } = context.query;
   const realId = id == undefined ? -1 : Number(id);
@@ -175,7 +175,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //ret
   return {
     props: {
-      allmachines: allmachines,
+      allMachines: allMachines,
       oldStudent: oldStudent,
       admins: admins,
     },

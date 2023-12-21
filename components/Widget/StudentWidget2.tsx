@@ -8,14 +8,14 @@ import { errorToast, successToast } from "services/toasty";
 
 type StudentWidget2Props = {
   student: StudentProps;
-  targetmachine: MachineProps;
+  targetMachine: MachineProps;
   invert: boolean;
   isAdmin: boolean;
 };
 
 export default function StudentWidget2({
   student,
-  targetmachine,
+  targetMachine,
   invert,
   isAdmin,
 }: StudentWidget2Props) {
@@ -23,9 +23,9 @@ export default function StudentWidget2({
   const handleRemove = async () => {
     try {
       const body = {
-        id: targetmachine.id,
-        name: targetmachine.name,
-        studentIds: targetmachine.students
+        id: targetMachine.id,
+        name: targetMachine.name,
+        studentIds: targetMachine.students
           .filter((item) => item.id != student.id)
           .map((item) => ({ id: item.id })),
       };
@@ -47,13 +47,13 @@ export default function StudentWidget2({
   };
   const handleAdd = async () => {
     try {
-      const studentIds = targetmachine.students.map((item) => ({
+      const studentIds = targetMachine.students.map((item) => ({
         id: item.id,
       }));
       studentIds.push({ id: student.id });
       const body = {
-        id: targetmachine.id,
-        name: targetmachine.name,
+        id: targetMachine.id,
+        name: targetMachine.name,
         studentIds,
       };
       if (debugMode) console.log(body);

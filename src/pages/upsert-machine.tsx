@@ -26,7 +26,7 @@ enum FormState {
 }
 type PageProps = {
   allStudents: StudentProps[];
-  oldmachine: MachineProps;
+  oldMachine: MachineProps;
   admins: AdminProps[];
 };
 type RelateProps = {
@@ -34,7 +34,7 @@ type RelateProps = {
 };
 export default function UpsertMachine({
   allStudents,
-  oldmachine,
+  oldMachine,
   admins,
 }: PageProps) {
   const { data: session } = useSession();
@@ -44,13 +44,13 @@ export default function UpsertMachine({
     value: student.id,
     label: student.name,
   }));
-  const prefillOptions = oldmachine.students.map((student) => ({
+  const prefillOptions = oldMachine.students.map((student) => ({
     value: student.id,
     label: student.name,
   }));
-  const id = oldmachine.id;
+  const id = oldMachine.id;
   const isNew = id == -1;
-  const [name, setName] = useState<string>(isNew ? "" : oldmachine.name);
+  const [name, setName] = useState<string>(isNew ? "" : oldMachine.name);
   const [formState, setFormState] = useState(FormState.Input);
   const [students, setStudents] = useState<
     MultiValue<{ value: number; label: string }>
@@ -90,7 +90,7 @@ export default function UpsertMachine({
         h="100%"
       >
         <FormControl isRequired>
-          <FormLabel>machine Name</FormLabel>
+          <FormLabel>Machine Name</FormLabel>
           <Input
             value={name}
             variant="filled"
@@ -121,7 +121,7 @@ export default function UpsertMachine({
             isLoading={formState == FormState.Input ? false : true}
             onClick={submitData}
           >
-            {isNew ? "Add machine" : "Update machine"}
+            {isNew ? "Add Machine" : "Update Machine"}
           </Button>
         )}
       </Flex>
@@ -143,12 +143,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       students: true,
     },
   });
-  const oldmachine = find == null ? { id: -1, name: "", students: [] } : find;
+  const oldMachine = find == null ? { id: -1, name: "", students: [] } : find;
   //ret
   return {
     props: {
       allStudents: allStudents,
-      oldmachine: oldmachine,
+      oldMachine: oldMachine,
       admins: admins,
     },
   };

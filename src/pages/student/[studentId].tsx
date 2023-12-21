@@ -20,7 +20,8 @@ import prisma from "services/prisma";
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import MachineWidget2 from "components/Widget/MachineWidget2";
-import { debugMode } from "services/constants";
+import { poster } from "services/poster";
+import { PiSignOutBold } from "react-icons/pi";
 
 type PageProps = {
   student: StudentProps;
@@ -39,32 +40,28 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
   const outId = machines
     .map((item) => item.id)
     .filter((id) => !inId.includes(id));
-  // delete modal
+  //modal - delete student
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
-    try {
-      const body = { id: student.id };
-      const res = await fetch("/api/delete-student", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      await Router.push({ pathname: "/manage-students" });
-    } catch (error) {
-      if (debugMode) console.error(error);
-    }
+    const body = { id: student.id };
+    const res = await poster("/api/delete-student", body, toaster);
+    if (res.status == 200) await Router.push({ pathname: "/manage-students" });
+  };
+  //student force log out
+  const handleLeave = async () => {
+    const body = { id: student.id };
+    const res = await poster("/api/leave-student", body, toaster);
+    if (res.status == 200) Router.reload();
   };
   // ret
   return (
     <Layout isAdmin={isAdmin}>
       <Center pb={3} flexDir={"column"}>
-        <Flex>
-          <Heading>{student.name}</Heading>
+        <Flex gap="8px">
+          <Heading w="100%">{student.name}</Heading>
           {isAdmin && (
             <>
               <IconButton
-                ml={2}
-                mr={2}
                 colorScheme="teal"
                 aria-label="edit"
                 icon={<EditIcon />}
@@ -81,10 +78,16 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
                 aria-label="delete"
                 icon={<DeleteIcon />}
               />
+              <IconButton
+                onClick={handleLeave}
+                colorScheme="blue"
+                aria-label=""
+                icon={<PiSignOutBold />}
+              />
               <ConfirmDeleteModal
                 isOpen={isOpen}
                 onClose={onClose}
-                name={" the student: " + student.name}
+                name={student.name}
                 handleDelete={handleDelete}
               />
             </>

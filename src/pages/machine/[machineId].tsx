@@ -105,7 +105,7 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
                 <StudentWidget2
                   student={student}
                   key={student.id}
-                  targetmachine={machine}
+                  targetMachine={machine}
                   invert={false}
                   isAdmin={isAdmin}
                 />
@@ -121,7 +121,7 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
                 <StudentWidget2
                   student={student}
                   key={student.id}
-                  targetmachine={machine}
+                  targetMachine={machine}
                   invert={true}
                   isAdmin={isAdmin}
                 />

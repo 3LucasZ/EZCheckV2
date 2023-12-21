@@ -6,17 +6,14 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { machineName, machineSecret } = req.body;
-  if (machineSecret != process.env.EZCHECK_SECRET) {
-    return res.status(403).json("Unauthorized machine. Denied Access");
-  }
+  const { id } = req.body;
   try {
-    await prisma.machine.update({
+    await prisma.student.update({
       where: {
-        name: machineName,
+        id,
       },
       data: {
-        usedById: null,
+        using: null,
       },
     });
     return res.status(200).json("Successfully left.");

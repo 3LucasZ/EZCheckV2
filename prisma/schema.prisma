@@ -15,11 +15,11 @@ model Student {
   id        Int         @id @default(autoincrement())
   name      String      @unique @db.VarChar(255)
   PIN       String      @unique @db.VarChar(255)
-  machines   machine[]    @relation("authorized")
-  using     machine?     @relation("using")
+  machines   Machine[]    @relation("authorized")
+  using     Machine?     @relation("using")
 }
 
-model machine {
+model Machine {
   id        Int         @id @default(autoincrement())
   name      String      @unique @db.VarChar(255)
   students  Student[]   @relation("authorized")
