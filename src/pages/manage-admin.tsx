@@ -10,6 +10,7 @@ import prisma from "services/prisma";
 import { AddIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
+import { poster } from "services/poster";
 
 type PageProps = {
   admins: AdminProps[];
@@ -25,22 +26,9 @@ export default function ManageAdmin({ admins }: PageProps) {
   };
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    try {
-      const body = { email };
-      const res = await fetch("/api/add-admin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (res.status != 200) {
-        errorToast(toaster, await res.json());
-      } else {
-        successToast(toaster, "Success!");
-        Router.reload();
-      }
-    } catch (error) {
-      errorToast(toaster, "" + error);
-    }
+    const body = { email };
+    const res = await poster("/api/add-admin", body, toaster);
+    if (res.status == 200) Router.reload();
   };
   return (
     <Layout isAdmin={isAdmin}>
