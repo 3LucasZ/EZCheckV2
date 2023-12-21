@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Router from "next/router";
-import { MultiValue } from "chakra-react-select";
 import {
   FormControl,
   Input,
@@ -12,82 +11,39 @@ import {
   FormLabel,
   Box,
   Flex,
+  SimpleGrid,
 } from "@chakra-ui/react";
-import { MachineProps } from "components/Widget/MachineWidget";
 import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Widget/StudentWidget";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
-import { errorToast, successToast } from "services/toasty";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
-import { debugMode } from "services/constants";
+import { poster } from "services/poster";
 
-enum FormState {
-  Input,
-  Submitting,
-}
 type PageProps = {
-  allMachines: MachineProps[];
   oldStudent: StudentProps;
   admins: AdminProps[];
 };
-type RelateProps = {
-  id: number;
-};
 
-export default function UpsertStudent({
-  allMachines,
-  oldStudent,
-  admins,
-}: PageProps) {
+export default function UpsertStudent({ oldStudent, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   const toaster = useToast();
-  const allOptions = allMachines.map((machine) => ({
-    value: machine.id,
-    label: machine.name,
-  }));
-  const prefillOptions = oldStudent.machines.map((machine) => ({
-    value: machine.id,
-    label: machine.name,
-  }));
 
   const id = oldStudent.id;
   const isNew = id == -1;
   const PINLen = 10;
   const [name, setName] = useState(oldStudent.name);
   const [PIN, setPIN] = useState(oldStudent.PIN);
-  const [machines, setmachines] =
-    useState<MultiValue<{ value: number; label: string }>>(prefillOptions);
-  const [formState, setFormState] = useState(FormState.Input);
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setFormState(FormState.Submitting);
-    try {
-      const machineIds: RelateProps[] = [];
-      machines.map((obj) => machineIds.push({ id: obj.value }));
-      const body = { id, name, PIN, machineIds };
-      if (debugMode) console.log(body);
-      const res = await fetch("/api/upsert-student", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (res.status != 200) {
-        setFormState(FormState.Input);
-        errorToast(toaster, await res.json());
-        return;
-      } else {
-        setFormState(FormState.Input);
-        successToast(toaster, "Success!");
-        await Router.push(isNew ? "manage-students" : "student/" + id);
-      }
-    } catch (error) {
-      setFormState(FormState.Input);
-      errorToast(toaster, "" + error);
+    const body = { id, name, PIN };
+    const res = await poster("/api/upsert-student", body, toaster);
+    if (res.status == 200) {
+      await Router.push(isNew ? "manage-students" : "student/" + id);
     }
   };
   return (
@@ -106,13 +62,13 @@ export default function UpsertStudent({
             value={name}
             variant="filled"
             placeholder="Name"
-            isDisabled={formState === FormState.Input ? false : true}
             onChange={(e) => setName(e.target.value)}
+            maxLength={50}
           />
         </FormControl>
         <FormControl isRequired>
           <FormLabel>PIN</FormLabel>
-          <HStack>
+          <SimpleGrid columns={[5, 10]} spacing="4">
             <PinInput onChange={(e) => setPIN(e)} value={PIN}>
               {Array.from(Array(PINLen).keys()).map((key) =>
                 key == 0 ? (
@@ -122,29 +78,14 @@ export default function UpsertStudent({
                 )
               )}
             </PinInput>
-          </HStack>
+          </SimpleGrid>
         </FormControl>
-        {/* <FormControl>
-          <FormLabel>Allowed machines</FormLabel>
-          <Select
-            isMulti
-            name="machines"
-            options={allOptions}
-            value={machines}
-            placeholder="Select machines"
-            closeMenuOnSelect={false}
-            onChange={(e) => setmachines(e)}
-            size="lg"
-            menuPosition="fixed"
-            menuPlacement="top"
-          />
-        </FormControl> */}
+
         {isAdmin && (
           <Button
             size="lg"
             colorScheme="teal"
             type="submit"
-            isLoading={formState == FormState.Input ? false : true}
             onClick={submitData}
           >
             {isNew ? "Add Student" : "Update Student"}
@@ -158,7 +99,6 @@ export default function UpsertStudent({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //prisma
-  const allMachines = await prisma.machine.findMany();
   const admins = await prisma.admin.findMany();
   const { id } = context.query;
   const realId = id == undefined ? -1 : Number(id);
@@ -175,7 +115,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //ret
   return {
     props: {
-      allMachines: allMachines,
       oldStudent: oldStudent,
       admins: admins,
     },
