@@ -13,7 +13,7 @@ export default async function handle(
         id,
       },
       data: {
-        using: null,
+        using: undefined,
       },
     });
     return res.status(200).json("Successfully left.");
