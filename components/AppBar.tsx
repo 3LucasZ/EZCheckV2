@@ -20,7 +20,7 @@ export default function AppBar() {
       <AppBarBtn icon={FaHome} href="/" />
       <AppBarBtn icon={MdManageAccounts} href="/manage-students" />
       <AppBarBtn icon={GiSewingMachine} href="/manage-machines" />
-      <AppBarBtn icon={IoDocumentText} href="/log" />
+      <AppBarBtn icon={IoDocumentText} href="/logs" />
       <AppBarBtn icon={IoIosInformationCircle} href="/help" />
     </HStack>
   );
