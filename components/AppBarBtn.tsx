@@ -1,8 +1,6 @@
-import { Center, HStack, Icon, IconButton, Link } from "@chakra-ui/react";
-import { FaHome } from "react-icons/fa";
-import { MdManageAccounts } from "react-icons/md";
-import { GiSewingMachine } from "react-icons/gi";
+import { Button, Center, Icon } from "@chakra-ui/react";
 import { IconType } from "react-icons";
+import Router from "next/router";
 
 type AppBarBtnProps = {
   icon: IconType;
@@ -10,7 +8,7 @@ type AppBarBtnProps = {
 };
 export default function AppBarBtn({ icon, href }: AppBarBtnProps) {
   return (
-    <Link
+    <Button
       w={"33%"}
       h={"100%"}
       rounded="unset"
@@ -18,14 +16,14 @@ export default function AppBarBtn({ icon, href }: AppBarBtnProps) {
       bg="teal.300"
       _hover={{ bg: "teal.400" }}
       color="white"
-      pt="13px"
-      href={href}
+      py="13px"
+      onClick={() => Router.push(href)}
     >
       {
         <Center>
-          <Icon as={icon} boxSize="23" />
+          <Icon as={icon} boxSize="24px" />
         </Center>
       }
-    </Link>
+    </Button>
   );
 }
