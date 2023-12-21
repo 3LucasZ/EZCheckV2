@@ -1,26 +1,12 @@
-import {
-  AddIcon,
-  CloseIcon,
-  DeleteIcon,
-  SmallAddIcon,
-  SmallCloseIcon,
-} from "@chakra-ui/icons";
-import {
-  Box,
-  Flex,
-  GridItem,
-  IconButton,
-  Link,
-  Text,
-  useDisclosure,
-  useToast,
-} from "@chakra-ui/react";
+import { SmallAddIcon, SmallCloseIcon } from "@chakra-ui/icons";
+import { Flex, IconButton, Link, Text, useDisclosure } from "@chakra-ui/react";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 
 type BaseWidgetProps = {
   href: string;
   title: string;
   bg: string;
+  bgHover: string;
   handleRemove: () => Promise<void>;
   safeRemove: boolean;
   handleAdd: () => Promise<void>;
@@ -32,6 +18,7 @@ export default function BaseWidget({
   href,
   title,
   bg,
+  bgHover,
   handleRemove,
   safeRemove,
   handleAdd,
@@ -44,6 +31,7 @@ export default function BaseWidget({
     <Flex h={8}>
       <Link
         bg={bg}
+        _hover={{ bg: bgHover }}
         color="white"
         href={href}
         style={{ textDecoration: "none" }}

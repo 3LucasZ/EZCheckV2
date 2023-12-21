@@ -76,7 +76,8 @@ export default function StudentWidget2({
     <BaseWidget2
       href={"/student/" + student.id}
       title={student.name}
-      bg={"blue.300"}
+      bg={"teal.300"}
+      bgHover={"teal.400"}
       handleRemove={handleRemove}
       safeRemove={false}
       handleAdd={handleAdd}

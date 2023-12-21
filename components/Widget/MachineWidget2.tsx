@@ -79,6 +79,7 @@ export default function MachineWidget2({
       href={"/machine/" + machine.id}
       title={machine.name}
       bg={"blue.300"}
+      bgHover={"blue.400"}
       handleRemove={handleRemove}
       safeRemove={false}
       handleAdd={handleAdd}
