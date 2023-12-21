@@ -26,7 +26,7 @@ export default function ManageAdmin({ admins }: PageProps) {
   };
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const body = { email };
+    const body = { creator: session?.user?.email, email };
     const res = await poster("/api/add-admin", body, toaster);
     if (res.status == 200) Router.reload();
   };
