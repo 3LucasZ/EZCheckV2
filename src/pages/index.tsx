@@ -37,14 +37,14 @@ export default function Home({ admins }: PageProps) {
           hoverColor={"blue.100"}
         ></RouteButton>
         <RouteButton
-          route={""}
+          route={"logs"}
           text={"View Logs"}
           icon={IoDocumentText}
           color={"orange.400"}
           hoverColor={"orange.100"}
         ></RouteButton>
         <RouteButton
-          route={""}
+          route={"help"}
           text={"Help"}
           icon={IoIosInformationCircle}
           color={"red.400"}
