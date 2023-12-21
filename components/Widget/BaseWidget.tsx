@@ -4,6 +4,7 @@ type BaseWidgetProps = {
   href: string;
   title: string;
   bg: string;
+  bgHover?: string;
   colSpan: number;
   round?: boolean;
 };
@@ -12,6 +13,7 @@ export default function BaseWidget({
   href,
   title,
   bg,
+  bgHover,
   colSpan,
   round,
 }: BaseWidgetProps) {
@@ -21,6 +23,7 @@ export default function BaseWidget({
       colSpan={colSpan}
       px={4}
       bg={bg}
+      _hover={{ bg: bgHover }}
       color="white"
       display="flex"
       overflow={"hidden"}
