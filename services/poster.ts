@@ -12,13 +12,13 @@ export async function poster(
       body: JSON.stringify(body),
     });
     if (res.status != 200) {
-      errorToast(toaster, "" + (await res.json()));
+      if (toaster) errorToast(toaster, "" + (await res.json()));
     } else {
-      successToast(toaster, "Success!");
+      if (toaster) successToast(toaster, "Success!");
     }
     return res;
   } catch (error) {
-    errorToast(toaster, "Unknown error: " + error);
+    if (toaster) errorToast(toaster, "Unknown error: " + error);
     return new Response();
   }
 }
