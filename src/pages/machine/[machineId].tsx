@@ -4,6 +4,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Spacer,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -56,13 +57,18 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
   return (
     <Layout isAdmin={isAdmin}>
       <Center pb={3} flexDir={"column"}>
-        <Flex>
-          <Heading>{machine.name}</Heading>
+        <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} w="100%">
+          <Center
+            w="100%"
+            wordBreak={"break-all"}
+            fontSize={["xl", "2xl", "2xl", "3xl", "4xl"]}
+          >
+            {machine.name}
+          </Center>
+          <Spacer />
           {isAdmin && (
             <>
               <IconButton
-                ml={2}
-                mr={2}
                 colorScheme="teal"
                 aria-label="edit"
                 icon={<EditIcon />}

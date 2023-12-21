@@ -6,6 +6,8 @@ import {
   IconButton,
   useDisclosure,
   useToast,
+  Text,
+  Spacer,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { StudentProps } from "components/Widget/StudentWidget";
@@ -59,8 +61,15 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
   return (
     <Layout isAdmin={isAdmin}>
       <Center pb={3} flexDir={"column"}>
-        <Flex gap="8px">
-          <Heading w="100%">{student.name}</Heading>
+        <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} w="100%">
+          <Center
+            w="100%"
+            wordBreak={"break-all"}
+            fontSize={["xl", "2xl", "2xl", "3xl", "4xl"]}
+          >
+            {student.name}
+          </Center>
+          <Spacer />
           {isAdmin && (
             <>
               <IconButton
