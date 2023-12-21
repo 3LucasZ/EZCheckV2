@@ -76,8 +76,6 @@ export default function SearchView(props: SearchViewProps) {
         />
         {props.url && props.isAdmin && (
           <IconButton
-            ml={2}
-            mr={2}
             colorScheme="teal"
             aria-label="edit"
             icon={<AddIcon />}
