@@ -3,7 +3,7 @@ import { errorToast, successToast } from "./toasty";
 export async function poster(
   path: string,
   body: any,
-  toaster: any
+  toaster?: any
 ): Promise<Response> {
   try {
     const res = await fetch(path, {
