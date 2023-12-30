@@ -38,5 +38,5 @@ model Log {
   id        Int         @id @default(autoincrement())
   timestamp String      @db.VarChar(255)
   message   String      @db.VarChar(2047)
-  level     Int         //0 = info(create/update student/machine), 1 = dangerous(delete student/machine, create/delete admin), 2 = fatal(wrong password/api key in join-machine)
+  level     Int         //0 = info(create/update student/machine, legal join-machine, legal leave-machine), 1 = dangerous(delete student/machine, create/delete admin), 2 = fatal(wrong student password in join-machine, student using multiple machines)
 }
