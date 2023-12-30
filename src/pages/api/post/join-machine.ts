@@ -2,13 +2,14 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { debugMode } from "services/constants";
 import createLog from "services/createLog";
 import prisma from "services/prisma";
+import { prismaErrHandler } from "services/prismaErrHandler";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { machineName, studentPIN, machineSecret, IP } = req.body;
-  const secret = process.env.EZCHECK_SECRET;
+  const { machineName, studentPIN, IP } = req.body;
+
   //find machine
   const machine = await prisma.machine.findUnique({
     where: {
@@ -22,64 +23,69 @@ export default async function handle(
     },
     include: {
       machines: true,
+      using: true,
     },
   });
-  //log
-  if (
-    machine == null ||
-    student == null ||
-    machineSecret != secret ||
-    IP == null
-  ) {
+  //find student allowed machines
+  const machinesStr = student
+    ? student.machines.map((machine) => machine.name)
+    : [];
+
+  //check cases
+  if (machine == null || student == null || IP == null) {
     createLog(
-      "SOMEONE IS TRESPASSING" +
-        (" | MACHINE: " + (machine == null ? "DNE" : machine?.name)) +
-        (" | STUDENT: " + (student == null ? "DNE" : student?.name)) +
-        (" | KEY: " + (machineSecret != secret ? "ILLEGAL" : "LEGAL")) +
-        (" | IP: " + (IP == null ? "HIDDEN" : IP)),
+      (student == null ? "An unknown student" : student.name) +
+        " might be trespassing on " +
+        (machine == null ? "an unknown machine" : machine?.name) +
+        " with IP " +
+        (IP == null ? "that is hidden" : IP),
       2
     );
-  }
-  //deal
-  if (machine == null) {
-    return res.status(404).json("Machine " + machineName + " does not exist");
-  }
-  if (student == null) {
-    return res.status(500).json("PIN is incorrect");
-  }
-  if (machineSecret != secret) {
+    if (machine == null) {
+      return res.status(500).json(machineName + " doesn't exist");
+    }
+    if (student == null) {
+      return res.status(500).json("Wrong PIN");
+    }
+    if (IP == null) {
+      return res.status(500).json("IP can't be empty.");
+    }
+  } else if (student.using != null) {
+    createLog(
+      student.name +
+        " is trying to use " +
+        machine.name +
+        ", but is already using " +
+        student.using.name,
+      2
+    );
+    return res.status(500).json("You are already using " + student.using);
+  } else if (!machinesStr.includes(machineName)) {
+    createLog(
+      student.name +
+        " is trying to use " +
+        machine.name +
+        ", but is not authorized",
+      2
+    );
     return res
-      .status(403)
-      .json(
-        "Unauthorized machine. Denied Access." +
-          (debugMode
-            ? " Secret is: " +
-              process.env.EZCHECK_SECRET +
-              ". You entered: " +
-              machineSecret
-            : "")
-      );
-  }
-  if (IP == null) {
-    return res.status(500).json("IP can not be empty.");
-  }
-
-  //Can student use machine?
-  const machinesStr = student.machines.map((machine) => machine.name);
-  if (machinesStr.includes(machineName)) {
-    await prisma.machine.update({
-      where: {
-        name: machineName,
-      },
-      data: {
-        usedById: student.id,
-        IP: IP,
-      },
-    });
-    return res.status(200).json("Welcome, " + student.name + "!");
+      .status(500)
+      .json(student.name + " doesn't have access to " + machineName);
   } else {
-    return res
-      .status(403)
-      .json(student.name + " does not have access to " + machineName);
+    createLog(student.name + " logged on to " + machine.name, 0);
+    try {
+      await prisma.machine.update({
+        where: {
+          name: machineName,
+        },
+        data: {
+          usedById: student.id,
+          IP: IP,
+        },
+      });
+      return res.status(200).json("Welcome, " + student.name + "!");
+    } catch (e) {
+      return res.status(500).json(prismaErrHandler(e));
+    }
   }
 }
