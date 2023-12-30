@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Layout from "components/Layout";
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
@@ -19,10 +19,11 @@ export default function Home({ admins, logs }: PageProps) {
   console.log(logs);
   return (
     <Layout isAdmin={isAdmin}>
-      <Flex flexDir="column" gap="8px">
+      <Flex flexDir="column" gap="8px" overflowY="auto">
         {logs.map((log) => (
           <LogWidget log={log}></LogWidget>
         ))}
+        <Box minH={"calc(50px + env(safe-area-inset-bottom))"}></Box>
       </Flex>
     </Layout>
   );
