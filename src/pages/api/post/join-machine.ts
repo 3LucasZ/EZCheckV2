@@ -42,13 +42,13 @@ export default async function handle(
       2
     );
     if (machine == null) {
-      return res.status(500).json("ID DNE");
+      return res.status(500).send(machineName + " DNE");
     }
     if (student == null) {
-      return res.status(500).json("Wrong PIN");
+      return res.status(500).send("Wrong PIN");
     }
     if (IP == null) {
-      return res.status(500).json("Empty IP");
+      return res.status(500).send("Empty IP");
     }
   } else if (student.using != null) {
     createLog(
@@ -59,7 +59,7 @@ export default async function handle(
         student.using.name,
       2
     );
-    return res.status(500).json("You are already using " + student.using);
+    return res.status(500).send("Already using " + student.using);
   } else if (!machinesStr.includes(machineName)) {
     createLog(
       student.name +
@@ -68,9 +68,8 @@ export default async function handle(
         ", but is not authorized",
       2
     );
-    return res.status(500).json("Denied access");
+    return res.status(500).send("Denied access");
   } else {
-    createLog(student.name + " logged on to " + machine.name, 0);
     try {
       await prisma.machine.update({
         where: {
@@ -81,10 +80,11 @@ export default async function handle(
           IP: IP,
         },
       });
-      return res.status(200).json(student.name);
+      createLog(student.name + " logged on to " + machine.name, 0);
+      return res.status(200).send(student.name);
     } catch (e) {
       createLog("Database error: " + prismaErrHandler(e), 2);
-      return res.status(500).json("System is down");
+      return res.status(500).send("Internal error");
     }
   }
 }
