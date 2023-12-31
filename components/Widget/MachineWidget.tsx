@@ -16,7 +16,7 @@ type MachineWidgetProps = {
 
 export default function MachineWidget({ machine }: MachineWidgetProps) {
   return (
-    <Box display="flex" position="relative">
+    <Box display="flex">
       <Grid
         templateColumns={["repeat(2, 1fr)", "repeat(4, 1fr)"]}
         w="100%"

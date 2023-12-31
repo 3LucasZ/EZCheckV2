@@ -31,13 +31,11 @@ export default function BaseWidget({
     >
       <Link
         href={href}
-        position="relative"
         display={"flex"}
         style={{ textDecoration: "none" }}
         sx={{
           WebkitUserDrag: "none",
         }}
-        zIndex={1000}
         w="100%"
         h="100%"
         pointerEvents={href ? "auto" : "none"}

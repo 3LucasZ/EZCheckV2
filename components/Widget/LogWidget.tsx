@@ -17,7 +17,7 @@ export default function LogWidget({ log }: LogWidgetProps) {
       status={log.level == 0 ? "info" : log.level == 1 ? "warning" : "error"}
       roundedRight="md"
       variant="left-accent"
-      overflow="visible"
+      overflow="visible" //extremely important to keep styling right
     >
       <AlertIcon />
       <Box flexDir="column">

@@ -145,6 +145,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
             };
           })}
           isAdmin={isAdmin}
+          isEdit={false}
         />
       )}
     </Layout>

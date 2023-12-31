@@ -31,7 +31,7 @@ export default function BaseWidget({
   isAdmin,
 }: BaseWidgetProps) {
   return (
-    <Flex overflow="hidden" rounded="md">
+    <Box display="flex" overflow="hidden" rounded="md" minH="8" maxW="100%">
       <Link
         bg={bg}
         _hover={{ bg: bgHover }}
@@ -63,6 +63,6 @@ export default function BaseWidget({
           rounded="none"
         />
       )}
-    </Flex>
+    </Box>
   );
 }

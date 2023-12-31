@@ -6,23 +6,23 @@ import {
   Flex,
   IconButton,
   Input,
-  useDimensions,
 } from "@chakra-ui/react";
-import Router from "next/router";
-import { ReactNode, useState, useRef } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { debugMode } from "services/constants";
 
 type SearchViewProps = {
   setIn: PairProps[];
   setOut?: PairProps[];
-  url?: string;
+  onAdd?: Function;
   isAdmin: boolean;
+  isEdit: boolean;
 };
 type PairProps = {
   name: string;
   widget: ReactNode;
 };
 export default function SearchView(props: SearchViewProps) {
+  //sort setIn, setOut
   const setIn = props.setIn.sort(function (a, b) {
     if (a.name < b.name) {
       return -1;
@@ -43,31 +43,31 @@ export default function SearchView(props: SearchViewProps) {
         return 0;
       })
     : [];
-
-  const elementRef = useRef<HTMLDivElement>(null);
-  const dimensions = useDimensions(elementRef, true);
-  const yOffset = dimensions == null ? 0 : dimensions.borderBox.y;
+  //state
   const [checked, setChecked] = useState(false);
   const [query, setQuery] = useState("");
   const [subset, setSubset] = useState(checked ? setOut : setIn);
-
+  //functions
   function filtered(pairset: PairProps[], q: string) {
-    if (debugMode) console.log(pairset);
-    if (debugMode) console.log(q);
     return pairset.filter((pair) => {
       return q === "" || pair.name.toLowerCase().includes(q.toLowerCase());
     });
   }
-
+  //handlers
   const handleSearchQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
     checked
       ? setSubset(filtered(setOut, e.target.value))
       : setSubset(filtered(setIn, e.target.value));
   };
+  //reactive
+  useEffect(() => {
+    setSubset(checked ? setOut : setIn);
+  }, [props.isEdit, props.setIn, props.setOut]);
+  //ret
   return (
     <>
-      <Flex gap={"8px"} pb="8px" px={[2, "5vw", "10vw", "15vw"]}>
+      <Flex gap={"8px"} px={[2, "5vw", "10vw", "15vw"]}>
         <Input
           variant="filled"
           placeholder="Search"
@@ -75,16 +75,12 @@ export default function SearchView(props: SearchViewProps) {
           value={query}
           onChange={handleSearchQueryChange}
         />
-        {props.url && props.isAdmin && (
+        {props.onAdd && props.isAdmin && (
           <IconButton
             colorScheme="teal"
             aria-label="edit"
             icon={<AddIcon />}
-            onClick={() =>
-              Router.push({
-                pathname: props.url,
-              })
-            }
+            onClick={() => props.onAdd && props.onAdd()}
           />
         )}
         {props.setOut && (
@@ -102,10 +98,10 @@ export default function SearchView(props: SearchViewProps) {
           </Checkbox>
         )}
       </Flex>
+      <Box minH={"8px"}></Box>
       <Flex
-        ref={elementRef}
         flexDir="column"
-        gap="2"
+        gap="8px"
         overflowY="auto"
         px={[2, "5vw", "10vw", "15vw"]}
         h="100%"
@@ -113,10 +109,12 @@ export default function SearchView(props: SearchViewProps) {
         {subset.length == 0 ? (
           <Center>No data available to display.</Center>
         ) : (
-          subset.map((pair) => pair.widget)
+          subset.map((pair) => {
+            return pair.widget;
+          })
         )}
+        <Box minH={"calc(50px + env(safe-area-inset-bottom))"}></Box>
       </Flex>
-      <Box minH={"calc(60px + env(safe-area-inset-bottom))"}></Box>
     </>
   );
 }
