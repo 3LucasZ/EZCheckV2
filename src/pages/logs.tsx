@@ -19,12 +19,12 @@ export default function Home({ admins, logs }: PageProps) {
   console.log(logs);
   return (
     <Layout isAdmin={isAdmin}>
-      <Flex flexDir="column" gap="8px" overflowY="auto">
+      <Box gap="8px" overflowY="auto" px="5" display="grid">
         {logs.map((log) => (
           <LogWidget log={log}></LogWidget>
         ))}
         <Box minH={"calc(50px + env(safe-area-inset-bottom))"}></Box>
-      </Flex>
+      </Box>
     </Layout>
   );
 }

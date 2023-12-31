@@ -1,4 +1,4 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, Grid } from "@chakra-ui/react";
 import BaseWidget from "./BaseWidget";
 
 export type LogProps = {
@@ -13,17 +13,17 @@ type LogWidgetProps = {
 
 export default function LogWidget({ log }: LogWidgetProps) {
   return (
-    <Box
-      display="flex"
-      flexDir="column"
-      bg={
-        log.level == 0 ? "blue.300" : log.level == 1 ? "orange.300" : "red.300"
-      }
-      px="5"
-      color="white"
+    <Alert
+      status={log.level == 0 ? "info" : log.level == 1 ? "warning" : "error"}
+      roundedRight="md"
+      variant="left-accent"
+      overflow="visible"
     >
-      <Box>{log.timestamp}</Box>
-      <Box>{log.message}</Box>
-    </Box>
+      <AlertIcon />
+      <Box flexDir="column">
+        <Box>{log.timestamp}</Box>
+        <Box>{log.message}</Box>
+      </Box>
+    </Alert>
   );
 }
