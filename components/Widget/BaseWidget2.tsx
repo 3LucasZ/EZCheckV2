@@ -1,5 +1,12 @@
 import { SmallAddIcon, SmallCloseIcon } from "@chakra-ui/icons";
-import { Flex, IconButton, Link, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  IconButton,
+  Link,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 
 type BaseWidgetProps = {

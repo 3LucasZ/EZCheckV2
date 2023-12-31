@@ -61,7 +61,7 @@ export default async function handle(
         student.using.name,
       2
     );
-    return res.status(500).send("Already using " + student.using);
+    return res.status(500).send("Already using " + student.using.name);
   } else if (!machinesStr.includes(machineName)) {
     createLog(
       student.name +
