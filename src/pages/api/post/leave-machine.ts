@@ -25,7 +25,7 @@ export default async function handle(
       "Someone is trying to access " + machineName + ", which doesn't exist",
       2
     );
-    return res.status(500).send(machineName + " DNE");
+    return res.status(500).send(machineName + " doesn't exist");
   } else if (machine.usedBy == null) {
     createLog(
       "Someone is trying to log out of " +

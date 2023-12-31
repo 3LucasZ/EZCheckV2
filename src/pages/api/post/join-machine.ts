@@ -36,13 +36,15 @@ export default async function handle(
     createLog(
       (student == null ? "An unknown student" : student.name) +
         " might be trespassing on " +
-        (machine == null ? "an unknown machine" : machine?.name) +
+        (machine == null
+          ? "an unknown machine (" + machineName + ") "
+          : machine?.name) +
         " with IP " +
         (IP == null ? "that is hidden" : IP),
       2
     );
     if (machine == null) {
-      return res.status(500).send(machineName + " DNE");
+      return res.status(500).send(machineName + " doesn't exist");
     }
     if (student == null) {
       return res.status(500).send("Wrong PIN");
