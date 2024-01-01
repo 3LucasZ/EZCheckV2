@@ -1,6 +1,7 @@
 import {
   Box,
   Center,
+  Divider,
   Flex,
   Heading,
   HStack,
@@ -60,18 +61,21 @@ export default function Header({ isAdmin }: HeaderProps) {
     </Stack>
   );
   return (
-    <HStack spacing={10} pb={5} pt={1}>
-      <Box w={"33%"}></Box>
-      <Box w={"33%"}>
-        <Center>
-          <Link href={"/"} style={{ textDecoration: "none" }}>
-            <Heading size={["xl", "2xl", "3xl"]} color="teal.500">
-              EZCheck
-            </Heading>
-          </Link>
-        </Center>
-      </Box>
-      <Box>{loginUI}</Box>
-    </HStack>
+    <Stack py={1}>
+      <HStack spacing={10}>
+        <Box w={"33%"}></Box>
+        <Box w={"33%"}>
+          <Center>
+            <Link href={"/"} style={{ textDecoration: "none" }}>
+              <Heading size={["xl", "2xl", "3xl"]} color="teal.500">
+                EZCheck
+              </Heading>
+            </Link>
+          </Center>
+        </Box>
+        <Box>{loginUI}</Box>
+      </HStack>
+      <Divider />
+    </Stack>
   );
 }

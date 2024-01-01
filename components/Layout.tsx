@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useEffect, type ReactNode } from "react";
 import Header from "./Header";
-import { Flex } from "@chakra-ui/react";
+import { Divider, Flex } from "@chakra-ui/react";
 import AppBar from "./AppBar";
 
 export default function Layout({

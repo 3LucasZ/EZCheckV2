@@ -1,4 +1,14 @@
-import { Box, Flex, IconButton, Input, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  IconButton,
+  Input,
+  Switch,
+  useToast,
+} from "@chakra-ui/react";
 import Admin, { AdminProps } from "components/Widget/AdminWidget2";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
@@ -34,10 +44,30 @@ export default function ManageAdmin({ admins }: PageProps) {
   return (
     <Layout isAdmin={isAdmin}>
       <Box px={[2, "5vw", "10vw", "15vw"]}>
-        I agree to be physically present in the machine shop as a supervisor.
-        I'm responsible for the safety of the students and will make sure
-        they're using equipment properly.
+        <Box>
+          {myAdmin.supervising
+            ? "I agree that when I leave, no students are left in the machine shop unsupervised."
+            : "I agree to be physically present in the machine shop as a supervisor. I'm responsible for the safety of the students and will make sure they're using equipment properly."}
+        </Box>
+        <Box minH="8px" />
+        <Center>
+          <Button
+            colorScheme={myAdmin.supervising ? "red" : "green"}
+            onClick={async () => {
+              const res = await poster(
+                "/api/update-admin",
+                { admin: myAdmin },
+                toaster
+              );
+              if (res.status == 200) Router.reload();
+            }}
+          >
+            {myAdmin.supervising ? "Stop Supervising" : "Start Supervising"}
+          </Button>
+        </Center>
       </Box>
+      <Box minH="8px" />
+      <Divider />
       <Box minH="8px" />
       <Flex px={[2, "5vw", "10vw", "15vw"]} gap={"8px"}>
         <Input
