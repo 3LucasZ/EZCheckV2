@@ -14,3 +14,12 @@ export function checkAdmin(
         session.user.email == "lucas.zheng@warriorlife.net")) == true
   );
 }
+
+export function getMyAdmin(
+  session: Session | null,
+  admins: AdminProps[]
+): AdminProps {
+  const res = admins.find((admin) => admin.email == session?.user?.email);
+  if (res) return res;
+  else return { id: -1, email: "lucas.j.zheng@gmail.com", supervising: false };
+}

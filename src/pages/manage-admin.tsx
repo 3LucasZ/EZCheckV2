@@ -9,7 +9,7 @@ import { errorToast, successToast } from "services/toasty";
 import prisma from "services/prisma";
 import { AddIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
-import { checkAdmin } from "services/checkAdmin";
+import { checkAdmin, getMyAdmin } from "services/checkAdmin";
 import { poster } from "services/poster";
 
 type PageProps = {
@@ -18,6 +18,7 @@ type PageProps = {
 export default function ManageAdmin({ admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   const [email, setEmail] = useState("");
   const toaster = useToast();
 
@@ -32,6 +33,12 @@ export default function ManageAdmin({ admins }: PageProps) {
   };
   return (
     <Layout isAdmin={isAdmin}>
+      <Box px={[2, "5vw", "10vw", "15vw"]}>
+        I agree to be physically present in the machine shop as a supervisor.
+        I'm responsible for the safety of the students and will make sure
+        they're using equipment properly.
+      </Box>
+      <Box minH="8px" />
       <Flex px={[2, "5vw", "10vw", "15vw"]} gap={"8px"}>
         <Input
           variant="filled"
@@ -56,6 +63,7 @@ export default function ManageAdmin({ admins }: PageProps) {
             widget: <Admin admin={admin} key={admin.id} />,
           }))}
           isAdmin={isAdmin}
+          isEdit={false}
         />
       )}
     </Layout>

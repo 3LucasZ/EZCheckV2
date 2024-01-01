@@ -18,6 +18,7 @@ type PageProps = {
 };
 export default function Home({ admins }: PageProps) {
   const { data: session } = useSession();
+  console.log(session);
   const isAdmin = checkAdmin(session, admins);
   return (
     <Layout isAdmin={isAdmin}>

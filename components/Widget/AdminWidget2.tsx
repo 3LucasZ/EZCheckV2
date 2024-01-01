@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 export type AdminProps = {
   id: number;
   email: string;
+  supervising: boolean;
 };
 
 const AdminWidget: React.FC<{
@@ -22,8 +23,8 @@ const AdminWidget: React.FC<{
   return (
     <BaseWidget2
       title={admin.email}
-      bg={"teal.300"}
-      bgHover={"teal.400"}
+      bg={admin.supervising ? "purple.300" : "teal.300"}
+      bgHover={admin.supervising ? "purple.400" : "teal.400"}
       handleRemove={handleRemove}
       invert={false}
       isAdmin={true}
