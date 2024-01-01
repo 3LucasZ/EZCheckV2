@@ -18,7 +18,13 @@ export default async function handle(
         supervising: !admin.supervising,
       },
     });
-    await createLog(admin.email + " has started supervising", 1);
+    await createLog(
+      admin.email +
+        (admin.supervising
+          ? " has stopped supervising."
+          : " has started supervising."),
+      1
+    );
     return res.status(200).json(op);
   } catch (e) {
     return res.status(500).json(prismaErrHandler(e));
