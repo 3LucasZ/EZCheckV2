@@ -6,6 +6,7 @@ import prisma from "services/prisma";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
+import Router from "next/router";
 
 type PageProps = {
   machines: MachineProps[];
@@ -21,8 +22,9 @@ export default function ManageMachines({ machines, admins }: PageProps) {
           name: machine.name,
           widget: <MachineWidget machine={machine} key={machine.id} />,
         }))}
-        url={"upsert-machine"}
         isAdmin={isAdmin}
+        isEdit={false}
+        onAdd={() => Router.push("upsert-machine")}
       />
     </Layout>
   );

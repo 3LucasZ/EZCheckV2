@@ -6,6 +6,7 @@ import prisma from "services/prisma";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
+import Router from "next/router";
 
 type PageProps = {
   students: StudentProps[];
@@ -21,8 +22,9 @@ export default function ManageStudents({ students, admins }: PageProps) {
           name: student.name,
           widget: <StudentWidget student={student} key={student.id} />,
         }))}
-        url={"upsert-student"}
         isAdmin={isAdmin}
+        isEdit={true}
+        onAdd={() => Router.push("upsert-student")}
       />
     </Layout>
   );
