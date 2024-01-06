@@ -10,13 +10,14 @@ export default async function handle(
   const { creator, email } = req.body;
   if (creator == "") return res.status(500).json("Creator can not be empty.");
   if (email == "") return res.status(500).json("Email can not be empty.");
+  const lowerEmail = email.toLowerCase();
   try {
     const op = await prisma.admin.create({
       data: {
-        email: email,
+        email: lowerEmail,
       },
     });
-    await createLog(creator + " created admin " + email, 1);
+    await createLog(creator + " created admin " + lowerEmail, 1);
     return res.status(200).json(op);
   } catch (e) {
     return res.status(500).json(prismaErrHandler(e));
