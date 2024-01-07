@@ -67,6 +67,7 @@ export default function SearchView(props: SearchViewProps) {
   //ret
   return (
     <>
+      <Box minH={"8px"}></Box>
       <Flex gap={"8px"} px={[2, "5vw", "10vw", "15vw"]}>
         <Input
           variant="filled"
@@ -113,7 +114,7 @@ export default function SearchView(props: SearchViewProps) {
             return pair.widget;
           })
         )}
-        <Box minH={"calc(50px + env(safe-area-inset-bottom))"}></Box>
+        <Box h={"8px"}></Box>
       </Flex>
     </>
   );

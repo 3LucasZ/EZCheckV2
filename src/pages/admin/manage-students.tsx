@@ -7,6 +7,9 @@ import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Router from "next/router";
+import { Box } from "@chakra-ui/react";
+import AppBar from "components/AppBar";
+import Header from "components/Header";
 
 type PageProps = {
   students: StudentProps[];
@@ -17,6 +20,7 @@ export default function ManageStudents({ students, admins }: PageProps) {
   const isAdmin = checkAdmin(session, admins);
   return (
     <Layout isAdmin={isAdmin}>
+      <Header />
       <SearchView
         setIn={students.map((student) => ({
           name: student.name,
@@ -26,6 +30,8 @@ export default function ManageStudents({ students, admins }: PageProps) {
         isEdit={true}
         onAdd={() => Router.push("upsert-student")}
       />
+      <Box minH="calc(50px + env(safe-area-inset-bottom))"></Box>
+      <AppBar />
     </Layout>
   );
 }

@@ -10,7 +10,7 @@ import { signOut, signIn, useSession } from "next-auth/react";
 import React from "react";
 import { debugMode } from "services/constants";
 
-export default function Header() {
+export default function AvatarMenu() {
   const { data: session } = useSession();
   return (
     <Menu>

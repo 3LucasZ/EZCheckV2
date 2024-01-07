@@ -1,4 +1,4 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, Center, Heading, SimpleGrid } from "@chakra-ui/react";
 import { RouteButton } from "components/RouteButton";
 import Layout from "components/Layout";
 import { GetServerSideProps } from "next";
@@ -12,6 +12,10 @@ import { IoIosInformationCircle } from "react-icons/io";
 
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
+import { RiAdminLine } from "react-icons/ri";
+import { PiStudent, PiStudentBold, PiStudentDuotone } from "react-icons/pi";
+import Header from "components/Header";
+import AvatarMenu from "components/AvatarMenu";
 
 type PageProps = {
   admins: AdminProps[];
@@ -22,37 +26,23 @@ export default function Home({ admins }: PageProps) {
   const isAdmin = checkAdmin(session, admins);
   return (
     <Layout isAdmin={isAdmin}>
+      <Header />
       <SimpleGrid columns={[1, 2]} spacing={10} overflowY="auto" h={"100%"}>
         <RouteButton
-          route={"manage-students"}
-          text={"Manage Students"}
-          icon={MdManageAccounts}
+          route={"student/home"}
+          text={"I'm a Student"}
+          icon={PiStudentDuotone}
           color={"teal.300"}
           hoverColor={"teal.100"}
         ></RouteButton>
         <RouteButton
-          route={"manage-machines"}
-          text={"Manage Machines"}
-          icon={GiSewingMachine}
+          route={"admin/home"}
+          text={"I'm an Admin"}
+          icon={RiAdminLine}
           color={"blue.300"}
           hoverColor={"blue.100"}
         ></RouteButton>
-        <RouteButton
-          route={"logs"}
-          text={"View Logs"}
-          icon={IoDocumentText}
-          color={"orange.400"}
-          hoverColor={"orange.100"}
-        ></RouteButton>
-        <RouteButton
-          route={"help"}
-          text={"Help"}
-          icon={IoIosInformationCircle}
-          color={"red.400"}
-          hoverColor={"red.100"}
-        ></RouteButton>
       </SimpleGrid>
-      <Box minH="calc(60px + env(safe-area-inset-bottom))"></Box>
     </Layout>
   );
 }
