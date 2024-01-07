@@ -50,9 +50,7 @@ export default function Layout({
             WebkitTapHighlightColor: "rgba(0,0,0,0)",
           }}
         >
-          <Header isAdmin={isAdmin} />
           {children}
-          <AppBar />
         </Flex>
       </main>
     </>
