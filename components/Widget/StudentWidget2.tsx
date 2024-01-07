@@ -22,28 +22,16 @@ export default function StudentWidget2({
 }: StudentWidget2Props) {
   const toaster = useToast();
   const handleRemove = async () => {
-    try {
-      const body = {
-        id: targetMachine.id,
-        name: targetMachine.name,
-        studentIds: targetMachine.students
-          .filter((item) => item.id != student.id)
-          .map((item) => ({ id: item.id })),
-      };
-      if (debugMode) console.log(body);
-      const res = await fetch("/api/upsert-machine", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (res.status != 200) {
-        errorToast(toaster, "Unknown error on id: " + student.id);
-      } else {
-        successToast(toaster, "Success!");
-        Router.reload();
-      }
-    } catch (error) {
-      errorToast(toaster, "" + error);
+    const body = {
+      id: targetMachine.id,
+      name: targetMachine.name,
+      studentIds: targetMachine.students
+        .filter((item) => item.id != student.id)
+        .map((item) => ({ id: item.id })),
+    };
+    const res = await poster("/api/upsert-machine", body, toaster);
+    if (res.status == 200) {
+      Router.push(Router.asPath);
     }
   };
   const handleAdd = async () => {
@@ -59,7 +47,7 @@ export default function StudentWidget2({
     if (debugMode) console.log(body);
     const res = await poster("/api/upsert-machine", body, toaster);
     if (res.status == 200) {
-      Router.reload();
+      Router.push(Router.asPath);
     }
   };
   return (
