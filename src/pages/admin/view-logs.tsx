@@ -7,6 +7,7 @@ import prisma from "services/prisma";
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import LogWidget, { LogProps } from "components/Widget/LogWidget";
+import AdminLayout from "components/AdminLayout";
 
 type PageProps = {
   admins: AdminProps[];
@@ -18,14 +19,14 @@ export default function Home({ admins, logs }: PageProps) {
   console.log(admins);
   console.log(logs);
   return (
-    <Layout isAdmin={isAdmin}>
+    <AdminLayout>
       <Box gap="8px" overflowY="auto" px="5" display="grid">
         {logs.map((log) => (
           <LogWidget log={log}></LogWidget>
         ))}
         <Box minH={"calc(50px + env(safe-area-inset-bottom))"}></Box>
       </Box>
-    </Layout>
+    </AdminLayout>
   );
 }
 

@@ -10,6 +10,7 @@ import Router from "next/router";
 import { Box } from "@chakra-ui/react";
 import AppBar from "components/AppBar";
 import Header from "components/Header";
+import AdminLayout from "components/AdminLayout";
 
 type PageProps = {
   students: StudentProps[];
@@ -19,7 +20,7 @@ export default function ManageStudents({ students, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   return (
-    <Layout isAdmin={isAdmin}>
+    <AdminLayout>
       <Header />
       <SearchView
         setIn={students.map((student) => ({
@@ -28,11 +29,11 @@ export default function ManageStudents({ students, admins }: PageProps) {
         }))}
         isAdmin={isAdmin}
         isEdit={true}
-        onAdd={async () => await Router.push("upsert-student")}
+        onAdd={async () => await Router.push("student-form")}
       />
       <Box minH="calc(50px + env(safe-area-inset-bottom))"></Box>
       <AppBar />
-    </Layout>
+    </AdminLayout>
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {

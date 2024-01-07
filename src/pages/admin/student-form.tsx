@@ -43,7 +43,7 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const body = { id, name, PIN };
+    const body = { id, email, name, PIN };
     const res = await poster("/api/upsert-student", body, toaster);
     if (res.status == 200) {
       await Router.push(isNew ? "manage-students" : "student/" + id);
@@ -102,7 +102,7 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
           </HStack>
 
           <FormHelperText>
-            Temporary. Students can change their own PINs on their accounts.
+            Temporary. Students can change their PINs on their accounts.
           </FormHelperText>
         </FormControl>
 
@@ -117,7 +117,6 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
           </Button>
         )}
       </Flex>
-      <Box h={"150px"}></Box>
     </AdminLayout>
   );
 }

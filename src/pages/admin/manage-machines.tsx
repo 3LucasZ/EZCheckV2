@@ -7,6 +7,7 @@ import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
 import Router from "next/router";
+import AdminLayout from "components/AdminLayout";
 
 type PageProps = {
   machines: MachineProps[];
@@ -16,7 +17,7 @@ export default function ManageMachines({ machines, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   return (
-    <Layout isAdmin={isAdmin}>
+    <AdminLayout>
       <SearchView
         setIn={machines.map((machine) => ({
           name: machine.name,
@@ -24,9 +25,9 @@ export default function ManageMachines({ machines, admins }: PageProps) {
         }))}
         isAdmin={isAdmin}
         isEdit={false}
-        onAdd={() => Router.push("upsert-machine")}
+        onAdd={() => Router.push("machine-form")}
       />
-    </Layout>
+    </AdminLayout>
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {

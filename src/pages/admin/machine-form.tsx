@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Router from "next/router";
-import { MultiValue } from "chakra-react-select";
 import {
   FormControl,
   Input,
@@ -8,17 +6,17 @@ import {
   useToast,
   FormLabel,
   Flex,
-  Box,
 } from "@chakra-ui/react";
 import { MachineProps } from "components/Widget/MachineWidget";
 import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Widget/StudentWidget";
-import Layout from "components/Layout";
 import prisma from "services/prisma";
-import { errorToast, successToast } from "services/toasty";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
+import AdminLayout from "components/AdminLayout";
+import Router from "next/router";
+import { poster } from "services/poster";
 
 enum FormState {
   Input,
@@ -29,64 +27,33 @@ type PageProps = {
   oldMachine: MachineProps;
   admins: AdminProps[];
 };
-type RelateProps = {
-  id: number;
-};
-export default function UpsertMachine({
-  allStudents,
-  oldMachine,
-  admins,
-}: PageProps) {
+
+export default function UpsertMachine({ oldMachine, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   const toaster = useToast();
-  const allOptions = allStudents.map((student) => ({
-    value: student.id,
-    label: student.name,
-  }));
-  const prefillOptions = oldMachine.students.map((student) => ({
-    value: student.id,
-    label: student.name,
-  }));
   const id = oldMachine.id;
   const isNew = id == -1;
   const [name, setName] = useState<string>(isNew ? "" : oldMachine.name);
-  const [formState, setFormState] = useState(FormState.Input);
-  const [students, setStudents] = useState<
-    MultiValue<{ value: number; label: string }>
-  >(isNew ? [] : prefillOptions);
+  const [formState] = useState(FormState.Input);
+
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setFormState(FormState.Submitting);
-    try {
-      const studentIds: RelateProps[] = [];
-      students.map((obj) => studentIds.push({ id: obj.value }));
-      const body = { id, name, studentIds };
-      const res = await fetch("/api/upsert-machine", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (res.status != 200) {
-        setFormState(FormState.Input);
-        errorToast(toaster, await res.json());
-      } else {
-        setFormState(FormState.Input);
-        successToast(toaster, "Success!");
-        await Router.push(isNew ? "manage-machines" : "machine/" + id);
-      }
-    } catch (error) {
-      setFormState(FormState.Input);
-      errorToast(toaster, "" + error);
+    const body = { id, name };
+    const res = await poster("/api/upsert-machine", body, toaster);
+    if (res.status == 200) {
+      await Router.push(isNew ? "manage-machines" : "student/" + id);
     }
   };
+
   return (
-    <Layout isAdmin={isAdmin}>
+    <AdminLayout>
       <Flex
         flexDir="column"
         gap="10"
         overflowY="auto"
         px={[2, "5vw", "10vw", "15vw"]}
+        pt={10}
         h="100%"
       >
         <FormControl isRequired>
@@ -99,20 +66,7 @@ export default function UpsertMachine({
             onChange={(e) => setName(e.target.value)}
           />
         </FormControl>
-        {/* <FormControl>
-            <FormLabel>Authorized Students</FormLabel>
-            <Select
-              isMulti
-              name="students"
-              options={allOptions}
-              value={students}
-              placeholder="Select Students"
-              closeMenuOnSelect={false}
-              onChange={(e) => setStudents(e)}
-              size="lg"
-              menuPosition="fixed"
-            />
-          </FormControl> */}
+
         {isAdmin && (
           <Button
             size="lg"
@@ -125,8 +79,7 @@ export default function UpsertMachine({
           </Button>
         )}
       </Flex>
-      <Box h={"150px"}></Box>
-    </Layout>
+    </AdminLayout>
   );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {

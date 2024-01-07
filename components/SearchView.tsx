@@ -1,11 +1,14 @@
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, PhoneIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Button,
   Center,
   Checkbox,
   Flex,
   IconButton,
   Input,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import { debugMode } from "services/constants";
@@ -69,20 +72,26 @@ export default function SearchView(props: SearchViewProps) {
     <>
       <Box minH={"8px"}></Box>
       <Flex gap={"8px"} px={[2, "5vw", "10vw", "15vw"]}>
-        <Input
-          variant="filled"
-          placeholder="Search"
-          type="search"
-          value={query}
-          onChange={handleSearchQueryChange}
-        />
-        {props.onAdd && props.isAdmin && (
-          <IconButton
-            colorScheme="teal"
-            aria-label="edit"
-            icon={<AddIcon />}
-            onClick={() => props.onAdd && props.onAdd()}
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <SearchIcon color="gray.300" />
+          </InputLeftElement>
+          <Input
+            variant="filled"
+            placeholder="Search"
+            type="search"
+            value={query}
+            onChange={handleSearchQueryChange}
           />
+        </InputGroup>
+        {props.onAdd && props.isAdmin && (
+          <Button
+            onClick={() => props.onAdd && props.onAdd()}
+            colorScheme="teal"
+          >
+            Create
+            <AddIcon ml="8px" />
+          </Button>
         )}
         {props.setOut && (
           <Checkbox

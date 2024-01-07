@@ -7,24 +7,26 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id, name, PIN, machineIds } = req.body;
-  if (name == "" || PIN == "")
-    return res.status(500).json("Name and PIN can not be empty.");
+  const { id, email, name, PIN, machineIds } = req.body;
+  if (email == "" || name == "" || PIN == "")
+    return res.status(500).json("email, name, and PIN can't be empty");
   try {
     const op = await prisma.student.upsert({
       where: {
-        id: id,
+        id,
       },
       update: {
-        name: name,
-        PIN: PIN,
+        email,
+        name,
+        PIN,
         machines: {
           set: machineIds,
         },
       },
       create: {
-        name: name,
-        PIN: PIN,
+        email,
+        name,
+        PIN,
         machines: {
           connect: machineIds,
         },
