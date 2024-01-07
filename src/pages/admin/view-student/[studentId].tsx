@@ -62,7 +62,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
   return (
     <AdminLayout>
       <Center pb={3} flexDir={"column"}>
-        <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} w="100%">
+        <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} pt="8px" w="100%">
           <Center
             w="100%"
             wordBreak={"break-all"}

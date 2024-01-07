@@ -17,11 +17,11 @@ export default function AppBar() {
       h={"calc(50px + env(safe-area-inset-bottom))"}
       p={0}
     >
-      <AppBarBtn icon={FaHome} href="/" />
-      <AppBarBtn icon={MdManageAccounts} href="manage-students" />
-      <AppBarBtn icon={GiSewingMachine} href="manage-machines" />
-      <AppBarBtn icon={IoDocumentText} href="view-logs" />
-      <AppBarBtn icon={IoIosInformationCircle} href="help" />
+      <AppBarBtn icon={FaHome} href="/admin/home" />
+      <AppBarBtn icon={MdManageAccounts} href="/admin/manage-students" />
+      <AppBarBtn icon={GiSewingMachine} href="/admin/manage-machines" />
+      <AppBarBtn icon={IoDocumentText} href="/admin/view-logs" />
+      <AppBarBtn icon={IoIosInformationCircle} href="/help" />
     </HStack>
   );
 }

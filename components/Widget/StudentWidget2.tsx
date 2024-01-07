@@ -4,7 +4,6 @@ import Router from "next/router";
 import { StudentProps } from "./StudentWidget";
 import { debugMode } from "services/constants";
 import { useToast } from "@chakra-ui/react";
-import { errorToast, successToast } from "services/toasty";
 import { poster } from "services/poster";
 
 type StudentWidget2Props = {
