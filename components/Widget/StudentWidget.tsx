@@ -4,6 +4,7 @@ import BaseWidget from "./BaseWidget";
 
 export type StudentProps = {
   id: number;
+  email: string;
   name: string;
   PIN: string;
   machines: MachineProps[];

@@ -28,7 +28,7 @@ export default function ManageStudents({ students, admins }: PageProps) {
         }))}
         isAdmin={isAdmin}
         isEdit={true}
-        onAdd={() => Router.push("upsert-student")}
+        onAdd={async () => await Router.push("upsert-student")}
       />
       <Box minH="calc(50px + env(safe-area-inset-bottom))"></Box>
       <AppBar />

@@ -1,16 +1,8 @@
 import Head from "next/head";
 import { useEffect, type ReactNode } from "react";
-import Header from "./Header";
-import { Divider, Flex } from "@chakra-ui/react";
-import AppBar from "./AppBar";
+import { Flex } from "@chakra-ui/react";
 
-export default function Layout({
-  children,
-  isAdmin,
-}: {
-  children: ReactNode;
-  isAdmin: boolean;
-}) {
+export default function Layout({ children }: { children: ReactNode }) {
   useEffect(() => {
     const html = document.querySelector("html") || new HTMLBodyElement();
     const body = document.querySelector("body") || new HTMLBodyElement();
@@ -21,8 +13,8 @@ export default function Layout({
   return (
     <>
       <Head>
-        <title>EZ-Check</title>
-        <meta name="description" content="Student Authentication" />
+        <title>EZCheck</title>
+        <meta name="description" content="Machine shop management system" />
         <link rel="icon" href="/favicon.ico" />
         {/*PWA UI-->*/}
         <meta

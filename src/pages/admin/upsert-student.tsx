@@ -12,6 +12,7 @@ import {
   Box,
   Flex,
   SimpleGrid,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Widget/StudentWidget";
@@ -21,6 +22,7 @@ import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/checkAdmin";
 import { poster } from "services/poster";
+import AdminLayout from "components/AdminLayout";
 
 type PageProps = {
   oldStudent: StudentProps;
@@ -36,6 +38,7 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
   const isNew = id == -1;
   const PINLen = 10;
   const [name, setName] = useState(oldStudent.name);
+  const [email, setEmail] = useState(oldStudent.email);
   const [PIN, setPIN] = useState(oldStudent.PIN);
 
   const submitData = async (e: React.SyntheticEvent) => {
@@ -47,14 +50,27 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
     }
   };
   return (
-    <Layout isAdmin={isAdmin}>
+    <AdminLayout>
       <Flex
         flexDir="column"
         gap="10"
         overflowY="auto"
         px={[2, "5vw", "10vw", "15vw"]}
+        pt="10"
         h="100%"
       >
+        <FormControl isRequired>
+          <FormLabel>Student Email</FormLabel>
+          <Input
+            required
+            value={email}
+            variant="filled"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+            maxLength={250}
+          />
+          <FormHelperText>Student school email recommended.</FormHelperText>
+        </FormControl>
         <FormControl isRequired>
           <FormLabel>Student Name</FormLabel>
           <Input
@@ -63,13 +79,18 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
             variant="filled"
             placeholder="Name"
             onChange={(e) => setName(e.target.value)}
-            maxLength={50}
+            maxLength={32}
           />
+          <FormHelperText>{name.length}/32</FormHelperText>
         </FormControl>
         <FormControl isRequired>
           <FormLabel>PIN</FormLabel>
-          <SimpleGrid columns={[5, 10]} spacing="4">
-            <PinInput onChange={(e) => setPIN(e)} value={PIN}>
+          <HStack>
+            <PinInput
+              onChange={(e) => setPIN(e)}
+              value={PIN}
+              size={["sm", "md"]}
+            >
               {Array.from(Array(PINLen).keys()).map((key) =>
                 key == 0 ? (
                   <PinInputField key={key} required />
@@ -78,7 +99,11 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
                 )
               )}
             </PinInput>
-          </SimpleGrid>
+          </HStack>
+
+          <FormHelperText>
+            Temporary. Students can change their own PINs on their accounts.
+          </FormHelperText>
         </FormControl>
 
         {isAdmin && (
@@ -93,7 +118,7 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
         )}
       </Flex>
       <Box h={"150px"}></Box>
-    </Layout>
+    </AdminLayout>
   );
 }
 

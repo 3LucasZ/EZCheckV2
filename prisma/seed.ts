@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 async function main() {
-  const admin1 = await prisma.admin.upsert({
+  const exampleAdmin = await prisma.admin.upsert({
     create: {
       email: "lucas.zheng@warriorlife.net",
     },
@@ -13,16 +13,29 @@ async function main() {
   for (let i = 0; i < 200; i++) {
     await prisma.machine.upsert({
       create: {
-        name: "machine #" + i,
+        name: "machine" + i,
       },
       update: {},
-      where: { name: "machine #" + i },
+      where: { name: "machine" + i },
+    });
+    await prisma.student.upsert({
+      create: {
+        email: "student" + i + "@warriorlife.net",
+        name: "student" + i,
+        PIN: "" + i,
+      },
+      update: {},
+      where: { name: "student" + i },
     });
   }
-  const student1 = await prisma.student.upsert({
-    create: { name: "Lucas Zheng", PIN: "123456" },
+  const exampleStudent = await prisma.student.upsert({
+    create: {
+      email: "lucas.zheng@warriorlife.net",
+      name: "Lucas Zheng",
+      PIN: "123456",
+    },
     update: {},
-    where: { name: "Lucas Zheng", PIN: "123456" },
+    where: { name: "Lucas Zheng" },
   });
 }
 main()
