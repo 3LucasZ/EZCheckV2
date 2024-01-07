@@ -20,13 +20,11 @@ export default function Header() {
           src={session?.user?.image ? session.user.image : ""}
         />
       </MenuButton>
-      <MenuList>
-        {session && (
-          <Text px={3} py={1}>
-            {session ? session.user!.name : "You are not signed in"}
-          </Text>
-        )}
-        <Text px={3} py={1}>
+      <MenuList textAlign="left">
+        <Text px={3} py={1.5}>
+          {session ? session.user!.name : "Guest"}
+        </Text>
+        <Text px={3} py={1.5}>
           {session ? session.user!.email : "You are not signed in"}
         </Text>
         <MenuItem

@@ -12,11 +12,9 @@ export default function Header() {
         textAlign={"center"}
         py="1"
       >
-        <Link href={"/"} style={{ textDecoration: "none" }} w="100%">
-          <Heading size={["xl", "2xl", "3xl"]} color="teal.500">
-            EZCheck
-          </Heading>
-        </Link>
+        <Heading size={["xl", "2xl", "3xl"]} color="teal.500" w="100%">
+          EZCheck
+        </Heading>
         <AvatarMenu />
       </HStack>
       <Divider />
