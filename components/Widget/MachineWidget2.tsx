@@ -5,6 +5,7 @@ import { StudentProps } from "./StudentWidget";
 import { debugMode } from "services/constants";
 import { useToast } from "@chakra-ui/react";
 import { errorToast, successToast } from "services/toasty";
+import { poster } from "services/poster";
 
 type MachineWidget2Props = {
   machine: MachineProps;
@@ -21,57 +22,35 @@ export default function MachineWidget2({
 }: MachineWidget2Props) {
   const toaster = useToast();
   const handleRemove = async () => {
-    try {
-      const body = {
-        id: targetStudent.id,
-        name: targetStudent.name,
-        PIN: targetStudent.PIN,
-        machineIds: targetStudent.machines
-          .filter((item) => item.id != machine.id)
-          .map((item) => ({ id: item.id })),
-      };
-      if (debugMode) console.log(body);
-      const res = await fetch("/api/upsert-student", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (res.status != 200) {
-        errorToast(toaster, "Unknown error on id: " + machine.id);
-      } else {
-        successToast(toaster, "Success!");
-        Router.reload();
-      }
-    } catch (error) {
-      errorToast(toaster, "" + error);
+    const body = {
+      id: targetStudent.id,
+      email: targetStudent.email,
+      name: targetStudent.name,
+      PIN: targetStudent.PIN,
+      machineIds: targetStudent.machines
+        .filter((item) => item.id != machine.id)
+        .map((item) => ({ id: item.id })),
+    };
+    const res = await poster("/api/upsert-student", body, toaster);
+    if (res.status == 200) {
+      Router.push("/admin/view-student/" + targetStudent.id);
     }
   };
   const handleAdd = async () => {
-    try {
-      const machineIds = targetStudent.machines.map((item) => ({
-        id: item.id,
-      }));
-      machineIds.push({ id: machine.id });
-      const body = {
-        id: targetStudent.id,
-        name: targetStudent.name,
-        PIN: targetStudent.PIN,
-        machineIds,
-      };
-      if (debugMode) console.log(body);
-      const res = await fetch("/api/upsert-student", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (res.status != 200) {
-        errorToast(toaster, "Unknown error on id: " + machine.id);
-      } else {
-        successToast(toaster, "Success!");
-        Router.reload();
-      }
-    } catch (error) {
-      errorToast(toaster, "" + error);
+    const machineIds = targetStudent.machines.map((item) => ({
+      id: item.id,
+    }));
+    machineIds.push({ id: machine.id });
+    const body = {
+      id: targetStudent.id,
+      email: targetStudent.email,
+      name: targetStudent.name,
+      PIN: targetStudent.PIN,
+      machineIds,
+    };
+    const res = await poster("/api/upsert-student", body, toaster);
+    if (res.status == 200) {
+      Router.push("/admin/view-student/" + targetStudent.id);
     }
   };
   return (

@@ -5,6 +5,7 @@ import { StudentProps } from "./StudentWidget";
 import { debugMode } from "services/constants";
 import { useToast } from "@chakra-ui/react";
 import { errorToast, successToast } from "services/toasty";
+import { poster } from "services/poster";
 
 type StudentWidget2Props = {
   student: StudentProps;
@@ -46,30 +47,19 @@ export default function StudentWidget2({
     }
   };
   const handleAdd = async () => {
-    try {
-      const studentIds = targetMachine.students.map((item) => ({
-        id: item.id,
-      }));
-      studentIds.push({ id: student.id });
-      const body = {
-        id: targetMachine.id,
-        name: targetMachine.name,
-        studentIds,
-      };
-      if (debugMode) console.log(body);
-      const res = await fetch("/api/upsert-machine", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (res.status == 500) {
-        errorToast(toaster, "Unknown error on id: " + student.id);
-      } else {
-        successToast(toaster, "Success!");
-        Router.reload();
-      }
-    } catch (error) {
-      errorToast(toaster, "" + error);
+    const studentIds = targetMachine.students.map((item) => ({
+      id: item.id,
+    }));
+    studentIds.push({ id: student.id });
+    const body = {
+      id: targetMachine.id,
+      name: targetMachine.name,
+      studentIds,
+    };
+    if (debugMode) console.log(body);
+    const res = await poster("/api/upsert-machine", body, toaster);
+    if (res.status == 200) {
+      Router.reload();
     }
   };
   return (

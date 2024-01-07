@@ -24,6 +24,7 @@ import { AdminProps } from "components/Widget/AdminWidget2";
 import MachineWidget2 from "components/Widget/MachineWidget2";
 import { poster } from "services/poster";
 import { PiSignOutBold } from "react-icons/pi";
+import AdminLayout from "components/AdminLayout";
 
 type PageProps = {
   student: StudentProps;
@@ -59,7 +60,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
   };
   // ret
   return (
-    <Layout isAdmin={isAdmin}>
+    <AdminLayout>
       <Center pb={3} flexDir={"column"}>
         <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} w="100%">
           <Center
@@ -148,7 +149,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
           isEdit={false}
         />
       )}
-    </Layout>
+    </AdminLayout>
   );
 }
 
