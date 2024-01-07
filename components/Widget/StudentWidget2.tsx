@@ -74,7 +74,7 @@ export default function StudentWidget2({
   };
   return (
     <BaseWidget2
-      href={"view-student/" + student.id}
+      href={"/admin/view-student/" + student.id}
       title={student.name}
       bg={"teal.300"}
       bgHover={"teal.400"}

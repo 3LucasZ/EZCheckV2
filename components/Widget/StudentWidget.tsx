@@ -24,14 +24,14 @@ export default function StudentWidget({ student }: StudentWidgetProps) {
         rounded="md"
       >
         <BaseWidget
-          href={"view-student/" + student.id}
+          href={"/admin/view-student/" + student.id}
           title={student.name}
           bg={"teal.300"}
           bgHover={"teal.400"}
           colSpan={1}
         />
         <BaseWidget
-          href={student.using ? "view-machine/" + student.using.id : ""}
+          href={student.using ? "/admin/view-machine/" + student.using.id : ""}
           title={student.using ? student.using.name : "Offline"}
           bg={student.using ? "blue.300" : "red.300"}
           bgHover={student.using ? "blue.400" : "red.300"}
