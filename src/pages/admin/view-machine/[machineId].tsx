@@ -2,7 +2,6 @@ import {
   Badge,
   Center,
   Flex,
-  Heading,
   IconButton,
   Spacer,
   useDisclosure,
@@ -13,7 +12,6 @@ import { GetServerSideProps } from "next";
 import Router from "next/router";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import SearchView from "components/SearchView";
-import Layout from "components/Layout";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import { StudentProps } from "components/Widget/StudentWidget";
@@ -21,7 +19,8 @@ import { MachineProps } from "components/Widget/MachineWidget";
 import { checkAdmin } from "services/checkAdmin";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import StudentWidget2 from "components/Widget/StudentWidget2";
-import { debugMode } from "services/constants";
+import AdminLayout from "components/AdminLayout";
+import { poster } from "services/poster";
 type PageProps = {
   machine: MachineProps;
   students: StudentProps[];
@@ -41,21 +40,13 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
   //modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
-    try {
-      const body = { id: machine.id };
-      const res = await fetch("/api/delete-machine", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      await Router.push({ pathname: "/manage-machines" });
-    } catch (error) {
-      if (debugMode) console.error(error);
-    }
+    const body = { id: machine.id };
+    const res = await poster("/api/delete-machine", body, toaster);
+    if (res.status == 200) await Router.push({ pathname: "/manage-machines" });
   };
   //ret
   return (
-    <Layout isAdmin={isAdmin}>
+    <AdminLayout>
       <Center pb={3} flexDir={"column"}>
         <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} w="100%">
           <Center
@@ -135,9 +126,10 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
             };
           })}
           isAdmin={isAdmin}
+          isEdit={false}
         />
       )}
-    </Layout>
+    </AdminLayout>
   );
 }
 

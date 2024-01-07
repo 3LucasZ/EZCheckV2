@@ -18,10 +18,6 @@ import AdminLayout from "components/AdminLayout";
 import Router from "next/router";
 import { poster } from "services/poster";
 
-enum FormState {
-  Input,
-  Submitting,
-}
 type PageProps = {
   allStudents: StudentProps[];
   oldMachine: MachineProps;
@@ -32,10 +28,10 @@ export default function UpsertMachine({ oldMachine, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   const toaster = useToast();
+
   const id = oldMachine.id;
   const isNew = id == -1;
   const [name, setName] = useState<string>(isNew ? "" : oldMachine.name);
-  const [formState] = useState(FormState.Input);
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -62,7 +58,6 @@ export default function UpsertMachine({ oldMachine, admins }: PageProps) {
             value={name}
             variant="filled"
             placeholder="Name"
-            isDisabled={formState === FormState.Input ? false : true}
             onChange={(e) => setName(e.target.value)}
           />
         </FormControl>
@@ -72,10 +67,9 @@ export default function UpsertMachine({ oldMachine, admins }: PageProps) {
             size="lg"
             colorScheme="teal"
             type="submit"
-            isLoading={formState == FormState.Input ? false : true}
             onClick={submitData}
           >
-            {isNew ? "Add Machine" : "Update Machine"}
+            {isNew ? "Register Machine" : "Update Machine"}
           </Button>
         )}
       </Flex>

@@ -24,14 +24,14 @@ export default function MachineWidget({ machine }: MachineWidgetProps) {
         rounded="md"
       >
         <BaseWidget
-          href={"/machine/" + machine.id}
+          href={"view-machine/" + machine.id}
           title={machine.name}
           bg={"blue.300"}
           bgHover="blue.400"
           colSpan={2}
         />
         <BaseWidget
-          href={machine.usedBy ? "/student/" + machine.usedBy.id : ""}
+          href={machine.usedBy ? "view-student/" + machine.usedBy.id : ""}
           title={machine.usedBy ? machine.usedBy.name : "Standby"}
           bg={machine.usedBy ? "teal.300" : "red.300"}
           bgHover={machine.usedBy ? "teal.400" : "red.300"}

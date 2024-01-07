@@ -9,14 +9,11 @@ import {
   PinInput,
   PinInputField,
   FormLabel,
-  Box,
   Flex,
-  SimpleGrid,
   FormHelperText,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Widget/StudentWidget";
-import Layout from "components/Layout";
 import prisma from "services/prisma";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
@@ -113,7 +110,7 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
             type="submit"
             onClick={submitData}
           >
-            {isNew ? "Add Student" : "Update Student"}
+            {isNew ? "Register Student" : "Update Student"}
           </Button>
         )}
       </Flex>

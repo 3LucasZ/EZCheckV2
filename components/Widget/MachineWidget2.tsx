@@ -76,7 +76,7 @@ export default function MachineWidget2({
   };
   return (
     <BaseWidget2
-      href={"/machine/" + machine.id}
+      href={"view-machine/" + machine.id}
       title={machine.name}
       bg={"blue.300"}
       bgHover={"blue.400"}

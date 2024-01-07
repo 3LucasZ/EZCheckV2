@@ -21,7 +21,6 @@ export default function ManageStudents({ students, admins }: PageProps) {
   const isAdmin = checkAdmin(session, admins);
   return (
     <AdminLayout>
-      <Header />
       <SearchView
         setIn={students.map((student) => ({
           name: student.name,
@@ -31,8 +30,6 @@ export default function ManageStudents({ students, admins }: PageProps) {
         isEdit={true}
         onAdd={async () => await Router.push("student-form")}
       />
-      <Box minH="calc(50px + env(safe-area-inset-bottom))"></Box>
-      <AppBar />
     </AdminLayout>
   );
 }
