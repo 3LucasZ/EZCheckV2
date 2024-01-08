@@ -10,10 +10,11 @@ import { GiSewingMachine } from "react-icons/gi";
 import { IoDocumentText } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 
-import { checkAdmin } from "services/checkAdmin";
+import { checkAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Header from "components/Header";
 import AppBar from "components/AppBar";
+import AdminLayout from "components/AdminLayout";
 
 type PageProps = {
   admins: AdminProps[];
@@ -23,8 +24,7 @@ export default function Home({ admins }: PageProps) {
   console.log(session);
   const isAdmin = checkAdmin(session, admins);
   return (
-    <Layout isAdmin={isAdmin}>
-      <Header />
+    <AdminLayout>
       <SimpleGrid
         columns={[1, 2]}
         spacing={10}
@@ -61,9 +61,7 @@ export default function Home({ admins }: PageProps) {
           hoverColor={"red.100"}
         ></RouteButton>
       </SimpleGrid>
-      <Box minH="calc(50px + env(safe-area-inset-bottom))"></Box>
-      <AppBar />
-    </Layout>
+    </AdminLayout>
   );
 }
 

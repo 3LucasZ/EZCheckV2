@@ -5,7 +5,7 @@ import SearchView from "components/SearchView";
 import prisma from "services/prisma";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
-import { checkAdmin } from "services/checkAdmin";
+import { checkAdmin } from "services/userHandler";
 import Router from "next/router";
 import AdminLayout from "components/AdminLayout";
 

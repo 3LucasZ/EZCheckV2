@@ -1,8 +1,10 @@
 import Head from "next/head";
 import { useEffect, type ReactNode } from "react";
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const { data: session, status } = useSession();
   useEffect(() => {
     const html = document.querySelector("html") || new HTMLBodyElement();
     const body = document.querySelector("body") || new HTMLBodyElement();
@@ -10,6 +12,10 @@ export default function Layout({ children }: { children: ReactNode }) {
     html.style.touchAction = "none";
     body.style.touchAction = "none";
   });
+  // if (status === "loading") {
+  //   return <></>;
+  // }
+
   return (
     <>
       <Head>

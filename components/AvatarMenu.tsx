@@ -7,6 +7,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { signOut, signIn, useSession } from "next-auth/react";
+import Router from "next/router";
 import React from "react";
 import { debugMode } from "services/constants";
 
@@ -38,6 +39,13 @@ export default function AvatarMenu() {
           }}
         >
           {session ? "Sign out" : "Sign in"}
+        </MenuItem>
+        <MenuItem
+          onClick={(e) => {
+            Router.push("/");
+          }}
+        >
+          Home
         </MenuItem>
       </MenuList>
     </Menu>

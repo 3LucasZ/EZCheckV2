@@ -19,7 +19,7 @@ import Layout from "components/Layout";
 import SearchView from "components/SearchView";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
-import { checkAdmin } from "services/checkAdmin";
+import { checkAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import MachineWidget2 from "components/Widget/MachineWidget2";
 import { poster } from "services/poster";

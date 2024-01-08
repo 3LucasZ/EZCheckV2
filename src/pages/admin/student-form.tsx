@@ -17,9 +17,10 @@ import { StudentProps } from "components/Widget/StudentWidget";
 import prisma from "services/prisma";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
-import { checkAdmin } from "services/checkAdmin";
+import { checkAdmin } from "services/userHandler";
 import { poster } from "services/poster";
 import AdminLayout from "components/AdminLayout";
+import { PINLen } from "services/constants";
 
 type PageProps = {
   oldStudent: StudentProps;
@@ -33,7 +34,6 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
 
   const id = oldStudent.id;
   const isNew = id == -1;
-  const PINLen = 10;
   const [name, setName] = useState(oldStudent.name);
   const [email, setEmail] = useState(oldStudent.email);
   const [PIN, setPIN] = useState(oldStudent.PIN);
@@ -82,7 +82,7 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
         </FormControl>
         <FormControl isRequired>
           <FormLabel>PIN</FormLabel>
-          <HStack>
+          <HStack spacing={["4px", "8px"]}>
             <PinInput
               onChange={(e) => setPIN(e)}
               value={PIN}

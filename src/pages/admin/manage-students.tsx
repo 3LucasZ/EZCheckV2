@@ -4,7 +4,7 @@ import SearchView from "components/SearchView";
 import { GetServerSideProps } from "next";
 import prisma from "services/prisma";
 import { useSession } from "next-auth/react";
-import { checkAdmin } from "services/checkAdmin";
+import { checkAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Router from "next/router";
 import { Box } from "@chakra-ui/react";

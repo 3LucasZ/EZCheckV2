@@ -30,7 +30,7 @@ export default function StudentWidget2({
     };
     const res = await poster("/api/upsert-machine", body, toaster);
     if (res.status == 200) {
-      Router.push(Router.asPath);
+      Router.reload();
     }
   };
   const handleAdd = async () => {
@@ -46,7 +46,7 @@ export default function StudentWidget2({
     if (debugMode) console.log(body);
     const res = await poster("/api/upsert-machine", body, toaster);
     if (res.status == 200) {
-      Router.push(Router.asPath);
+      Router.reload();
     }
   };
   return (

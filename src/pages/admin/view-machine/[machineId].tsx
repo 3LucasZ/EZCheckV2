@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import { StudentProps } from "components/Widget/StudentWidget";
 import { MachineProps } from "components/Widget/MachineWidget";
-import { checkAdmin } from "services/checkAdmin";
+import { checkAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import StudentWidget2 from "components/Widget/StudentWidget2";
 import AdminLayout from "components/AdminLayout";

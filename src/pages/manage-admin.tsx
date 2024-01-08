@@ -19,7 +19,7 @@ import { errorToast, successToast } from "services/toasty";
 import prisma from "services/prisma";
 import { AddIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
-import { checkAdmin, getMyAdmin } from "services/checkAdmin";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { poster } from "services/poster";
 
 type PageProps = {

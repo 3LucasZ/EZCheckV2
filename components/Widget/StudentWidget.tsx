@@ -8,7 +8,7 @@ export type StudentProps = {
   name: string;
   PIN: string;
   machines: MachineProps[];
-  using: MachineProps;
+  using?: MachineProps;
 };
 type StudentWidgetProps = {
   student: StudentProps;
