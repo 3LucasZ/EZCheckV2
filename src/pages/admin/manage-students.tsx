@@ -28,7 +28,7 @@ export default function ManageStudents({ students, admins }: PageProps) {
         }))}
         isAdmin={isAdmin}
         isEdit={true}
-        onAdd={async () => await Router.push("student-form")}
+        onAdd={async () => await Router.push("/admin/student-form")}
       />
     </AdminLayout>
   );

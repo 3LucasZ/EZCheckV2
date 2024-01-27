@@ -38,7 +38,9 @@ export default function UpsertMachine({ oldMachine, admins }: PageProps) {
     const body = { id, name };
     const res = await poster("/api/upsert-machine", body, toaster);
     if (res.status == 200) {
-      await Router.push(isNew ? "manage-machines" : "student/" + id);
+      await Router.push(
+        isNew ? "/admin/manage-machines" : "/admin/view-student/" + id
+      );
     }
   };
 

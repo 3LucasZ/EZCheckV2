@@ -48,12 +48,13 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
   const handleDelete = async () => {
     const body = { id: student.id };
     const res = await poster("/api/delete-student", body, toaster);
-    if (res.status == 200) await Router.push({ pathname: "/manage-students" });
+    if (res.status == 200)
+      await Router.push({ pathname: "/admin/manage-students" });
   };
   //student force log out
   const handleLeave = async () => {
     const body = {
-      machineName: student.using.name,
+      machineName: student.using?.name,
     };
     const res = await poster("/api/post/leave-machine", body, toaster);
     if (res.status == 200) Router.reload();
@@ -79,7 +80,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
                 icon={<EditIcon />}
                 onClick={() =>
                   Router.push({
-                    pathname: "/upsert-student",
+                    pathname: "/admin/student-form",
                     query: { id: student.id },
                   })
                 }

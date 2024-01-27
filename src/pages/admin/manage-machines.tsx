@@ -25,7 +25,7 @@ export default function ManageMachines({ machines, admins }: PageProps) {
         }))}
         isAdmin={isAdmin}
         isEdit={false}
-        onAdd={() => Router.push("machine-form")}
+        onAdd={() => Router.push("/admin/machine-form")}
       />
     </AdminLayout>
   );

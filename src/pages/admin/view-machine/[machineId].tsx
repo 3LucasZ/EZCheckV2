@@ -42,7 +42,8 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
   const handleDelete = async () => {
     const body = { id: machine.id };
     const res = await poster("/api/delete-machine", body, toaster);
-    if (res.status == 200) await Router.push({ pathname: "/manage-machines" });
+    if (res.status == 200)
+      await Router.push({ pathname: "/admin/manage-machines" });
   };
   //ret
   return (
@@ -65,7 +66,7 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
                 icon={<EditIcon />}
                 onClick={() =>
                   Router.push({
-                    pathname: "/upsert-machine",
+                    pathname: "/admin/machine-form",
                     query: { id: machine.id },
                   })
                 }

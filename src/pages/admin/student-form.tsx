@@ -43,7 +43,9 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
     const body = { id, email, name, PIN };
     const res = await poster("/api/upsert-student", body, toaster);
     if (res.status == 200) {
-      await Router.push(isNew ? "manage-students" : "student/" + id);
+      await Router.push(
+        isNew ? "/admin/manage-students" : "/admin/view-student/" + id
+      );
     }
   };
   return (
