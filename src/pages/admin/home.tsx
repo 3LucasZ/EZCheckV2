@@ -47,7 +47,7 @@ export default function Home({ admins }: PageProps) {
           hoverColor={"blue.100"}
         ></RouteButton>
         <RouteButton
-          route={"logs"}
+          route={"view-logs"}
           text={"View Logs"}
           icon={IoDocumentText}
           color={"orange.400"}
