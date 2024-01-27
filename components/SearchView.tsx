@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import { debugMode } from "services/constants";
+import { FAB } from "./FAB";
 
 type SearchViewProps = {
   setIn: PairProps[];
@@ -85,13 +86,14 @@ export default function SearchView(props: SearchViewProps) {
           />
         </InputGroup>
         {props.onAdd && props.isAdmin && (
-          <Button
-            onClick={() => props.onAdd && props.onAdd()}
-            colorScheme="teal"
-          >
-            Create
-            <AddIcon ml="8px" />
-          </Button>
+          // <Button
+          //   onClick={() => props.onAdd && props.onAdd()}
+          //   colorScheme="teal"
+          // >
+          //   Create
+          //   <AddIcon ml="8px" />
+          // </Button>
+          <FAB onClick={() => props.onAdd && props.onAdd()} />
         )}
         {props.setOut && (
           <Checkbox

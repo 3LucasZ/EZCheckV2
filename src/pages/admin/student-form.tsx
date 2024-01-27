@@ -49,7 +49,7 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
     }
   };
   return (
-    <AdminLayout>
+    <AdminLayout isAdmin={isAdmin}>
       <Flex
         flexDir="column"
         gap="10"

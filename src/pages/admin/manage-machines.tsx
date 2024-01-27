@@ -17,7 +17,7 @@ export default function ManageMachines({ machines, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   return (
-    <AdminLayout>
+    <AdminLayout isAdmin={isAdmin}>
       <SearchView
         setIn={machines.map((machine) => ({
           name: machine.name,

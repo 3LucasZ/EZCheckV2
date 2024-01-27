@@ -2,7 +2,10 @@ import { Divider, Heading, HStack, Link, Stack } from "@chakra-ui/react";
 import React from "react";
 import AvatarMenu from "./AvatarMenu";
 
-export default function Header() {
+type HeaderProps = {
+  isAdmin: boolean;
+};
+export default function Header({ isAdmin }: HeaderProps) {
   return (
     <>
       <HStack
@@ -15,7 +18,7 @@ export default function Header() {
         <Heading size={["xl", "2xl", "3xl"]} color="teal.500" w="100%">
           EZCheck
         </Heading>
-        <AvatarMenu />
+        <AvatarMenu isAdmin={isAdmin} />
       </HStack>
       <Divider />
     </>

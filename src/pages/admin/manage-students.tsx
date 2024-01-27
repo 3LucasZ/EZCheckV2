@@ -20,7 +20,7 @@ export default function ManageStudents({ students, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
   return (
-    <AdminLayout>
+    <AdminLayout isAdmin={isAdmin}>
       <SearchView
         setIn={students.map((student) => ({
           name: student.name,

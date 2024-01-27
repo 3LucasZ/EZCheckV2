@@ -2,6 +2,7 @@ import {
   Avatar,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
   Text,
@@ -11,7 +12,11 @@ import Router from "next/router";
 import React from "react";
 import { debugMode } from "services/constants";
 
-export default function AvatarMenu() {
+type AvatarMenuProps = {
+  isAdmin: boolean;
+};
+
+export default function AvatarMenu({ isAdmin }: AvatarMenuProps) {
   const { data: session } = useSession();
   return (
     <Menu>
@@ -28,6 +33,23 @@ export default function AvatarMenu() {
         <Text px={3} py={1.5}>
           {session ? session.user!.email : "You are not signed in"}
         </Text>
+        <MenuDivider />
+        <MenuItem
+          onClick={(e) => {
+            Router.push("/");
+          }}
+        >
+          Home
+        </MenuItem>
+        {isAdmin && (
+          <MenuItem
+            onClick={(e) => {
+              Router.push("/admin/manage-admin");
+            }}
+          >
+            Admin Dashboard
+          </MenuItem>
+        )}
         <MenuItem
           onClick={(e) => {
             if (debugMode) console.log(e);
@@ -39,13 +61,6 @@ export default function AvatarMenu() {
           }}
         >
           {session ? "Sign out" : "Sign in"}
-        </MenuItem>
-        <MenuItem
-          onClick={(e) => {
-            Router.push("/");
-          }}
-        >
-          Home
         </MenuItem>
       </MenuList>
     </Menu>

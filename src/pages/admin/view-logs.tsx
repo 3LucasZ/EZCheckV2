@@ -19,7 +19,7 @@ export default function Home({ admins, logs }: PageProps) {
   console.log(admins);
   console.log(logs);
   return (
-    <AdminLayout>
+    <AdminLayout isAdmin={isAdmin}>
       <Box gap="8px" overflowY="auto" px="5" display="grid">
         {logs.map((log) => (
           <LogWidget log={log}></LogWidget>

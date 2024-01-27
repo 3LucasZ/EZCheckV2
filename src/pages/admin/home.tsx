@@ -24,7 +24,7 @@ export default function Home({ admins }: PageProps) {
   console.log(session);
   const isAdmin = checkAdmin(session, admins);
   return (
-    <AdminLayout>
+    <AdminLayout isAdmin={isAdmin}>
       <SimpleGrid
         columns={[1, 2]}
         spacing={10}

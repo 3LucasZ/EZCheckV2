@@ -45,7 +45,7 @@ export default function UpsertMachine({ oldMachine, admins }: PageProps) {
   };
 
   return (
-    <AdminLayout>
+    <AdminLayout isAdmin={isAdmin}>
       <Flex
         flexDir="column"
         gap="10"

@@ -21,6 +21,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { poster } from "services/poster";
+import AdminLayout from "components/AdminLayout";
 
 type PageProps = {
   admins: AdminProps[];
@@ -42,7 +43,7 @@ export default function ManageAdmin({ admins }: PageProps) {
     if (res.status == 200) Router.reload();
   };
   return (
-    <Layout isAdmin={isAdmin}>
+    <AdminLayout isAdmin={isAdmin}>
       <Box px={[2, "5vw", "10vw", "15vw"]}>
         <Box>
           {myAdmin.supervising
@@ -85,7 +86,6 @@ export default function ManageAdmin({ admins }: PageProps) {
           />
         )}
       </Flex>
-      <Box minH="8px" />
       {isAdmin && (
         <SearchView
           setIn={admins.map((admin) => ({
@@ -96,7 +96,7 @@ export default function ManageAdmin({ admins }: PageProps) {
           isEdit={false}
         />
       )}
-    </Layout>
+    </AdminLayout>
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {

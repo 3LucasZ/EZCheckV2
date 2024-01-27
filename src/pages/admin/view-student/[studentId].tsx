@@ -61,7 +61,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
   };
   // ret
   return (
-    <AdminLayout>
+    <AdminLayout isAdmin={isAdmin}>
       <Center pb={3} flexDir={"column"}>
         <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} pt="8px" w="100%">
           <Center

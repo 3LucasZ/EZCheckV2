@@ -92,7 +92,7 @@ export default function Home({ admins, students, machines }: PageProps) {
 
   return (
     <Layout>
-      <Header />
+      <Header isAdmin={isAdmin} />
       <Stack px={[2, "5vw", "10vw", "15vw"]} alignItems={"center"} spacing="0">
         <Flex flexDir="row" py="8px" gap="8px">
           <Heading>PIN</Heading>

@@ -25,8 +25,8 @@ export default function Home({ admins }: PageProps) {
   console.log(session);
   const isAdmin = checkAdmin(session, admins);
   return (
-    <Layout isAdmin={isAdmin}>
-      <Header />
+    <Layout>
+      <Header isAdmin={isAdmin} />
       <SimpleGrid columns={[1, 2]} spacing={10} overflowY="auto" h={"100%"}>
         <RouteButton
           route={"student/home"}
