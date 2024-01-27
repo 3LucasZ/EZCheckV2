@@ -1,4 +1,5 @@
-import { GridItem, Link, Text } from "@chakra-ui/react";
+import { Box, GridItem, Link, Text } from "@chakra-ui/react";
+import Router from "next/router";
 
 type BaseWidgetProps = {
   href?: string;
@@ -29,8 +30,8 @@ export default function BaseWidget({
       overflow={"hidden"}
       borderRadius={round ? "md" : "none"}
     >
-      <Link
-        href={href}
+      <Box
+        onClick={() => Router.push(href ? href : "")}
         display={"flex"}
         style={{ textDecoration: "none" }}
         sx={{
@@ -43,7 +44,7 @@ export default function BaseWidget({
         <Text noOfLines={1} h={6}>
           {title}
         </Text>
-      </Link>
+      </Box>
     </GridItem>
   );
 }

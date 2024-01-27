@@ -8,6 +8,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
+import Router from "next/router";
 
 type BaseWidgetProps = {
   href?: string;
@@ -32,11 +33,11 @@ export default function BaseWidget({
 }: BaseWidgetProps) {
   return (
     <Box display="flex" overflow="hidden" rounded="md" minH="8" maxW="100%">
-      <Link
+      <Box
         bg={bg}
         _hover={{ bg: bgHover }}
         color="white"
-        href={href}
+        onClick={() => Router.push(href ? href : "")}
         style={{ textDecoration: "none" }}
         sx={{
           WebkitUserDrag: "none",
@@ -49,7 +50,7 @@ export default function BaseWidget({
         <Text noOfLines={1} h={6}>
           {title}
         </Text>
-      </Link>
+      </Box>
       {isAdmin && (
         <IconButton
           onClick={invert ? handleAdd : handleRemove}
