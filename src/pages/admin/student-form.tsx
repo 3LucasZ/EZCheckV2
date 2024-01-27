@@ -100,9 +100,9 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
             </PinInput>
           </HStack>
 
-          <FormHelperText>
+          {/* <FormHelperText>
             Temporary. Students can change their PINs on their accounts.
-          </FormHelperText>
+          </FormHelperText> */}
         </FormControl>
 
         {isAdmin && (

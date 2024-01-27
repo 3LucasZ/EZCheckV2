@@ -118,7 +118,7 @@ export default function Home({ admins, students, machines }: PageProps) {
               }}
               aria-label=""
             />
-            <IconButton
+            {/* <IconButton
               icon={editing ? <CloseIcon /> : <EditIcon />}
               colorScheme={editing ? "red" : "blue"}
               aria-label=""
@@ -130,7 +130,7 @@ export default function Home({ admins, students, machines }: PageProps) {
                   setEditing(true);
                 }
               }}
-            />
+            /> */}
           </ButtonGroup>
         </Flex>
         <HStack spacing={["4px", "8px"]}>
