@@ -140,19 +140,22 @@ export default function Home({ admins, students, machines }: PageProps) {
             size={["sm", "md"]}
             mask={!visible && !editing}
           >
-            {Array.from(Array(PINLen).keys()).map((key) =>
-              key == 0 ? (
-                <PinInputField
-                  key={key}
-                  pointerEvents={editing ? "initial" : "none"}
-                />
-              ) : (
-                <PinInputField
-                  key={key}
-                  pointerEvents={editing ? "initial" : "none"}
-                />
+            {
+              // Array.from(Array(PINLen).keys())
+              Array.from(Array(PIN.length).keys()).map((key) =>
+                key == 0 ? (
+                  <PinInputField
+                    key={key}
+                    pointerEvents={editing ? "initial" : "none"}
+                  />
+                ) : (
+                  <PinInputField
+                    key={key}
+                    pointerEvents={editing ? "initial" : "none"}
+                  />
+                )
               )
-            )}
+            }
           </PinInput>
         </HStack>
       </Stack>
