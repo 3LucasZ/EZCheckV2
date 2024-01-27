@@ -4,8 +4,9 @@ import AvatarMenu from "./AvatarMenu";
 
 type HeaderProps = {
   isAdmin: boolean;
+  isSupervisor?: boolean;
 };
-export default function Header({ isAdmin }: HeaderProps) {
+export default function Header({ isAdmin, isSupervisor }: HeaderProps) {
   return (
     <>
       <HStack
@@ -18,7 +19,7 @@ export default function Header({ isAdmin }: HeaderProps) {
         <Heading size={["xl", "2xl", "3xl"]} color="teal.500" w="100%">
           EZCheck
         </Heading>
-        <AvatarMenu isAdmin={isAdmin} />
+        <AvatarMenu isAdmin={isAdmin} isSupervisor={isSupervisor} />
       </HStack>
       <Divider />
     </>

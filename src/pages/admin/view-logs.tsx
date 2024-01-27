@@ -4,7 +4,7 @@ import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 
-import { checkAdmin } from "services/userHandler";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import LogWidget, { LogProps } from "components/Widget/LogWidget";
 import AdminLayout from "components/AdminLayout";
@@ -16,10 +16,11 @@ type PageProps = {
 export default function Home({ admins, logs }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   console.log(admins);
   console.log(logs);
   return (
-    <AdminLayout isAdmin={isAdmin}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
       <Box gap="8px" overflowY="auto" px="5" display="grid">
         <Box minH="0px"></Box>
         {logs.map((log) => (

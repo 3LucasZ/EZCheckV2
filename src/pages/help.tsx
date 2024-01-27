@@ -3,10 +3,11 @@ import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 
-import { checkAdmin } from "services/userHandler";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 
 import { Box, Link, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { AdminProps } from "components/Widget/AdminWidget2";
+import Header from "components/Header";
 
 type PageProps = {
   admins: AdminProps[];
@@ -14,8 +15,10 @@ type PageProps = {
 export default function Home({ admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   return (
-    <Layout isAdmin={isAdmin}>
+    <Layout>
+      <Header isAdmin={isAdmin} isSupervisor={myAdmin.supervising} />
       <Box px="5" overflowY="auto">
         <Text fontSize="4xl">Version</Text>
         <Text fontSize="xl">2.1 (Alpha)</Text>

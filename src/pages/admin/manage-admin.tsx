@@ -43,7 +43,7 @@ export default function ManageAdmin({ admins }: PageProps) {
     if (res.status == 200) Router.reload();
   };
   return (
-    <AdminLayout isAdmin={isAdmin}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
       <Box px={[2, "5vw", "10vw", "15vw"]}>
         <Box>
           {myAdmin.supervising

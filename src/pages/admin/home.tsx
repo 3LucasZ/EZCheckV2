@@ -10,7 +10,7 @@ import { GiSewingMachine } from "react-icons/gi";
 import { IoDocumentText } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 
-import { checkAdmin } from "services/userHandler";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Header from "components/Header";
 import AppBar from "components/AppBar";
@@ -23,8 +23,9 @@ export default function Home({ admins }: PageProps) {
   const { data: session } = useSession();
   console.log(session);
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   return (
-    <AdminLayout isAdmin={isAdmin}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
       <SimpleGrid
         columns={[1, 2]}
         spacing={10}

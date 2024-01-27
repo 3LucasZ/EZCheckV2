@@ -10,7 +10,7 @@ import { GiSewingMachine } from "react-icons/gi";
 import { IoDocumentText } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 
-import { checkAdmin } from "services/userHandler";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { RiAdminLine } from "react-icons/ri";
 import { PiStudent, PiStudentBold, PiStudentDuotone } from "react-icons/pi";
@@ -24,9 +24,10 @@ export default function Home({ admins }: PageProps) {
   const { data: session } = useSession();
   console.log(session);
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   return (
     <Layout>
-      <Header isAdmin={isAdmin} />
+      <Header isAdmin={isAdmin} isSupervisor={myAdmin.supervising} />
       <SimpleGrid columns={[1, 2]} spacing={10} overflowY="auto" h={"100%"}>
         <RouteButton
           route={"student/home"}

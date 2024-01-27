@@ -17,7 +17,7 @@ import { StudentProps } from "components/Widget/StudentWidget";
 import prisma from "services/prisma";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
-import { checkAdmin } from "services/userHandler";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { poster } from "services/poster";
 import AdminLayout from "components/AdminLayout";
 import { PINLen } from "services/constants";
@@ -30,6 +30,7 @@ type PageProps = {
 export default function UpsertStudent({ oldStudent, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   const toaster = useToast();
 
   const id = oldStudent.id;
@@ -49,7 +50,7 @@ export default function UpsertStudent({ oldStudent, admins }: PageProps) {
     }
   };
   return (
-    <AdminLayout isAdmin={isAdmin}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
       <Flex
         flexDir="column"
         gap="10"

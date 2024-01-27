@@ -4,7 +4,7 @@ import SearchView from "components/SearchView";
 import { GetServerSideProps } from "next";
 import prisma from "services/prisma";
 import { useSession } from "next-auth/react";
-import { checkAdmin } from "services/userHandler";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Router from "next/router";
 import { Box } from "@chakra-ui/react";
@@ -19,8 +19,9 @@ type PageProps = {
 export default function ManageStudents({ students, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   return (
-    <AdminLayout isAdmin={isAdmin}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
       <SearchView
         setIn={students.map((student) => ({
           name: student.name,

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  AvatarBadge,
   Menu,
   MenuButton,
   MenuDivider,
@@ -14,9 +15,10 @@ import { debugMode } from "services/constants";
 
 type AvatarMenuProps = {
   isAdmin: boolean;
+  isSupervisor?: boolean;
 };
 
-export default function AvatarMenu({ isAdmin }: AvatarMenuProps) {
+export default function AvatarMenu({ isAdmin, isSupervisor }: AvatarMenuProps) {
   const { data: session } = useSession();
   return (
     <Menu>
@@ -24,7 +26,14 @@ export default function AvatarMenu({ isAdmin }: AvatarMenuProps) {
         <Avatar
           name={session?.user?.name ? session.user.name : ""}
           src={session?.user?.image ? session.user.image : ""}
-        />
+        >
+          {isAdmin && (
+            <AvatarBadge
+              boxSize="1.25em"
+              bg={isSupervisor ? "green.500" : "red.500"}
+            />
+          )}
+        </Avatar>
       </MenuButton>
       <MenuList textAlign="left">
         <Text px={3} py={1.5}>
@@ -40,6 +49,13 @@ export default function AvatarMenu({ isAdmin }: AvatarMenuProps) {
           }}
         >
           Home
+        </MenuItem>
+        <MenuItem
+          onClick={(e) => {
+            Router.push("/help");
+          }}
+        >
+          Help
         </MenuItem>
         {isAdmin && (
           <MenuItem

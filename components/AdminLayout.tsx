@@ -16,13 +16,18 @@ import AppBar from "./AppBar";
 
 type LayoutProps = {
   isAdmin: boolean;
+  isSupervisor: boolean;
   children: ReactNode;
 };
 
-export default function AdminLayout({ isAdmin, children }: LayoutProps) {
+export default function AdminLayout({
+  isAdmin,
+  isSupervisor,
+  children,
+}: LayoutProps) {
   return (
     <Layout>
-      <Header isAdmin={isAdmin} />
+      <Header isAdmin={isAdmin} isSupervisor={isSupervisor} />
       {children}
       <Box minH="calc(50px + env(safe-area-inset-bottom))"></Box>
       <AppBar />

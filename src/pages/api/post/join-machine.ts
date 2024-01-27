@@ -26,13 +26,29 @@ export default async function handle(
       using: true,
     },
   });
+  //find supervisors
+  const supervisors = await prisma.admin.findMany({
+    where: {
+      supervising: true,
+    },
+  });
+  const supervisorsMsg = supervisors.length
+    ? "Supervisors: " +
+      supervisors.map((supervisor) => supervisor.email).join(", ") +
+      "."
+    : "No supervisors available.";
   //find student allowed machines
   const machinesStr = student
     ? student.machines.map((machine) => machine.name)
     : [];
 
   //check cases
-  if (machine == null || student == null || IP == null) {
+  if (
+    machine == null ||
+    student == null ||
+    IP == null ||
+    supervisors.length == 0
+  ) {
     createLog(
       (student == null ? "An unknown student" : student.name) +
         " might be trespassing on " +
@@ -40,7 +56,9 @@ export default async function handle(
           ? "an unknown machine (" + machineName + ") "
           : machine?.name) +
         " with IP " +
-        (IP == null ? "that is hidden" : IP),
+        (IP == null ? "that is hidden" : IP) +
+        ". " +
+        supervisorsMsg,
       2
     );
     if (machine == null) {
@@ -82,7 +100,10 @@ export default async function handle(
           IP: IP,
         },
       });
-      createLog(student.name + " logged on to " + machine.name, 0);
+      createLog(
+        student.name + " started using " + machine.name + ". " + supervisorsMsg,
+        0
+      );
       return res.status(200).send(student.name);
     } catch (e) {
       createLog("Database error: " + prismaErrHandler(e), 2);

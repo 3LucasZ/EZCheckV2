@@ -5,7 +5,7 @@ import SearchView from "components/SearchView";
 import prisma from "services/prisma";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
-import { checkAdmin } from "services/userHandler";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 import Router from "next/router";
 import AdminLayout from "components/AdminLayout";
 
@@ -16,8 +16,9 @@ type PageProps = {
 export default function ManageMachines({ machines, admins }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   return (
-    <AdminLayout isAdmin={isAdmin}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
       <SearchView
         setIn={machines.map((machine) => ({
           name: machine.name,

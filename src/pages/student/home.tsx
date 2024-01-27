@@ -26,7 +26,7 @@ import { GiSewingMachine } from "react-icons/gi";
 import { IoDocumentText } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 
-import { checkAdmin, getMyStudent } from "services/userHandler";
+import { checkAdmin, getMyAdmin, getMyStudent } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Header from "components/Header";
 import AppBar from "components/AppBar";
@@ -60,6 +60,7 @@ export default function Home({ admins, students, machines }: PageProps) {
   const { data: session, status } = useSession();
   const toaster = useToast();
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   const myStudent = getMyStudent(session, students);
   console.log(myStudent);
   const inId = myStudent.machines.map((item) => item.id);
@@ -92,7 +93,7 @@ export default function Home({ admins, students, machines }: PageProps) {
 
   return (
     <Layout>
-      <Header isAdmin={isAdmin} />
+      <Header isAdmin={isAdmin} isSupervisor={myAdmin.supervising} />
       <Stack px={[2, "5vw", "10vw", "15vw"]} alignItems={"center"} spacing="0">
         <Flex flexDir="row" py="8px" gap="8px">
           <Heading>PIN</Heading>
