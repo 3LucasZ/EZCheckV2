@@ -21,10 +21,11 @@ export default function Home({ admins, logs }: PageProps) {
   return (
     <AdminLayout isAdmin={isAdmin}>
       <Box gap="8px" overflowY="auto" px="5" display="grid">
+        <Box minH="0px"></Box>
         {logs.map((log) => (
           <LogWidget log={log}></LogWidget>
         ))}
-        <Box minH={"calc(50px + env(safe-area-inset-bottom))"}></Box>
+        <Box minH="0px"></Box>
       </Box>
     </AdminLayout>
   );
