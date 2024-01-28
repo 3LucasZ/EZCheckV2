@@ -43,6 +43,7 @@ export const RouteButton = ({
           borderColor={color}
           borderRadius="20px"
           _hover={hoverState}
+          w="215px"
         >
           <CardBody>
             <Center>
