@@ -7,7 +7,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, SettingsIcon } from "@chakra-ui/icons";
 import { GetServerSideProps } from "next";
 import Router from "next/router";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
@@ -77,6 +77,17 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
                 colorScheme="red"
                 aria-label="delete"
                 icon={<DeleteIcon />}
+              />
+              <IconButton
+                onClick={() =>
+                  Router.push({
+                    pathname: "/admin/config-machine",
+                    query: { id: machine.id },
+                  })
+                }
+                colorScheme="blue"
+                aria-label="delete"
+                icon={<SettingsIcon />}
               />
               <ConfirmDeleteModal
                 isOpen={isOpen}
