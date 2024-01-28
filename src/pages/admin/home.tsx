@@ -34,28 +34,28 @@ export default function Home({ admins }: PageProps) {
         py={"2"}
       >
         <RouteButton
-          route={"manage-students"}
+          route={"/admin/manage-students"}
           text={"Manage Students"}
           icon={MdManageAccounts}
           color={"teal.300"}
           hoverColor={"teal.100"}
         ></RouteButton>
         <RouteButton
-          route={"manage-machines"}
+          route={"/admin/manage-machines"}
           text={"Manage Machines"}
           icon={GiSewingMachine}
           color={"blue.300"}
           hoverColor={"blue.100"}
         ></RouteButton>
         <RouteButton
-          route={"view-logs"}
+          route={"/admin/view-logs"}
           text={"View Logs"}
           icon={IoDocumentText}
           color={"orange.400"}
           hoverColor={"orange.100"}
         ></RouteButton>
         <RouteButton
-          route={"help"}
+          route={"/help"}
           text={"Help"}
           icon={IoIosInformationCircle}
           color={"red.400"}
