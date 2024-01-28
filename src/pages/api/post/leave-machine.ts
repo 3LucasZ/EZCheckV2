@@ -18,22 +18,40 @@ export default async function handle(
       usedBy: true,
     },
   });
-
+  //find student
+  const student = machine?.usedBy;
+  //find supervisors
+  const supervisors = await prisma.admin.findMany({
+    where: {
+      supervising: true,
+    },
+  });
+  const supervisorsMsg = supervisors.length
+    ? "Supervisors: " +
+      supervisors.map((supervisor) => supervisor.email).join(", ") +
+      "."
+    : "No supervisors available.";
   //check cases
-  if (machine == null) {
+  if (student == null || machine == null || supervisors.length == 0) {
     createLog(
-      "Someone is trying to access " + machineName + ", which doesn't exist",
+      (student == null ? "An unknown student" : student.name) +
+        " might be trespassing on " +
+        (machine == null
+          ? "an unknown machine (" + machineName + ") "
+          : machine?.name) +
+        ". " +
+        supervisorsMsg,
       2
     );
-    return res.status(500).send(machineName + " doesn't exist");
-  } else if (machine.usedBy == null) {
-    createLog(
-      "Someone is trying to log out of " +
-        machine.name +
-        ", but no one is using this machine right now",
-      2
-    );
-    return res.status(500).send("Already logged out");
+    if (machine == null) {
+      return res.status(500).send(machineName + " doesn't exist");
+    }
+    if (student == null) {
+      return res.status(500).send("Already logged out");
+    }
+    if (supervisors.length == 0) {
+      return res.status(500).send("Unsupervised");
+    }
   } else {
     try {
       await prisma.machine.update({
@@ -44,7 +62,14 @@ export default async function handle(
           usedById: null,
         },
       });
-      createLog(machine.usedBy.name + " logged out of " + machine.name, 0);
+      createLog(
+        machine.usedBy?.name +
+          " logged out of " +
+          machine.name +
+          ". " +
+          supervisorsMsg,
+        0
+      );
       return res.status(200).send("Logged out");
     } catch (e) {
       createLog("Database error: " + prismaErrHandler(e), 2);

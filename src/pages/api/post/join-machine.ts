@@ -15,6 +15,9 @@ export default async function handle(
     where: {
       name: machineName,
     },
+    include: {
+      usedBy: true,
+    },
   });
   //find student
   const student = await prisma.student.findUnique({
@@ -70,22 +73,42 @@ export default async function handle(
     if (IP == null) {
       return res.status(500).send("Empty IP");
     }
+    if (supervisors.length == 0) {
+      return res.status(500).send("Unsupervised");
+    }
   } else if (student.using != null) {
     createLog(
       student.name +
         " is trying to use " +
         machine.name +
         ", but is already using " +
-        student.using.name,
+        student.using.name +
+        ". " +
+        supervisorsMsg,
       2
     );
     return res.status(500).send("Already using " + student.using.name);
+  } else if (machine.usedBy != null) {
+    createLog(
+      student.name +
+        " is trying to use " +
+        machine.name +
+        ", but it is already in use by " +
+        machine.usedBy.name +
+        ". " +
+        supervisorsMsg,
+      2
+    );
+    return res
+      .status(500)
+      .send(machine.name + " already in use by " + machine.usedBy.name + ".");
   } else if (!machinesStr.includes(machineName)) {
     createLog(
       student.name +
         " is trying to use " +
         machine.name +
-        ", but is not authorized",
+        ", but is not authorized. " +
+        supervisorsMsg,
       2
     );
     return res.status(500).send("Denied access");
