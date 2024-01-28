@@ -26,7 +26,12 @@ import { GiSewingMachine } from "react-icons/gi";
 import { IoDocumentText } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 
-import { checkAdmin, getMyAdmin, getMyStudent } from "services/userHandler";
+import {
+  checkAdmin,
+  checkStudent,
+  getMyAdmin,
+  getMyStudent,
+} from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Header from "components/Header";
 import AppBar from "components/AppBar";
@@ -50,18 +55,27 @@ import MachineWidget3 from "components/Widget/MachineWidget3";
 import { PINLen } from "services/constants";
 import Router from "next/router";
 import { poster } from "services/poster";
+import StudentLayout from "components/StudentLayout";
 
 type PageProps = {
   admins: AdminProps[];
   students: StudentProps[];
   machines: MachineProps[];
+  supervisors: AdminProps[];
 };
-export default function Home({ admins, students, machines }: PageProps) {
+export default function Home({
+  admins,
+  students,
+  machines,
+  supervisors,
+}: PageProps) {
   const { data: session, status } = useSession();
   const toaster = useToast();
   const isAdmin = checkAdmin(session, admins);
   const myAdmin = getMyAdmin(session, admins);
+  const isStudent = checkStudent(session, students);
   const myStudent = getMyStudent(session, students);
+
   console.log(myStudent);
   const inId = myStudent.machines.map((item) => item.id);
   const outId = machines
@@ -92,8 +106,11 @@ export default function Home({ admins, students, machines }: PageProps) {
   };
 
   return (
-    <Layout>
-      <Header isAdmin={isAdmin} isSupervisor={myAdmin.supervising} />
+    <StudentLayout
+      isAdmin={isAdmin}
+      isStudent={isStudent}
+      isSupervisor={myAdmin.supervising}
+    >
       <Stack px={[2, "5vw", "10vw", "15vw"]} alignItems={"center"} spacing="0">
         <Flex flexDir="row" py="8px" gap="8px">
           <Heading>PIN</Heading>
@@ -198,12 +215,17 @@ export default function Home({ admins, students, machines }: PageProps) {
         isAdmin={isAdmin}
         isEdit={false}
       />
-    </Layout>
+    </StudentLayout>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const admins = await prisma.admin.findMany();
+  const supervisors = await prisma.admin.findMany({
+    where: {
+      supervising: true,
+    },
+  });
   const students = await prisma.student.findMany({
     include: { machines: true },
   });
@@ -213,6 +235,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       students,
       admins,
       machines,
+      supervisors,
     },
   };
 };
