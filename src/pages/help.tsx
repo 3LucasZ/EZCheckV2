@@ -55,7 +55,7 @@ export default function Home({ admins }: PageProps) {
         >
           Terms of Service
         </Link>
-        <Text fontSize="4xl">Help</Text>
+        <Text fontSize="4xl">Contact Us</Text>
         <Text fontSize="xl">
           Please do not hesitate to email us at sahuber@vcs.net if you have any
           questions, need further instruction, or have suggestions for
@@ -63,7 +63,6 @@ export default function Home({ admins }: PageProps) {
         </Text>
         <Box h="10px"></Box>
       </Box>
-      <Box minH="calc(50px + env(safe-area-inset-bottom))"></Box>
     </Layout>
   );
 }
