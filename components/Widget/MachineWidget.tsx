@@ -40,10 +40,9 @@ export default function MachineWidget({ machine }: MachineWidgetProps) {
           colSpan={1}
         />
         <BaseWidget
-          href={""}
           title={machine.IP ? machine.IP : "Not seen"}
           bg={machine.IP ? "orange.300" : "red.400"}
-          bgHover={machine.IP ? "orange.400" : "red.400"}
+          // bgHover={machine.IP ? "orange.400" : "red.400"}
           colSpan={1}
         />
       </Grid>
