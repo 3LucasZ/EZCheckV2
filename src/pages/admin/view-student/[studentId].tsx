@@ -19,7 +19,7 @@ import Layout from "components/Layout";
 import SearchView from "components/SearchView";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
-import { checkAdmin } from "services/userHandler";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import MachineWidget2 from "components/Widget/MachineWidget2";
 import { poster } from "services/poster";
@@ -36,6 +36,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
   //admin
   const { data: session, status } = useSession();
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   //toaster
   const toaster = useToast();
   //inId and outId
@@ -61,7 +62,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
   };
   // ret
   return (
-    <AdminLayout isAdmin={isAdmin}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
       <Center pb={3} flexDir={"column"}>
         <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} pt="8px" w="100%">
           <Center
@@ -69,7 +70,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
             wordBreak={"break-all"}
             fontSize={["xl", "2xl", "2xl", "3xl", "4xl"]}
           >
-            {student.name}
+            {student.name + " (" + student.email + ")"}
           </Center>
           <Spacer />
           {isAdmin && (

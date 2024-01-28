@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import { StudentProps } from "components/Widget/StudentWidget";
 import { MachineProps } from "components/Widget/MachineWidget";
-import { checkAdmin } from "services/userHandler";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import StudentWidget2 from "components/Widget/StudentWidget2";
 import AdminLayout from "components/AdminLayout";
@@ -30,6 +30,7 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
   //admin
   const { data: session, status } = useSession();
   const isAdmin = checkAdmin(session, admins);
+  const myAdmin = getMyAdmin(session, admins);
   //toaster
   const toaster = useToast();
   //inId outId
@@ -47,7 +48,7 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
   };
   //ret
   return (
-    <AdminLayout isAdmin={isAdmin}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
       <Center pb={3} flexDir={"column"}>
         <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} pt="8px" w="100%">
           <Center
