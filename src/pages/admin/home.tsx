@@ -8,13 +8,17 @@ import prisma from "services/prisma";
 import { MdManageAccounts } from "react-icons/md";
 import { GiSewingMachine } from "react-icons/gi";
 import { IoDocumentText } from "react-icons/io5";
-import { IoIosInformationCircle } from "react-icons/io";
+import { IoIosInformationCircle, IoIosSettings } from "react-icons/io";
+import { BiSolidWrench } from "react-icons/bi";
 
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Header from "components/Header";
 import AppBar from "components/AppBar";
 import AdminLayout from "components/AdminLayout";
+import { SettingsIcon } from "@chakra-ui/icons";
+import { GrConfigure } from "react-icons/gr";
+import { FaWrench } from "react-icons/fa6";
 
 type PageProps = {
   admins: AdminProps[];
@@ -28,10 +32,13 @@ export default function Home({ admins }: PageProps) {
     <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
       <SimpleGrid
         columns={[1, 2]}
-        spacing={10}
         overflowY="auto"
+        w="100svw"
         h={"100%"}
-        py={"2"}
+        position={"fixed"}
+        py={16}
+        top={"0%"}
+        zIndex={-100}
       >
         <RouteButton
           route={"/admin/manage-students"}
@@ -55,9 +62,9 @@ export default function Home({ admins }: PageProps) {
           hoverColor={"orange.100"}
         ></RouteButton>
         <RouteButton
-          route={"/help"}
-          text={"Help"}
-          icon={IoIosInformationCircle}
+          route={"/admin/config"}
+          text={"Configure"}
+          icon={BiSolidWrench}
           color={"red.400"}
           hoverColor={"red.100"}
         ></RouteButton>

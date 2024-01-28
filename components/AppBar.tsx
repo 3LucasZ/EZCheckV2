@@ -6,6 +6,7 @@ import { IoDocumentText } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 
 import AppBarBtn from "./AppBarBtn";
+import { BiSolidWrench } from "react-icons/bi";
 
 export default function AppBar() {
   return (
@@ -21,7 +22,7 @@ export default function AppBar() {
       <AppBarBtn icon={MdManageAccounts} href="/admin/manage-students" />
       <AppBarBtn icon={GiSewingMachine} href="/admin/manage-machines" />
       <AppBarBtn icon={IoDocumentText} href="/admin/view-logs" />
-      <AppBarBtn icon={IoIosInformationCircle} href="/help" />
+      <AppBarBtn icon={BiSolidWrench} href="/admin/config" />
     </HStack>
   );
 }
