@@ -91,6 +91,8 @@ export default function Home({ admins, queryName }: PageProps) {
               <Link color={"teal.500"}>
                 {"http://" + name.replaceAll(" ", "-") + ".local" + "/ota"}
               </Link>
+              . Make sure you are on Google Chrome (not Safari) and on a
+              computer.
             </Text>
             <Text>
               If the configuration page does not load, then the machine you are
