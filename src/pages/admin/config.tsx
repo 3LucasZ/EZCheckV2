@@ -6,8 +6,11 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  Link,
   SimpleGrid,
   useToast,
+  Text,
+  HStack,
 } from "@chakra-ui/react";
 import { RouteButton } from "components/RouteButton";
 import Layout from "components/Layout";
@@ -31,13 +34,14 @@ import { errorToast, successToast } from "services/toasty";
 
 type PageProps = {
   admins: AdminProps[];
+  queryName: string;
 };
-export default function Home({ admins }: PageProps) {
+export default function Home({ admins, queryName }: PageProps) {
   const { data: session } = useSession();
   const toaster = useToast();
   const isAdmin = checkAdmin(session, admins);
   const myAdmin = getMyAdmin(session, admins);
-  const [name, setName] = useState<string>("");
+  const [name, setName] = useState<string>(queryName);
   return (
     <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
       <Flex
@@ -53,15 +57,16 @@ export default function Home({ admins }: PageProps) {
           <Input
             value={name}
             variant="filled"
-            placeholder="Name"
+            placeholder="Ex: Laser Cutter"
             onChange={(e) => setName(e.target.value)}
           />
           <FormHelperText>
-            Name of unregistered or registered machine.
+            Name of an unregistered or registered machine.
           </FormHelperText>
         </FormControl>
 
         <Button
+          isDisabled={name.length == 0}
           size="lg"
           colorScheme="teal"
           type="submit"
@@ -70,15 +75,30 @@ export default function Home({ admins }: PageProps) {
             if (!name) {
               errorToast(toaster, "Name can't be empty");
             } else {
-              Router.push({
-                pathname: "/admin/config-machine",
-                query: { name: name },
-              });
+              const url =
+                "http://" + name.replaceAll(" ", "-") + ".local" + "/ota";
+              console.log(url);
+              Router.push(url);
             }
           }}
         >
           Start Configuring
         </Button>
+        {name && (
+          <>
+            <Text>
+              You will be redirected to{" "}
+              <Link color={"teal.500"}>
+                {"http://" + name.replaceAll(" ", "-") + ".local" + "/ota"}
+              </Link>
+            </Text>
+            <Text>
+              If the configuration page does not load, then the machine you are
+              trying to access does not exist or is not on the same network as
+              your device.
+            </Text>
+          </>
+        )}
       </Flex>
     </AdminLayout>
   );
@@ -86,9 +106,12 @@ export default function Home({ admins }: PageProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const admins = await prisma.admin.findMany();
+  var { name } = context.query;
+  if (name == null) name = "";
   return {
     props: {
       admins: admins,
+      queryName: name,
     },
   };
 };

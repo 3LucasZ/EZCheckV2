@@ -81,8 +81,8 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
               <IconButton
                 onClick={() =>
                   Router.push({
-                    pathname: "/admin/config-machine",
-                    query: { id: machine.id },
+                    pathname: "/admin/config",
+                    query: { name: machine.name },
                   })
                 }
                 colorScheme="blue"
