@@ -16,7 +16,12 @@ export default function Header({ isAdmin, isSupervisor }: HeaderProps) {
         textAlign={"center"}
         py="1"
       >
-        <Heading size={["xl", "2xl", "3xl"]} color="teal.500" w="100%">
+        <Heading
+          size={["xl"]}
+          bgGradient={"linear(to-b, orange.200, red.300)"} //light
+          bgClip={"text"}
+          w="100%"
+        >
           EZCheck
         </Heading>
         <AvatarMenu isAdmin={isAdmin} isSupervisor={isSupervisor} />
