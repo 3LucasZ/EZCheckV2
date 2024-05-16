@@ -3,12 +3,16 @@ import { useEffect, type ReactNode } from "react";
 import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 
-export default function Layout({ children }: { children: ReactNode }) {
+type LayoutProps = {
+  overscrollY?: string;
+  children: ReactNode;
+};
+export default function Layout(props: LayoutProps) {
   const { data: session, status } = useSession();
   useEffect(() => {
     const html = document.querySelector("html") || new HTMLBodyElement();
     const body = document.querySelector("body") || new HTMLBodyElement();
-    html.style.overscrollBehavior = "none";
+    // html.style.overscrollBehavior = "none";
     html.style.touchAction = "none";
     body.style.touchAction = "none";
   });
@@ -32,23 +36,25 @@ export default function Layout({ children }: { children: ReactNode }) {
       <main>
         <Flex
           flexDir="column"
-          overflow="hidden"
-          overscrollY="none"
-          height={"100svh"}
-          width={"100%"}
-          position={"fixed"}
-          sx={{
-            userSelect: "none",
-            touchAction: "none",
-            overscrollBehavior: "none",
-            WebkitOverflowScrolling: "touch",
-            WebkitUserSelect: "none",
-            WebkitTouchCallout: "none",
-            WebkitUserDrag: "none",
-            WebkitTapHighlightColor: "rgba(0,0,0,0)",
-          }}
+          // overflow="hidden"
+          // overscroll={props.overscrollY ? props.overscrollY : "none"}
+          // height={"100svh"}
+          // width={"100%"}
+          // position={"fixed"}
+          sx={
+            {
+              // userSelect: "none",
+              // touchAction: "none",
+              // // overscrollBehavior: "none",
+              // // WebkitOverflowScrolling: "touch",
+              // WebkitUserSelect: "none",
+              // WebkitTouchCallout: "none",
+              // WebkitUserDrag: "none",
+              // WebkitTapHighlightColor: "rgba(0,0,0,0)",
+            }
+          }
         >
-          {children}
+          {props.children}
         </Flex>
       </main>
     </>
