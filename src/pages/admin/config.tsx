@@ -75,8 +75,7 @@ export default function Home({ admins, queryName }: PageProps) {
             if (!name) {
               errorToast(toaster, "Name can't be empty");
             } else {
-              const url =
-                "http://" + name.replaceAll(" ", "-") + ".local" + "/ota";
+              const url = "http://" + name.replaceAll(" ", "-") + ".local";
               console.log(url);
               Router.push(url);
             }
@@ -89,7 +88,7 @@ export default function Home({ admins, queryName }: PageProps) {
             <Text>
               You will be redirected to{" "}
               <Link color={"teal.500"}>
-                {"http://" + name.replaceAll(" ", "-") + ".local" + "/ota"}
+                {"http://" + name.replaceAll(" ", "-") + ".local"}
               </Link>
               . Make sure you are on Google Chrome (not Safari) and on a
               computer.
