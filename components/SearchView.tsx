@@ -17,8 +17,6 @@ import { FAB } from "./FAB";
 type SearchViewProps = {
   setIn: PairProps[];
   setOut?: PairProps[];
-  onAdd?: Function;
-  isAdmin: boolean | undefined;
   isEdit: boolean;
 };
 type PairProps = {
@@ -85,16 +83,6 @@ export default function SearchView(props: SearchViewProps) {
             onChange={handleSearchQueryChange}
           />
         </InputGroup>
-        {props.onAdd && props.isAdmin && (
-          // <Button
-          //   onClick={() => props.onAdd && props.onAdd()}
-          //   colorScheme="teal"
-          // >
-          //   Create
-          //   <AddIcon ml="8px" />
-          // </Button>
-          <FAB onClick={() => props.onAdd && props.onAdd()} />
-        )}
         {props.setOut && (
           <Checkbox
             colorScheme="red"
