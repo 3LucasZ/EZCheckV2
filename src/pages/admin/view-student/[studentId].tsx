@@ -15,7 +15,7 @@ import { GetServerSideProps } from "next";
 import { MachineProps } from "components/Widget/MachineWidget";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import Router from "next/router";
-import Layout from "components/Layout";
+import Layout from "components/Layout/Layout";
 import SearchView from "components/SearchView";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
@@ -24,7 +24,7 @@ import { AdminProps } from "components/Widget/AdminWidget2";
 import MachineWidget2 from "components/Widget/MachineWidget2";
 import { poster } from "services/poster";
 import { PiSignOutBold } from "react-icons/pi";
-import AdminLayout from "components/AdminLayout";
+import AdminLayout from "components/Layout/AdminLayout";
 
 type PageProps = {
   student: StudentProps;

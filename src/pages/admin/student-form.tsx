@@ -19,7 +19,7 @@ import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { poster } from "services/poster";
-import AdminLayout from "components/AdminLayout";
+import AdminLayout from "components/Layout/AdminLayout";
 import { PINLen } from "services/constants";
 
 type PageProps = {

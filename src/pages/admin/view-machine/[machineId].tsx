@@ -19,7 +19,7 @@ import { MachineProps } from "components/Widget/MachineWidget";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import StudentWidget2 from "components/Widget/StudentWidget2";
-import AdminLayout from "components/AdminLayout";
+import AdminLayout from "components/Layout/AdminLayout";
 import { poster } from "services/poster";
 type PageProps = {
   machine: MachineProps;

@@ -16,7 +16,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { RouteButton } from "components/RouteButton";
-import Layout from "components/Layout";
+import Layout from "components/Layout/Layout";
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
@@ -33,7 +33,7 @@ import {
   getMyStudent,
 } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
-import Header from "components/Header";
+import Header from "components/Layout/Header";
 import AppBar from "components/AppBar";
 import {
   EditIcon,
@@ -55,7 +55,7 @@ import MachineWidget3 from "components/Widget/MachineWidget3";
 import { PINLen } from "services/constants";
 import Router from "next/router";
 import { poster } from "services/poster";
-import StudentLayout from "components/StudentLayout";
+import StudentLayout from "components/Layout/StudentLayout";
 
 type PageProps = {
   admins: AdminProps[];

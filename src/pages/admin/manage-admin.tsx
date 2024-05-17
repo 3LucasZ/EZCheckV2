@@ -13,7 +13,7 @@ import Admin, { AdminProps } from "components/Widget/AdminWidget2";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
 import Router from "next/router";
-import Layout from "components/Layout";
+import Layout from "components/Layout/Layout";
 import SearchView from "components/SearchView";
 import { errorToast, successToast } from "services/toasty";
 import prisma from "services/prisma";
@@ -21,7 +21,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { poster } from "services/poster";
-import AdminLayout from "components/AdminLayout";
+import AdminLayout from "components/Layout/AdminLayout";
 
 type PageProps = {
   admins: AdminProps[];

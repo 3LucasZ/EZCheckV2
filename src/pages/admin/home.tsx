@@ -1,6 +1,6 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { RouteButton } from "components/RouteButton";
-import Layout from "components/Layout";
+import Layout from "components/Layout/Layout";
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
@@ -13,9 +13,9 @@ import { BiSolidWrench } from "react-icons/bi";
 
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
-import Header from "components/Header";
+import Header from "components/Layout/Header";
 import AppBar from "components/AppBar";
-import AdminLayout from "components/AdminLayout";
+import AdminLayout from "components/Layout/AdminLayout";
 import { SettingsIcon } from "@chakra-ui/icons";
 import { GrConfigure } from "react-icons/gr";
 import { FaWrench } from "react-icons/fa6";

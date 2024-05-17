@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import Layout from "components/Layout";
+import Layout from "components/Layout/Layout";
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
@@ -7,7 +7,7 @@ import prisma from "services/prisma";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import LogWidget, { LogProps } from "components/Widget/LogWidget";
-import AdminLayout from "components/AdminLayout";
+import AdminLayout from "components/Layout/AdminLayout";
 
 type PageProps = {
   admins: AdminProps[];

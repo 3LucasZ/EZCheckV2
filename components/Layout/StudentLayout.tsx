@@ -13,15 +13,17 @@ import React, { ReactNode } from "react";
 import { debugMode } from "services/constants";
 import Layout from "./Layout";
 import Header from "./Header";
-import AppBar from "./AppBar";
+import AppBar from "../AppBar";
 
 type LayoutProps = {
-  isAdmin: boolean | undefined;
-  isSupervisor: boolean | undefined;
+  isStudent: boolean;
+  isAdmin: boolean;
+  isSupervisor: boolean;
   children: ReactNode;
 };
 
-export default function AdminLayout({
+export default function StudentLayout({
+  isStudent,
   isAdmin,
   isSupervisor,
   children,
@@ -37,15 +39,7 @@ export default function AdminLayout({
   return (
     <Layout>
       <Header isAdmin={isAdmin} isSupervisor={isSupervisor} />
-      {isAdmin ? (
-        <>
-          {children}
-          <Box minH="calc(50px + env(safe-area-inset-bottom))"></Box>
-          <AppBar />
-        </>
-      ) : (
-        forbiddenPage
-      )}
+      {isStudent ? <>{children}</> : forbiddenPage}
     </Layout>
   );
 }

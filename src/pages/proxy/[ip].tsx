@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { StudentProps } from "components/Widget/StudentWidget";
-import Layout from "components/Layout";
+import Layout from "components/Layout/Layout";
 import prisma from "services/prisma";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import { useSession } from "next-auth/react";
