@@ -3,7 +3,7 @@ import React from "react";
 import AvatarMenu from "./AvatarMenu";
 
 type HeaderProps = {
-  isAdmin: boolean;
+  isAdmin: boolean | undefined;
   isSupervisor?: boolean;
 };
 export default function Header({ isAdmin, isSupervisor }: HeaderProps) {

@@ -14,7 +14,7 @@ import React from "react";
 import { debugMode } from "services/constants";
 
 type AvatarMenuProps = {
-  isAdmin: boolean;
+  isAdmin: boolean | undefined;
   isSupervisor?: boolean;
 };
 

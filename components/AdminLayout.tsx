@@ -16,8 +16,8 @@ import Header from "./Header";
 import AppBar from "./AppBar";
 
 type LayoutProps = {
-  isAdmin: boolean;
-  isSupervisor: boolean;
+  isAdmin: boolean | undefined;
+  isSupervisor: boolean | undefined;
   children: ReactNode;
 };
 
