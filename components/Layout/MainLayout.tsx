@@ -4,29 +4,21 @@ import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 
 type LayoutProps = {
-  overscrollY?: string;
+  // isAdmin: boolean | undefined;
+  authorized?: boolean;
+  loading?: boolean;
   children: ReactNode;
 };
 export default function Layout(props: LayoutProps) {
-  const { data: session, status } = useSession();
-  useEffect(() => {
-    const html = document.querySelector("html") || new HTMLBodyElement();
-    const body = document.querySelector("body") || new HTMLBodyElement();
-    // html.style.overscrollBehavior = "none";
-    html.style.touchAction = "none";
-    body.style.touchAction = "none";
-  });
-  // if (status === "loading") {
-  //   return <></>;
-  // }
-
+  // set content based on: loading, authorized
   return (
     <>
       <Head>
         <title>EZCheck</title>
         <meta name="description" content="Machine shop management system" />
+        {/* ICON */}
         <link rel="icon" href="/favicon.ico" />
-        {/*PWA UI-->*/}
+        {/*PWA UI*/}
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
@@ -36,23 +28,21 @@ export default function Layout(props: LayoutProps) {
       <main>
         <Flex
           flexDir="column"
-          // overflow="hidden"
-          // overscroll={props.overscrollY ? props.overscrollY : "none"}
-          // height={"100svh"}
-          // width={"100%"}
-          // position={"fixed"}
-          sx={
-            {
-              // userSelect: "none",
-              // touchAction: "none",
-              // // overscrollBehavior: "none",
-              // // WebkitOverflowScrolling: "touch",
-              // WebkitUserSelect: "none",
-              // WebkitTouchCallout: "none",
-              // WebkitUserDrag: "none",
-              // WebkitTapHighlightColor: "rgba(0,0,0,0)",
-            }
-          }
+          overflow="hidden"
+          overscrollY="none"
+          height={"100svh"}
+          width={"100%"}
+          position={"fixed"}
+          sx={{
+            userSelect: "none",
+            touchAction: "none",
+            overscrollBehavior: "none",
+            WebkitOverflowScrolling: "touch",
+            WebkitUserSelect: "none",
+            WebkitTouchCallout: "none",
+            WebkitUserDrag: "none",
+            WebkitTapHighlightColor: "rgba(0,0,0,0)",
+          }}
         >
           {props.children}
         </Flex>
@@ -60,3 +50,13 @@ export default function Layout(props: LayoutProps) {
     </>
   );
 }
+
+/*
+  useEffect(() => {
+    const html = document.querySelector("html") || new HTMLBodyElement();
+    const body = document.querySelector("body") || new HTMLBodyElement();
+    // html.style.overscrollBehavior = "none";
+    html.style.touchAction = "none";
+    body.style.touchAction = "none";
+  });
+  */

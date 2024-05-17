@@ -38,9 +38,9 @@ export default function Home() {
   const isAdmin = session?.user.isAdmin;
   return (
     <>
-      <Layout overscrollY="auto">
+      <Layout>
         <Header isAdmin={isAdmin} isSupervisor={session?.user.supervising} />
-        <Container px={responsivePx} minW="100%" overscroll={"auto"} h="100%">
+        <Box px={responsivePx} overflow={"auto"}>
           <Box h="20"></Box>
           <Heading
             fontWeight={600}
@@ -113,7 +113,7 @@ export default function Home() {
             <Image src="images/VCS.png" w="20%" p="4"></Image>
             <Image src="images/Q4.png" w="20%"></Image>
           </HStack> */}
-        </Container>
+        </Box>
       </Layout>
     </>
   );

@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { signOut, signIn, useSession } from "next-auth/react";
 import React, { ReactNode } from "react";
-import { debugMode } from "services/constants";
+import { debugMode, responsivePx } from "services/constants";
 import Layout from "./MainLayout";
 import Header from "./Header";
 import AppBar from "../AppBar";
@@ -28,7 +28,7 @@ export default function AdminLayout({
 }: LayoutProps) {
   const forbiddenPage = (
     <>
-      <Heading px={[2, "5vw", "10vw", "15vw"]} py="30vh">
+      <Heading px={responsivePx} py="30vh">
         Sorry, you do not have access to this page. Please contact an
         administrator to grant you access.
       </Heading>
