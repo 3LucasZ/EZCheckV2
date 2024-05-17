@@ -1,12 +1,20 @@
+import Header from "components/Header";
+import Layout from "components/Layout";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import Router from "next/router";
+import { useEffect } from "react";
 
-export default async function Main() {
+export default function Main() {
   const { data: session, status } = useSession();
   const isAdmin = session?.user.isAdmin;
-  if (isAdmin) {
-    redirect("/admin/home");
-  } else {
-    redirect("/student/home");
-  }
+
+  useEffect(() => {
+    Router.push(isAdmin ? "/admin/home" : "/student/home");
+  });
+  return (
+    <Layout>
+      <Header isAdmin={false}></Header>
+    </Layout>
+  );
 }
