@@ -7,11 +7,23 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
+      //custom admin
       isAdmin: boolean;
+      supervising: boolean;
+      //custom student
+      PIN: string;
+      machines: MachineProps[];
+      using: MachineProps;
     } & DefaultSession["user"];
   }
   interface User {
     id: string;
+    //custom admin
     isAdmin: boolean;
+    supervising: boolean;
+    //custom student
+    PIN: string;
+    machines: MachineProps[];
+    using: MachineProps;
   }
 }
