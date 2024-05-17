@@ -9,7 +9,7 @@ import {
   Switch,
   useToast,
 } from "@chakra-ui/react";
-import Admin, { AdminProps } from "components/Widget/AdminWidget2";
+import Admin, { AdminProps } from "archive/AdminWidget2";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
 import Router from "next/router";

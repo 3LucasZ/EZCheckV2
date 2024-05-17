@@ -14,10 +14,10 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
-import { StudentProps } from "components/Widget/StudentWidget";
+import { StudentProps } from "archive/StudentWidget";
 import Layout from "components/Layout/MainLayout";
 import prisma from "services/prisma";
-import { AdminProps } from "components/Widget/AdminWidget2";
+import { AdminProps } from "archive/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin } from "services/userHandler";
 import { poster } from "services/poster";

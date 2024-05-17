@@ -11,7 +11,7 @@ import { IoDocumentText } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 
 import { checkAdmin, getMyAdmin } from "services/userHandler";
-import { AdminProps } from "components/Widget/AdminWidget2";
+import { AdminProps } from "archive/AdminWidget2";
 import { RiAdminLine } from "react-icons/ri";
 import { PiStudent, PiStudentBold, PiStudentDuotone } from "react-icons/pi";
 import Header from "components/Layout/Header";

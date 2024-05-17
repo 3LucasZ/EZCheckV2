@@ -1,5 +1,5 @@
-import { AdminProps } from "components/Widget/AdminWidget2";
-import { StudentProps } from "components/Widget/StudentWidget";
+import { AdminProps } from "archive/AdminWidget2";
+import { StudentProps } from "archive/StudentWidget";
 import { Session } from "next-auth";
 
 export function checkAdmin(

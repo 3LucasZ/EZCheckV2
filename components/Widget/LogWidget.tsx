@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, Box, Grid } from "@chakra-ui/react";
-import BaseWidget from "./BaseWidget";
+import BaseWidget from "../../archive/BaseWidget";
 
 export type LogProps = {
   id: number;

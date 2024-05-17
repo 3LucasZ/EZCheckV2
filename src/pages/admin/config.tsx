@@ -24,7 +24,7 @@ import { IoDocumentText } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 
 import { checkAdmin, getMyAdmin } from "services/userHandler";
-import { AdminProps } from "components/Widget/AdminWidget2";
+import { AdminProps } from "archive/AdminWidget2";
 import Header from "components/Layout/Header";
 import AppBar from "components/Layout/AppBar";
 import AdminLayout from "components/Layout/AdminLayout";

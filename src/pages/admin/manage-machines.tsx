@@ -1,9 +1,9 @@
-import MachineWidget, { MachineProps } from "components/Widget/MachineWidget";
+import MachineWidget, { MachineProps } from "archive/MachineWidget";
 import Layout from "components/Layout/MainLayout";
 import { GetServerSideProps } from "next";
 import SearchView from "components/SearchView";
 import prisma from "services/prisma";
-import { AdminProps } from "components/Widget/AdminWidget2";
+import { AdminProps } from "archive/AdminWidget2";
 import { useSession } from "next-auth/react";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import Router from "next/router";
@@ -39,6 +39,7 @@ export default function ManageMachines({ machines }: PageProps) {
           }
         }}
         icon={AddIcon}
+        bg="orange.200"
       />
     </AdminLayout>
   );

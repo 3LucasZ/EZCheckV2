@@ -32,7 +32,7 @@ import {
   getMyAdmin,
   getMyStudent,
 } from "services/userHandler";
-import { AdminProps } from "components/Widget/AdminWidget2";
+import { AdminProps } from "archive/AdminWidget2";
 import Header from "components/Layout/Header";
 import AppBar from "components/Layout/AppBar";
 import {
@@ -45,13 +45,13 @@ import {
 } from "@chakra-ui/icons";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import SearchView from "components/SearchView";
-import MachineWidget2 from "components/Widget/MachineWidget2";
+import MachineWidget2 from "archive/MachineWidget2";
 
 import { PiSignOutBold } from "react-icons/pi";
-import { StudentProps } from "components/Widget/StudentWidget";
-import MachineWidget, { MachineProps } from "components/Widget/MachineWidget";
+import { StudentProps } from "archive/StudentWidget";
+import MachineWidget, { MachineProps } from "archive/MachineWidget";
 import { useEffect, useState } from "react";
-import MachineWidget3 from "components/Widget/MachineWidget3";
+import MachineWidget3 from "archive/MachineWidget3";
 import { PINLen } from "services/constants";
 import Router from "next/router";
 import { poster } from "services/poster";

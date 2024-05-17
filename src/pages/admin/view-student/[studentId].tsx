@@ -10,9 +10,9 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { StudentProps } from "components/Widget/StudentWidget";
+import { StudentProps } from "archive/StudentWidget";
 import { GetServerSideProps } from "next";
-import { MachineProps } from "components/Widget/MachineWidget";
+import { MachineProps } from "archive/MachineWidget";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import Router from "next/router";
 import Layout from "components/Layout/MainLayout";
@@ -20,8 +20,8 @@ import SearchView from "components/SearchView";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
-import { AdminProps } from "components/Widget/AdminWidget2";
-import MachineWidget2 from "components/Widget/MachineWidget2";
+import { AdminProps } from "archive/AdminWidget2";
+import MachineWidget2 from "archive/MachineWidget2";
 import { poster } from "services/poster";
 import { PiSignOutBold } from "react-icons/pi";
 import AdminLayout from "components/Layout/AdminLayout";

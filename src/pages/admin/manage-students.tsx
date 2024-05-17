@@ -1,10 +1,10 @@
-import StudentWidget, { StudentProps } from "components/Widget/StudentWidget";
+import StudentWidget, { StudentProps } from "archive/StudentWidget";
 import SearchView from "components/SearchView";
 import { GetServerSideProps } from "next";
 import prisma from "services/prisma";
 import { useSession } from "next-auth/react";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
-import { AdminProps } from "components/Widget/AdminWidget2";
+import { AdminProps } from "archive/AdminWidget2";
 import Router from "next/router";
 import AdminLayout from "components/Layout/AdminLayout";
 import UserWidget from "components/Widget/UserWidget";

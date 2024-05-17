@@ -12,7 +12,7 @@ import { IoIosInformationCircle, IoIosSettings } from "react-icons/io";
 import { BiSolidWrench } from "react-icons/bi";
 
 import { checkAdmin, getMyAdmin } from "services/userHandler";
-import { AdminProps } from "components/Widget/AdminWidget2";
+import { AdminProps } from "archive/AdminWidget2";
 import Header from "components/Layout/Header";
 import AppBar from "components/Layout/AppBar";
 import AdminLayout from "components/Layout/AdminLayout";
