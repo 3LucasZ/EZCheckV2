@@ -11,14 +11,12 @@ import AdminLayout from "components/AdminLayout";
 
 type PageProps = {
   machines: MachineProps[];
-  admins: AdminProps[];
 };
-export default function ManageMachines({ machines, admins }: PageProps) {
+export default function ManageMachines({ machines }: PageProps) {
   const { data: session } = useSession();
-  const isAdmin = checkAdmin(session, admins);
-  const myAdmin = getMyAdmin(session, admins);
+  const isAdmin = session?.user.isAdmin;
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
       <SearchView
         setIn={machines.map((machine) => ({
           name: machine.name,
@@ -32,9 +30,12 @@ export default function ManageMachines({ machines, admins }: PageProps) {
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {
-  const machines = await prisma.machine.findMany({ include: { usedBy: true } });
-  const admins = await prisma.admin.findMany();
+  const machines = await prisma.machine.findMany({
+    include: {
+      usedBy: true,
+    },
+  });
   return {
-    props: { machines: machines, admins: admins },
+    props: { machines },
   };
 };

@@ -33,18 +33,13 @@ import AvatarMenu from "components/AvatarMenu";
 import { responsivePx } from "services/constants";
 import FeatureCard from "components/FeatureCard";
 
-type PageProps = {
-  admins: AdminProps[];
-};
-export default function Home({ admins }: PageProps) {
+export default function Home() {
   const { data: session } = useSession();
-  console.log(session);
-  const isAdmin = checkAdmin(session, admins);
-  const myAdmin = getMyAdmin(session, admins);
+  const isAdmin = session?.user.isAdmin;
   return (
     <>
       <Layout overscrollY="auto">
-        <Header isAdmin={isAdmin} isSupervisor={myAdmin.supervising} />
+        <Header isAdmin={isAdmin} isSupervisor={session?.user.supervising} />
         <Container px={responsivePx} minW="100%" overscroll={"auto"} h="100%">
           <Box h="20"></Box>
           <Heading
@@ -123,12 +118,3 @@ export default function Home({ admins }: PageProps) {
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const admins = await prisma.admin.findMany();
-  return {
-    props: {
-      admins: admins,
-    },
-  };
-};

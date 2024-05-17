@@ -15,12 +15,9 @@ type PageProps = {
 };
 export default function Home({ admins, logs }: PageProps) {
   const { data: session } = useSession();
-  const isAdmin = checkAdmin(session, admins);
-  const myAdmin = getMyAdmin(session, admins);
-  console.log(admins);
-  console.log(logs);
+  const isAdmin = session?.user.isAdmin;
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
       <Box gap="8px" overflowY="auto" px="5" display="grid">
         <Box minH="0px"></Box>
         {logs.map((log) => (
@@ -33,11 +30,11 @@ export default function Home({ admins, logs }: PageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const admins = await prisma.admin.findMany();
-  const logs = await prisma.log.findMany({ orderBy: [{ id: "desc" }] });
+  const logs = await prisma.log.findMany({
+    orderBy: [{ id: "desc" }],
+  });
   return {
     props: {
-      admins,
       logs,
     },
   };

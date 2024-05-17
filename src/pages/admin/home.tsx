@@ -20,16 +20,11 @@ import { SettingsIcon } from "@chakra-ui/icons";
 import { GrConfigure } from "react-icons/gr";
 import { FaWrench } from "react-icons/fa6";
 
-type PageProps = {
-  admins: AdminProps[];
-};
-export default function Home({ admins }: PageProps) {
+export default function Home() {
   const { data: session } = useSession();
-  console.log(session);
-  const isAdmin = checkAdmin(session, admins);
-  const myAdmin = getMyAdmin(session, admins);
+  const isAdmin = session?.user.isAdmin;
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
       <SimpleGrid
         columns={[1, 2]}
         overflowY="auto"
@@ -72,12 +67,3 @@ export default function Home({ admins }: PageProps) {
     </AdminLayout>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const admins = await prisma.admin.findMany();
-  return {
-    props: {
-      admins: admins,
-    },
-  };
-};
