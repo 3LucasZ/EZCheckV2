@@ -34,7 +34,7 @@ import {
 } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Header from "components/Layout/Header";
-import AppBar from "components/AppBar";
+import AppBar from "components/Layout/AppBar";
 import {
   EditIcon,
   DeleteIcon,

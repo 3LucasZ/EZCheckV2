@@ -26,7 +26,7 @@ import { IoIosInformationCircle } from "react-icons/io";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Header from "components/Layout/Header";
-import AppBar from "components/AppBar";
+import AppBar from "components/Layout/AppBar";
 import AdminLayout from "components/Layout/AdminLayout";
 import Router from "next/router";
 import { useState } from "react";
