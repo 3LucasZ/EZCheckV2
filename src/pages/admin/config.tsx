@@ -33,17 +33,16 @@ import { useState } from "react";
 import { errorToast, successToast } from "services/toasty";
 
 type PageProps = {
-  admins: AdminProps[];
   queryName: string;
 };
-export default function Home({ admins, queryName }: PageProps) {
+export default function Home({ queryName }: PageProps) {
   const { data: session } = useSession();
+  const isAdmin = session?.user.isAdmin;
   const toaster = useToast();
-  const isAdmin = checkAdmin(session, admins);
-  const myAdmin = getMyAdmin(session, admins);
+
   const [name, setName] = useState<string>(queryName);
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
       <Flex
         flexDir="column"
         gap="10"
@@ -106,12 +105,10 @@ export default function Home({ admins, queryName }: PageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const admins = await prisma.admin.findMany();
   var { name } = context.query;
   if (name == null) name = "";
   return {
     props: {
-      admins: admins,
       queryName: name,
     },
   };
