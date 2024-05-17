@@ -1,18 +1,14 @@
-import { AddIcon, PhoneIcon, SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Button,
   Center,
   Checkbox,
   Flex,
-  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
-import { debugMode } from "services/constants";
-import { FAB } from "./FAB";
 
 type SearchViewProps = {
   setIn: PairProps[];
