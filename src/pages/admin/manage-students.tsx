@@ -7,29 +7,39 @@ import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "components/Widget/AdminWidget2";
 import Router from "next/router";
 import AdminLayout from "components/AdminLayout";
+import UserWidget from "components/Widget/UserWidget";
+import { UserProps } from "types/db";
 
 type PageProps = {
-  students: StudentProps[];
+  students: UserProps[];
 };
 export default function ManageStudents({ students }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = session?.user.isAdmin;
+
   return (
     <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
       <SearchView
         setIn={students.map((student) => ({
           name: student.name,
-          widget: <StudentWidget student={student} key={student.id} />,
+          widget: (
+            <UserWidget
+              key={student.id}
+              name={student.name}
+              email={student.email}
+              image={student.image}
+              isAdmin={student.isAdmin}
+            />
+          ),
         }))}
-        isAdmin={isAdmin}
         isEdit={true}
-        onAdd={async () => await Router.push("/admin/student-form")}
       />
     </AdminLayout>
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {
   const students = await prisma.user.findMany({
+    where: { isAdmin: false },
     include: { using: true },
   });
   return {
