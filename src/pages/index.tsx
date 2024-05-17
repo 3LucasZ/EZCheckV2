@@ -32,6 +32,7 @@ import AvatarMenu from "components/Layout/AvatarMenu";
 
 import { responsivePx } from "services/constants";
 import FeatureCard from "components/FeatureCard";
+import Router from "next/router";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -70,7 +71,7 @@ export default function Home() {
             onClick={(e) => {
               e.preventDefault();
               session
-                ? signOut({ callbackUrl: "/" })
+                ? Router.push(isAdmin ? "/admin/home" : "/student/home")
                 : signIn("google", { callbackUrl: "/main" });
             }}
           >
