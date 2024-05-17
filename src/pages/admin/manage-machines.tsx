@@ -8,6 +8,10 @@ import { useSession } from "next-auth/react";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import Router from "next/router";
 import AdminLayout from "components/Layout/AdminLayout";
+import { FAB } from "components/Layout/FAB/FAB";
+import { AddIcon } from "@chakra-ui/icons";
+import { poster } from "services/poster";
+import { useToast } from "@chakra-ui/react";
 
 type PageProps = {
   machines: MachineProps[];
@@ -15,6 +19,8 @@ type PageProps = {
 export default function ManageMachines({ machines }: PageProps) {
   const { data: session } = useSession();
   const isAdmin = session?.user.isAdmin;
+  const toaster = useToast();
+
   return (
     <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
       <SearchView
@@ -22,9 +28,17 @@ export default function ManageMachines({ machines }: PageProps) {
           name: machine.name,
           widget: <MachineWidget machine={machine} key={machine.id} />,
         }))}
-        isAdmin={isAdmin}
         isEdit={false}
-        onAdd={() => Router.push("/admin/machine-form")}
+      />
+      <FAB
+        onClick={async () => {
+          const body = {};
+          const res = await poster("/api/create-machine", body, toaster);
+          if (res.status == 200) {
+            await Router.push("/admin/view-machine/" + (await res.json()));
+          }
+        }}
+        icon={AddIcon}
       />
     </AdminLayout>
   );

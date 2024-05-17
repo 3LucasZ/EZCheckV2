@@ -21,18 +21,18 @@ import { AdminProps } from "components/Widget/AdminWidget2";
 import StudentWidget2 from "components/Widget/StudentWidget2";
 import AdminLayout from "components/Layout/AdminLayout";
 import { poster } from "services/poster";
+import UserWidget from "components/Widget/UserWidget";
+import { UserProps } from "types/db";
 type PageProps = {
   machine: MachineProps;
-  students: StudentProps[];
-  admins: AdminProps[];
+  students: UserProps[];
 };
-export default function MachinePage({ machine, students, admins }: PageProps) {
-  //admin
+export default function MachinePage({ machine, students }: PageProps) {
+  //Template
   const { data: session, status } = useSession();
-  const isAdmin = checkAdmin(session, admins);
-  const myAdmin = getMyAdmin(session, admins);
-  //toaster
+  const isAdmin = session?.user.isAdmin;
   const toaster = useToast();
+
   //inId outId
   const inId = machine.students.map((item) => item.id);
   const outId = students
@@ -48,7 +48,7 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
   };
   //ret
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
       <Center pb={3} flexDir={"column"}>
         <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} pt="8px" w="100%">
           <Center
@@ -112,12 +112,11 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
             return {
               name: student.name,
               widget: (
-                <StudentWidget2
-                  student={student}
-                  key={student.id}
-                  targetMachine={machine}
-                  invert={false}
-                  isAdmin={isAdmin}
+                <UserWidget
+                  name={student.name}
+                  email={student.email}
+                  image={student.image}
+                  isAdmin={false}
                 />
               ),
             };
@@ -128,17 +127,15 @@ export default function MachinePage({ machine, students, admins }: PageProps) {
             return {
               name: student.name,
               widget: (
-                <StudentWidget2
-                  student={student}
-                  key={student.id}
-                  targetMachine={machine}
-                  invert={true}
-                  isAdmin={isAdmin}
+                <UserWidget
+                  name={student.name}
+                  email={student.email}
+                  image={student.image}
+                  isAdmin={false}
                 />
               ),
             };
           })}
-          isAdmin={isAdmin}
           isEdit={false}
         />
       )}
@@ -156,13 +153,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       usedBy: true,
     },
   });
-  const students = await prisma.student.findMany();
-  const admins = await prisma.admin.findMany();
+  const students = await prisma.user.findMany({ where: { isAdmin: false } });
   return {
     props: {
-      machine: machine,
-      students: students,
-      admins: admins,
+      machine,
+      students,
     },
   };
 };
