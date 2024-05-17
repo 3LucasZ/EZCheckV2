@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import Layout from "components/Layout/Layout";
+import Layout from "components/Layout/MainLayout";
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";

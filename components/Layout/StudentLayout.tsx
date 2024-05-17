@@ -11,7 +11,7 @@ import {
 import { signOut, signIn, useSession } from "next-auth/react";
 import React, { ReactNode } from "react";
 import { debugMode } from "services/constants";
-import Layout from "./Layout";
+import Layout from "./MainLayout";
 import Header from "./Header";
 import AppBar from "../AppBar";
 

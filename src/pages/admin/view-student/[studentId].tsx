@@ -15,7 +15,7 @@ import { GetServerSideProps } from "next";
 import { MachineProps } from "components/Widget/MachineWidget";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import Router from "next/router";
-import Layout from "components/Layout/Layout";
+import Layout from "components/Layout/MainLayout";
 import SearchView from "components/SearchView";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";

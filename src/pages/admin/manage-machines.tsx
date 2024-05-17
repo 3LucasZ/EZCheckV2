@@ -1,5 +1,5 @@
 import MachineWidget, { MachineProps } from "components/Widget/MachineWidget";
-import Layout from "components/Layout/Layout";
+import Layout from "components/Layout/MainLayout";
 import { GetServerSideProps } from "next";
 import SearchView from "components/SearchView";
 import prisma from "services/prisma";
