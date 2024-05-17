@@ -24,8 +24,14 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  //custom
+  //custom admin
   isAdmin       Boolean @default(false)
+  supervising   Boolean   @default(false)
+
+  //custom student
+  PIN       String?      @unique @db.VarChar(255) 
+  machines  Machine[]   @relation("authorized")
+  using     Machine?    @relation("using")
 }
  
 model Account {
@@ -69,29 +75,15 @@ model VerificationToken {
 
 //----DB----
 
-model Student {
-  id        Int         @id @default(autoincrement())
-  email     String      @unique @db.VarChar(255)
-  name      String      @unique @db.VarChar(255)
-  PIN       String      @unique @db.VarChar(255)
-  machines  Machine[]   @relation("authorized")
-  using     Machine?    @relation("using")
-}
-
 model Machine {
   id        Int         @id @default(autoincrement())
   name      String      @unique @db.VarChar(255)
-  students  Student[]   @relation("authorized")
   lastSeen  String?     @db.VarChar(255)
-  usedBy    Student?    @relation("using", fields: [usedById], references: [id])
-  usedById  Int?        @unique
   IP        String?     @db.VarChar(255)
-}
 
-model Admin {
-  id        Int         @id @default(autoincrement())
-  email     String      @unique @db.VarChar(255)
-  supervising Boolean   @default(false)
+  students  User[]   @relation("authorized")
+  usedBy    User?    @relation("using", fields: [usedById], references: [id])
+  usedById  String?        @unique
 }
 
 model Log {
