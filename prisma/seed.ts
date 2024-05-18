@@ -10,24 +10,24 @@ async function main() {
       email: "lucas.zheng@warriorlife.net",
     },
   });
-  for (let i = 0; i < 200; i++) {
-    await prisma.machine.upsert({
-      create: {
-        name: "machine" + i,
-      },
-      update: {},
-      where: { name: "machine" + i },
-    });
-    await prisma.student.upsert({
-      create: {
-        email: "student" + i + "@warriorlife.net",
-        name: "student" + i,
-        PIN: "" + i,
-      },
-      update: {},
-      where: { name: "student" + i },
-    });
-  }
+  // for (let i = 0; i < 200; i++) {
+  //   await prisma.machine.upsert({
+  //     create: {
+  //       name: "machine" + i,
+  //     },
+  //     update: {},
+  //     where: { name: "machine" + i },
+  //   });
+  //   await prisma.student.upsert({
+  //     create: {
+  //       email: "student" + i + "@warriorlife.net",
+  //       name: "student" + i,
+  //       PIN: "" + i,
+  //     },
+  //     update: {},
+  //     where: { name: "student" + i },
+  //   });
+  // }
   const exampleStudent = await prisma.student.upsert({
     create: {
       email: "lucas.zheng@warriorlife.net",
