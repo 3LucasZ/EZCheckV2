@@ -16,8 +16,8 @@ export const EditFAB = ({ isEdit, onEdit, onSave, onCancel }: EditFABProps) => {
       <FAB
         icon={isEdit ? FiX : FiEdit2}
         onClick={isEdit ? onCancel : onEdit}
-        bg={isEdit ? "red.300" : ""}
-        hoverBg={isEdit ? "red.400" : ""}
+        bg={isEdit ? "red.300" : "orange.200"}
+        hoverBg={isEdit ? "red.400" : "orange.300"}
       />
     </>
   );
