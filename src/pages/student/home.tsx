@@ -1,116 +1,71 @@
 import {
-  Badge,
   Box,
-  Button,
   ButtonGroup,
-  Center,
   Flex,
   HStack,
   Heading,
   IconButton,
   PinInput,
   PinInputField,
-  SimpleGrid,
-  Spacer,
   Stack,
   useToast,
 } from "@chakra-ui/react";
-import { RouteButton } from "components/RouteButton";
-import Layout from "components/Layout/MainLayout";
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 
-import { MdManageAccounts } from "react-icons/md";
-import { GiSewingMachine } from "react-icons/gi";
-import { IoDocumentText } from "react-icons/io5";
-import { IoIosInformationCircle } from "react-icons/io";
-
-import {
-  checkAdmin,
-  checkStudent,
-  getMyAdmin,
-  getMyStudent,
-} from "services/userHandler";
 import { AdminProps } from "archive/AdminWidget2";
-import Header from "components/Layout/Header";
-import AppBar from "components/Layout/AppBar";
-import {
-  EditIcon,
-  DeleteIcon,
-  ViewIcon,
-  CheckIcon,
-  CloseIcon,
-  ViewOffIcon,
-} from "@chakra-ui/icons";
-import ConfirmDeleteModal from "components/ConfirmDeleteModal";
+import { ViewIcon, CheckIcon, ViewOffIcon } from "@chakra-ui/icons";
 import SearchView from "components/SearchView";
-import MachineWidget2 from "archive/MachineWidget2";
 
-import { PiSignOutBold } from "react-icons/pi";
 import { StudentProps } from "archive/StudentWidget";
-import MachineWidget, { MachineProps } from "archive/MachineWidget";
 import { useEffect, useState } from "react";
-import MachineWidget3 from "archive/MachineWidget3";
-import { PINLen } from "services/constants";
 import Router from "next/router";
 import { poster } from "services/poster";
 import StudentLayout from "components/Layout/StudentLayout";
+import MachineWidget from "components/Widget/MachineWidget";
+import { MachineProps } from "archive/MachineWidget";
 
 type PageProps = {
-  admins: AdminProps[];
   students: StudentProps[];
   machines: MachineProps[];
-  supervisors: AdminProps[];
 };
-export default function Home({
-  admins,
-  students,
-  machines,
-  supervisors,
-}: PageProps) {
+export default function Home({ students, machines }: PageProps) {
   const { data: session, status } = useSession();
   const toaster = useToast();
-  const isAdmin = checkAdmin(session, admins);
-  const myAdmin = getMyAdmin(session, admins);
-  const isStudent = checkStudent(session, students);
-  const myStudent = getMyStudent(session, students);
+  const user = session?.user;
+  const isAdmin = user?.isAdmin;
 
-  console.log(myStudent);
-  const inId = myStudent.machines.map((item) => item.id);
+  const inId = user ? user?.machines.map((item) => item.id) : [];
   const outId = machines
     .map((item) => item.id)
     .filter((id) => !inId.includes(id));
 
   const [allowMode, setAllowMode] = useState(true);
-  const [PIN, setPIN] = useState(myStudent.PIN);
+  const [PIN, setPIN] = useState(user?.PIN);
   useEffect(() => {
-    setPIN(myStudent.PIN);
+    setPIN(user?.PIN);
   }, [session]);
 
   const [visible, setVisible] = useState(false);
   const [editing, setEditing] = useState(false);
   const submitData = async () => {
     const body = {
-      id: myStudent.id,
-      email: myStudent.email,
-      name: myStudent.name,
+      id: user?.id,
+      email: user?.email,
+      name: user?.name,
       PIN,
     };
     const res = await poster("/api/upsert-student", body, toaster);
     if (res.status == 200) {
       Router.push(Router.asPath);
     } else {
-      setPIN(myStudent.PIN);
+      setPIN(user?.PIN);
     }
   };
 
   return (
-    <StudentLayout
-      isAdmin={isAdmin}
-      isStudent={isStudent}
-      isSupervisor={myAdmin.supervising}
-    >
+    <StudentLayout isAdmin={isAdmin} isStudent={true} isSupervisor={false}>
       <Stack px={[2, "5vw", "10vw", "15vw"]} alignItems={"center"} spacing="0">
         <Flex flexDir="row" py="8px" gap="8px">
           <Heading>PIN</Heading>
@@ -160,7 +115,7 @@ export default function Home({
           >
             {
               // Array.from(Array(PINLen).keys())
-              Array.from(Array(PIN.length).keys()).map((key) =>
+              Array.from(Array(PIN?.length).keys()).map((key) =>
                 key == 0 ? (
                   <PinInputField
                     key={key}
@@ -209,10 +164,18 @@ export default function Home({
           if (!machine) machine = machines[0];
           return {
             name: machine.name,
-            widget: <MachineWidget3 machine={machine} key={machine.id} />,
+            widget: (
+              <MachineWidget
+                key={machine.id}
+                name={machine.name}
+                description={""}
+                image={""}
+                count={0}
+                url={""}
+              />
+            ),
           };
         })}
-        isAdmin={isAdmin}
         isEdit={false}
       />
     </StudentLayout>
@@ -220,22 +183,15 @@ export default function Home({
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const admins = await prisma.admin.findMany();
-  const supervisors = await prisma.admin.findMany({
-    where: {
-      supervising: true,
-    },
-  });
-  const students = await prisma.student.findMany({
+  const students = await prisma.user.findMany({
+    where: { isAdmin: false },
     include: { machines: true },
   });
   const machines = await prisma.machine.findMany();
   return {
     props: {
       students,
-      admins,
       machines,
-      supervisors,
     },
   };
 };
