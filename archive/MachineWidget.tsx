@@ -1,16 +1,8 @@
 import { Box, Grid } from "@chakra-ui/react";
 import { StudentProps } from "./StudentWidget";
 import BaseWidget from "./BaseWidget";
-import { UserProps } from "types/db";
+import { MachineProps } from "types/db";
 
-export type MachineProps = {
-  id: number;
-  name: string;
-  students: UserProps[];
-  lastSeen?: string;
-  usedBy?: UserProps;
-  IP?: string;
-};
 type MachineWidgetProps = {
   machine: MachineProps;
 };

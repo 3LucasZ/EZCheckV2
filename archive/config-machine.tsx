@@ -11,7 +11,7 @@ import {
   IconButton,
   Box,
 } from "@chakra-ui/react";
-import { MachineProps } from "archive/MachineWidget";
+import { MachineProps } from "types/db";
 import { GetServerSideProps } from "next";
 import { StudentProps } from "archive/StudentWidget";
 import prisma from "services/prisma";

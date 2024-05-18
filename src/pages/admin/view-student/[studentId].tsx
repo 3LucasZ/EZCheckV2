@@ -12,7 +12,7 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { StudentProps } from "archive/StudentWidget";
 import { GetServerSideProps } from "next";
-import { MachineProps } from "archive/MachineWidget";
+import { MachineProps } from "types/db";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import Router from "next/router";
 import Layout from "components/Layout/MainLayout";

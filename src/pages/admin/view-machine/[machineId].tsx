@@ -15,7 +15,7 @@ import SearchView from "components/SearchView";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import { StudentProps } from "archive/StudentWidget";
-import { MachineProps } from "archive/MachineWidget";
+import { MachineProps } from "types/db";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "archive/AdminWidget2";
 import StudentWidget2 from "archive/StudentWidget2";
@@ -24,16 +24,23 @@ import { poster } from "services/poster";
 import UserWidget from "components/Widget/UserWidget";
 import { UserProps } from "types/db";
 import { EditFAB } from "components/Layout/FAB/EditFAB";
+import { useState } from "react";
 type PageProps = {
   machine: MachineProps;
   students: UserProps[];
 };
 export default function MachinePage({ machine, students }: PageProps) {
-  //Template
+  //--copy paste on every page--
   const { data: session, status } = useSession();
   const isAdmin = session?.user.isAdmin;
   const toaster = useToast();
-
+  //--state--
+  const [isEdit, setIsEdit] = useState(false);
+  //--new state--
+  const [newName, setNewName] = useState(machine.name);
+  const [newDescription, setNewDescription] = useState(machine.description);
+  const [newRelations, setNewRelations] = useState(item.storageRelations);
+  const [newLink, setNewLink] = useState(item.link);
   //inId outId
   const inId = machine.students.map((item) => item.id);
   const outId = students

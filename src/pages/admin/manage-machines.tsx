@@ -11,7 +11,7 @@ import { FAB } from "components/Layout/FAB/FAB";
 import { AddIcon } from "@chakra-ui/icons";
 import { poster } from "services/poster";
 import { useToast } from "@chakra-ui/react";
-import { MachineProps } from "archive/MachineWidget";
+import { MachineProps } from "types/db";
 import MachineWidget from "components/Widget/MachineWidget";
 
 type PageProps = {

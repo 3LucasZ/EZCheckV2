@@ -1,4 +1,4 @@
-import { MachineProps } from "./MachineWidget";
+import { MachineProps } from "types/db";
 import BaseWidget2 from "./BaseWidget2";
 import Router from "next/router";
 import { StudentProps } from "./StudentWidget";

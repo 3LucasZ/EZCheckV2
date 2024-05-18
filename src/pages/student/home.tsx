@@ -24,7 +24,7 @@ import Router from "next/router";
 import { poster } from "services/poster";
 import StudentLayout from "components/Layout/StudentLayout";
 import MachineWidget from "components/Widget/MachineWidget";
-import { MachineProps } from "archive/MachineWidget";
+import { MachineProps } from "types/db";
 
 type PageProps = {
   students: StudentProps[];
