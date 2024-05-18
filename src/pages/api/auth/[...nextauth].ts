@@ -35,15 +35,19 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     callbacks: {
       //Add data to user object so it is passed along with session
       session({ session, token, user }) {
-        //id
         session.user.id = user.id;
-        //isAdmin
+        //student
+        session.user.PIN = user.PIN;
+        session.user.machines = user.machines;
+        session.user.using = user.using;
+        //admin
         session.user.isAdmin = user.isAdmin;
         if (
           user.email == "lucas.j.zheng@gmail.com" ||
           user.email == "lucas.zheng@warriorlife.net"
         )
           session.user.isAdmin = true;
+        session.user.supervising = user.supervising;
         return session;
       },
     },
