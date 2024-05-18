@@ -107,7 +107,7 @@ model MachineCertificate {
 
   //meta
   issuedAt DateTime @default(now())
-  issuer User @relation("issuer", fields: [issuerId], references: [id])
-  issuerId String
+  issuer User? @relation("issuer", fields: [issuerId], references: [id], onDelete: SetNull)
+  issuerId String?
   @@id([machineId, recipientId])
 }
