@@ -25,6 +25,7 @@ export default function ManageStudents({ students }: PageProps) {
           widget: (
             <UserWidget
               key={student.id}
+              id={student.id}
               name={student.name}
               email={student.email}
               image={student.image}
