@@ -50,6 +50,7 @@ export default function ManageMachines({ machines }: PageProps) {
         }}
         icon={AddIcon}
         bg="orange.200"
+        hoverBg="orange.300"
       />
     </AdminLayout>
   );

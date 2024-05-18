@@ -39,15 +39,13 @@ export default function MachinePage({ machine, students }: PageProps) {
   //--new state--
   const [newName, setNewName] = useState(machine.name);
   const [newDescription, setNewDescription] = useState(machine.description);
-  const [newRelations, setNewRelations] = useState(item.storageRelations);
-  const [newLink, setNewLink] = useState(item.link);
-  //inId outId
+  const [newRelations, setNewRelations] = useState(machine.students);
+  //--in and out relations--
   const inId = machine.students.map((item) => item.id);
   const outId = students
     .map((item) => item.id)
     .filter((id) => !inId.includes(id));
-
-  //modal
+  //--handle delete modal--
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
     const body = { id: machine.id };
@@ -55,8 +53,15 @@ export default function MachinePage({ machine, students }: PageProps) {
     if (res.status == 200)
       await Router.push({ pathname: "/admin/manage-machines" });
   };
-
-  //ret
+  //--handle view modal--
+  //--handle upload image--
+  //--handle update machine
+  const handleUpdate = async () => {
+    const body = { id: machine.id };
+    const res = await poster("/api/update-machine", body, toaster);
+    if (res.status == 200) Router.reload();
+  };
+  //--ret--
   return (
     <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
       <Center pb={3} flexDir={"column"}>
@@ -71,17 +76,6 @@ export default function MachinePage({ machine, students }: PageProps) {
           <Spacer />
           {isAdmin && (
             <>
-              <IconButton
-                colorScheme="teal"
-                aria-label="edit"
-                icon={<EditIcon />}
-                onClick={() =>
-                  Router.push({
-                    pathname: "/admin/machine-form",
-                    query: { id: machine.id },
-                  })
-                }
-              />
               <IconButton
                 onClick={onOpen}
                 colorScheme="red"
@@ -151,18 +145,17 @@ export default function MachinePage({ machine, students }: PageProps) {
           isEdit={false}
         />
       )}
-      {/* <EditFAB
+      <EditFAB
         isEdit={isEdit}
         onEdit={() => {
-          setNewName(item.name);
-          setNewDescription(item.description);
-          setNewLink(item.link);
-          setNewRelations(item.storageRelations);
+          setNewName(machine.name);
+          setNewDescription(machine.description);
+          setNewRelations(machine.students);
           setIsEdit(true);
         }}
-        onSave={handleUpdateItem}
+        onSave={handleUpdate}
         onCancel={() => setIsEdit(false)}
-      /> */}
+      />
     </AdminLayout>
   );
 }
