@@ -23,6 +23,7 @@ import AdminLayout from "components/Layout/AdminLayout";
 import { poster } from "services/poster";
 import UserWidget from "components/Widget/UserWidget";
 import { UserProps } from "types/db";
+import { EditFAB } from "components/Layout/FAB/EditFAB";
 type PageProps = {
   machine: MachineProps;
   students: UserProps[];
@@ -38,6 +39,7 @@ export default function MachinePage({ machine, students }: PageProps) {
   const outId = students
     .map((item) => item.id)
     .filter((id) => !inId.includes(id));
+
   //modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
@@ -46,6 +48,7 @@ export default function MachinePage({ machine, students }: PageProps) {
     if (res.status == 200)
       await Router.push({ pathname: "/admin/manage-machines" });
   };
+
   //ret
   return (
     <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
@@ -117,6 +120,7 @@ export default function MachinePage({ machine, students }: PageProps) {
                   email={student.email}
                   image={student.image}
                   isAdmin={false}
+                  id={student.id}
                 />
               ),
             };
@@ -132,6 +136,7 @@ export default function MachinePage({ machine, students }: PageProps) {
                   email={student.email}
                   image={student.image}
                   isAdmin={false}
+                  id={student.id}
                 />
               ),
             };
@@ -139,6 +144,18 @@ export default function MachinePage({ machine, students }: PageProps) {
           isEdit={false}
         />
       )}
+      {/* <EditFAB
+        isEdit={isEdit}
+        onEdit={() => {
+          setNewName(item.name);
+          setNewDescription(item.description);
+          setNewLink(item.link);
+          setNewRelations(item.storageRelations);
+          setIsEdit(true);
+        }}
+        onSave={handleUpdateItem}
+        onCancel={() => setIsEdit(false)}
+      /> */}
     </AdminLayout>
   );
 }

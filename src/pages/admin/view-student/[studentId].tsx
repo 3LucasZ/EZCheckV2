@@ -25,29 +25,29 @@ import MachineWidget2 from "archive/MachineWidget2";
 import { poster } from "services/poster";
 import { PiSignOutBold } from "react-icons/pi";
 import AdminLayout from "components/Layout/AdminLayout";
+import MachineWidget from "components/Widget/MachineWidget";
+import { UserProps } from "types/db";
 
 type PageProps = {
-  student: StudentProps;
+  student: UserProps;
   machines: MachineProps[];
-  admins: AdminProps[];
 };
 
-export default function StudentPage({ student, machines, admins }: PageProps) {
+export default function StudentPage(props: PageProps) {
   //admin
   const { data: session, status } = useSession();
-  const isAdmin = checkAdmin(session, admins);
-  const myAdmin = getMyAdmin(session, admins);
+  const user = session?.user;
   //toaster
   const toaster = useToast();
   //inId and outId
-  const inId = student.machines.map((item) => item.id);
-  const outId = machines
+  const inId = props.student.machines.map((item) => item.id);
+  const outId = props.machines
     .map((item) => item.id)
     .filter((id) => !inId.includes(id));
   //modal - delete student
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
-    const body = { id: student.id };
+    const body = { id: user?.id };
     const res = await poster("/api/delete-student", body, toaster);
     if (res.status == 200)
       await Router.push({ pathname: "/admin/manage-students" });
@@ -55,14 +55,14 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
   //student force log out
   const handleLeave = async () => {
     const body = {
-      machineName: student.using?.name,
+      machineName: props.student.using?.name,
     };
     const res = await poster("/api/post/leave-machine", body, toaster);
     if (res.status == 200) Router.reload();
   };
   // ret
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
+    <AdminLayout isAdmin={user?.isAdmin} isSupervisor={user?.supervising}>
       <Center pb={3} flexDir={"column"}>
         <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} pt="8px" w="100%">
           <Center
@@ -70,10 +70,10 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
             wordBreak={"break-all"}
             fontSize={["xl", "2xl", "2xl", "3xl", "4xl"]}
           >
-            {student.name + " (" + student.email + ")"}
+            {props.student.name + " (" + props.student.email + ")"}
           </Center>
           <Spacer />
-          {isAdmin && (
+          {user?.isAdmin && (
             <>
               <IconButton
                 colorScheme="teal"
@@ -82,7 +82,7 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
                 onClick={() =>
                   Router.push({
                     pathname: "/admin/student-form",
-                    query: { id: student.id },
+                    query: { id: props.student.id },
                   })
                 }
               />
@@ -101,53 +101,52 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
               <ConfirmDeleteModal
                 isOpen={isOpen}
                 onClose={onClose}
-                name={student.name}
+                name={user.name!}
                 handleDelete={handleDelete}
               />
             </>
           )}
         </Flex>
         {
-          <Badge colorScheme={student.using ? "green" : "red"}>
-            {student.using ? student.using.name : "Offline"}
+          <Badge colorScheme={props.student.using ? "green" : "red"}>
+            {props.student.using ? props.student.using.name : "Offline"}
           </Badge>
         }
       </Center>
       {status != "loading" && (
         <SearchView
           setIn={inId.map((id) => {
-            var machine = machines.find((x) => x.id == id);
-            if (!machine) machine = machines[0];
+            var machine = props.machines.find((x) => x.id == id);
+            if (!machine) machine = props.machines[0];
             return {
               name: machine.name,
               widget: (
-                <MachineWidget2
-                  machine={machine}
-                  key={machine.id}
-                  targetStudent={student}
-                  invert={false}
-                  isAdmin={isAdmin}
+                <MachineWidget
+                  name={machine.name}
+                  description={""}
+                  image={""}
+                  count={0}
+                  url={""}
                 />
               ),
             };
           })}
           setOut={outId.map((id) => {
-            var machine = machines.find((x) => x.id == id);
-            if (!machine) machine = machines[0];
+            var machine = props.machines.find((x) => x.id == id);
+            if (!machine) machine = props.machines[0];
             return {
               name: machine.name,
               widget: (
-                <MachineWidget2
-                  machine={machine}
-                  key={machine.id}
-                  targetStudent={student}
-                  invert={true}
-                  isAdmin={isAdmin}
+                <MachineWidget
+                  name={machine.name}
+                  description={""}
+                  image={""}
+                  count={0}
+                  url={""}
                 />
               ),
             };
           })}
-          isAdmin={isAdmin}
           isEdit={false}
         />
       )}
@@ -156,9 +155,9 @@ export default function StudentPage({ student, machines, admins }: PageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const student = await prisma.student.findUnique({
+  const student = await prisma.user.findUnique({
     where: {
-      id: Number(context.params?.studentId),
+      id: String(context.params?.studentId),
     },
     include: {
       machines: true,
@@ -166,12 +165,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
   const machines = await prisma.machine.findMany();
-  const admins = await prisma.admin.findMany();
   return {
     props: {
-      student: student,
-      machines: machines,
-      admins: admins,
+      student,
+      machines,
     },
   };
 };
