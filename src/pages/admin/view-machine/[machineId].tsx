@@ -1,5 +1,6 @@
 import {
   Badge,
+  ButtonGroup,
   Center,
   Flex,
   IconButton,
@@ -25,6 +26,9 @@ import UserWidget from "components/Widget/UserWidget";
 import { UserProps } from "types/db";
 import { EditFAB } from "components/Layout/FAB/EditFAB";
 import { useState } from "react";
+import { responsivePx } from "services/constants";
+import EditableTitle from "components/Composable/EditableTitle";
+import EditableSubtitle from "components/Composable/EditableSubtitle";
 type PageProps = {
   machine: MachineProps;
   students: UserProps[];
@@ -64,87 +68,96 @@ export default function MachinePage({ machine, students }: PageProps) {
   //--ret--
   return (
     <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
-      <Center pb={3} flexDir={"column"}>
-        <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} pt="8px" w="100%">
-          <Center
-            w="100%"
-            wordBreak={"break-all"}
-            fontSize={["xl", "2xl", "2xl", "3xl", "4xl"]}
-          >
-            {machine.name}
-          </Center>
-          <Spacer />
-          {isAdmin && (
-            <>
-              <IconButton
-                onClick={onOpen}
-                colorScheme="red"
-                aria-label="delete"
-                icon={<DeleteIcon />}
-              />
-              <IconButton
-                onClick={() =>
-                  Router.push({
-                    pathname: "/admin/config",
-                    query: { name: machine.name },
-                  })
-                }
-                colorScheme="blue"
-                aria-label="delete"
-                icon={<SettingsIcon />}
-              />
-              <ConfirmDeleteModal
-                isOpen={isOpen}
-                onClose={onClose}
-                name={" the machine: " + machine.name}
-                handleDelete={handleDelete}
-              />
-            </>
-          )}
-        </Flex>
-        {
-          <Badge colorScheme={machine.usedBy ? "green" : "red"}>
-            {machine.usedBy ? machine.usedBy.name : "Standby"}
-          </Badge>
-        }
-      </Center>
-      {status != "loading" && (
-        <SearchView
-          setIn={inId.map((id) => {
-            var student = students.find((x) => x.id == id);
-            if (!student) student = students[0];
-            return {
-              name: student.name,
-              widget: (
-                <UserWidget
-                  name={student.name}
-                  email={student.email}
-                  image={student.image}
-                  isAdmin={false}
-                  id={student.id}
-                />
-              ),
-            };
-          })}
-          setOut={outId.map((id) => {
-            var student = students.find((x) => x.id == id);
-            if (!student) student = students[0];
-            return {
-              name: student.name,
-              widget: (
-                <UserWidget
-                  name={student.name}
-                  email={student.email}
-                  image={student.image}
-                  isAdmin={false}
-                  id={student.id}
-                />
-              ),
-            };
-          })}
-          isEdit={false}
+      <Flex px={responsivePx}>
+        <EditableTitle
+          value={isEdit ? newName : machine.name}
+          onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+            setNewName(e.target.value)
+          }
+          isDisabled={!isEdit}
         />
-      )}
+        <Center>
+          <ButtonGroup spacing="2" pl="2" isAttached>
+            <IconButton
+              onClick={onOpen}
+              colorScheme="red"
+              aria-label="delete"
+              icon={<DeleteIcon />}
+            />
+            <ConfirmDeleteModal
+              isOpen={isOpen}
+              onClose={onClose}
+              name={" the machine: " + machine.name}
+              handleDelete={handleDelete}
+            />
+            <IconButton
+              onClick={() =>
+                Router.push({
+                  pathname: "/admin/config",
+                  query: { name: machine.name },
+                })
+              }
+              colorScheme="blue"
+              aria-label="delete"
+              icon={<SettingsIcon />}
+            />
+          </ButtonGroup>
+        </Center>
+      </Flex>
+      <Flex px={responsivePx} flexDir="column">
+        <EditableSubtitle
+          value={
+            isEdit
+              ? newDescription
+              : machine.description
+              ? machine.description
+              : "No description."
+          }
+          onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+            setNewDescription(e.target.value)
+          }
+          isDisabled={!isEdit}
+          placeholder="Description"
+        />
+        {/* <Badge colorScheme={machine.usedBy ? "green" : "red"} w="24" h="8">
+          {machine.usedBy ? machine.usedBy.name : "Standby"}
+        </Badge> */}
+      </Flex>
+      <SearchView
+        setIn={inId.map((id) => {
+          var student = students.find((x) => x.id == id);
+          if (!student) student = students[0];
+          return {
+            name: student.name,
+            widget: (
+              <UserWidget
+                name={student.name}
+                email={student.email}
+                image={student.image}
+                isAdmin={false}
+                id={student.id}
+              />
+            ),
+          };
+        })}
+        setOut={outId.map((id) => {
+          var student = students.find((x) => x.id == id);
+          if (!student) student = students[0];
+          return {
+            name: student.name,
+            widget: (
+              <UserWidget
+                name={student.name}
+                email={student.email}
+                image={student.image}
+                isAdmin={false}
+                id={student.id}
+              />
+            ),
+          };
+        })}
+        isEdit={false}
+      />
       <EditFAB
         isEdit={isEdit}
         onEdit={() => {
