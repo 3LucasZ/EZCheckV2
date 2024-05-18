@@ -1,4 +1,3 @@
-import MachineWidget, { MachineProps } from "archive/MachineWidget";
 import Layout from "components/Layout/MainLayout";
 import { GetServerSideProps } from "next";
 import SearchView from "components/SearchView";
@@ -12,6 +11,8 @@ import { FAB } from "components/Layout/FAB/FAB";
 import { AddIcon } from "@chakra-ui/icons";
 import { poster } from "services/poster";
 import { useToast } from "@chakra-ui/react";
+import { MachineProps } from "archive/MachineWidget";
+import MachineWidget from "components/Widget/MachineWidget";
 
 type PageProps = {
   machines: MachineProps[];
@@ -26,7 +27,16 @@ export default function ManageMachines({ machines }: PageProps) {
       <SearchView
         setIn={machines.map((machine) => ({
           name: machine.name,
-          widget: <MachineWidget machine={machine} key={machine.id} />,
+          widget: (
+            <MachineWidget
+              key={machine.id}
+              name={machine.name}
+              description={""}
+              image={""}
+              count={0}
+              url={""}
+            />
+          ),
         }))}
         isEdit={false}
       />
