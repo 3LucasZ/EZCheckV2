@@ -36,7 +36,11 @@ export default function Home({ students, machines }: PageProps) {
   const user = session?.user;
   const isAdmin = user?.isAdmin;
 
-  const inId = user ? user?.machines.map((item) => item.id) : [];
+  const inId = machines
+    .filter((machine) =>
+      machine.students.map((student) => student.id).includes(user!.id)
+    )
+    .map((machine) => machine.id);
   const outId = machines
     .map((item) => item.id)
     .filter((id) => !inId.includes(id));
