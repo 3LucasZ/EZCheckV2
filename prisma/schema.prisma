@@ -30,7 +30,8 @@ model User {
 
   //custom student
   PIN       String?      @unique @db.VarChar(255) 
-  machines  Machine[]   @relation("authorized")
+  certificates  MachineCertificate[] @relation("recipient")
+  issuing MachineCertificate[] @relation("issuer")
   using     Machine?    @relation("using")
 }
  
@@ -84,7 +85,7 @@ model Machine {
   lastSeen  String?     @db.VarChar(255)
   IP        String?     @db.VarChar(255)
   //relations
-  students  User[]   @relation("authorized")
+  certificates  MachineCertificate[] 
   usedBy    User?    @relation("using", fields: [usedById], references: [id])
   usedById  String?        @unique
 }
@@ -94,4 +95,19 @@ model Log {
   timestamp String      @db.VarChar(255)
   message   String      @db.VarChar(2047)
   level     Int         //0 = info(create/update student/machine, legal join-machine, legal leave-machine), 1 = dangerous(delete student/machine, create/delete admin), 2 = fatal(wrong student password in join-machine, student using multiple machines)
+}
+
+//----Relations----
+model MachineCertificate {
+  //defn relation
+  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  machineId Int
+  recipient User @relation("recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  recipientId String
+
+  //meta
+  issuedAt DateTime @default(now())
+  issuer User @relation("issuer", fields: [issuerId], references: [id])
+  issuerId String
+  @@id([machineId, recipientId])
 }
