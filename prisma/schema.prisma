@@ -74,13 +74,16 @@ model VerificationToken {
 } 
 
 //----DB----
-
 model Machine {
+  //primary
   id        Int         @id @default(autoincrement())
   name      String      @unique @db.VarChar(255)
+  description String    @db.VarChar(255) @default("")
+  image String @default("")
+  //miscellaneous
   lastSeen  String?     @db.VarChar(255)
   IP        String?     @db.VarChar(255)
-
+  //relations
   students  User[]   @relation("authorized")
   usedBy    User?    @relation("using", fields: [usedById], references: [id])
   usedById  String?        @unique
