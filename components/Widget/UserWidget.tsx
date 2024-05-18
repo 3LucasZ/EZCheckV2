@@ -12,9 +12,11 @@ import {
 
 import AddRemoveButton from "components/Composable/AddRemoveButton";
 import { UserCardModal } from "components/Main/UserCardModal";
+import Router from "next/router";
 
 type UserWidgetProps = {
   //data
+  id: string;
   name: string;
   email: string;
   image: string;
@@ -41,7 +43,8 @@ export default function UserWidget(props: UserWidgetProps) {
         rounded="md"
         boxShadow={"md"}
         mx={1} //so we can see the side shadows
-        onClick={onOpen}
+        // onClick={onOpen}
+        onClick={() => Router.push(`/admin/view-student/${props.id}`)}
         px="2"
         _hover={{ bg: "gray.100" }}
         minH="60px"
