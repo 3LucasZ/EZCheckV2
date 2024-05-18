@@ -4,4 +4,6 @@ export type UserProps = {
   name: string;
   isAdmin: boolean;
   image: string;
+  machines: MachineProps[];
+  using: MachineProps;
 };
