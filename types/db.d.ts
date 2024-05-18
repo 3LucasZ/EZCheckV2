@@ -12,8 +12,12 @@ export type UserProps = {
 export type MachineProps = {
   id: number;
   name: string;
-  students: UserProps[];
+  description: string;
+  image: string;
+
   lastSeen?: string;
-  usedBy?: UserProps;
   IP?: string;
+
+  students: UserProps[];
+  usedBy?: UserProps;
 };
