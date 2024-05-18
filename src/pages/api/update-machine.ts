@@ -2,15 +2,23 @@ import { Prisma } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/prisma";
 import { prismaErrHandler } from "services/prismaErrHandler";
+import { UserProps } from "types/db";
+import { TypedRequestBody } from "types/req";
 
 export default async function handle(
-  req: NextApiRequest,
+  req: TypedRequestBody<{
+    id: number;
+    newName: string;
+    newDescription: string;
+    newUsers: UserProps[];
+  }>,
   res: NextApiResponse
 ) {
-  const { id, name, studentIds } = req.body;
-  if (name == "") return res.status(500).json("Name can not be empty.");
+  const { id, newName, newDescription, newUsers } = req.body;
+  if (newName == "")
+    return res.status(500).json("Machine name can not be empty.");
   try {
-    const op = await prisma.machine.upsert({
+    const op = await prisma.machine.update({
       where: {
         id: id,
       },
