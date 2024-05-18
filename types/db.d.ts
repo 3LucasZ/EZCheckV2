@@ -21,3 +21,16 @@ export type MachineProps = {
   students: UserProps[];
   usedBy?: UserProps;
 };
+
+export type CertificateProps = {
+  //defn relation
+  machine: MachineProps;
+  machineId: number;
+  recipient: UserProps;
+  recipientId: string;
+
+  //meta
+  issuedAt: number;
+  issuer?: UserProps;
+  issuerId?: string;
+};
