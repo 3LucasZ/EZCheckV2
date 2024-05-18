@@ -34,7 +34,7 @@ export default function ManageMachines({ machines }: PageProps) {
               description={""}
               image={""}
               count={0}
-              url={""}
+              url={`/admin/view-machine/${machine.id}`}
             />
           ),
         }))}
