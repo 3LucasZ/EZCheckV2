@@ -17,7 +17,7 @@ import AppBar from "./AppBar";
 
 type LayoutProps = {
   isStudent: boolean;
-  isAdmin: boolean;
+  isAdmin: boolean | undefined;
   isSupervisor: boolean;
   children: ReactNode;
 };
