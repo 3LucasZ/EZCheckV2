@@ -8,13 +8,19 @@ import { TypedRequestBody } from "types/req";
 export default async function handle(
   req: TypedRequestBody<{
     id: string;
-    newPIN: string;
-    newCerts: CertificateProps[];
+    //student
+    newPIN?: string;
+    newCerts?: CertificateProps[];
+    //admin
+    isAdmin?: boolean;
+    isSupervising?: boolean;
   }>,
   res: NextApiResponse
 ) {
-  const { id, newPIN, newCerts } = req.body;
-  const newRelations = newCerts.map((cert) => ({
+  const { id, newPIN, newCerts, isAdmin, isSupervising } = req.body;
+  console.log(req.body);
+  console.log(isSupervising);
+  const newRelations = newCerts?.map((cert) => ({
     machineId: cert.machineId!,
     issuerId: cert.issuerId,
   }));
@@ -25,14 +31,18 @@ export default async function handle(
         id,
       },
       data: {
-        PIN: newPIN,
-        certificates: {
-          deleteMany: {},
-          createMany: { data: newRelations },
-        },
+        ...(newPIN != undefined && { PIN: newPIN }),
+        ...(newRelations != undefined && {
+          certificates: {
+            deleteMany: {},
+            createMany: { data: newRelations },
+          },
+        }),
+        ...(isAdmin != undefined && { isAdmin: isAdmin }),
+        ...(isSupervising != undefined && { isSupervising: isSupervising }),
       },
       include: {
-        certificates: true,
+        ...(newRelations != undefined && { certificates: true }),
       },
     });
     return res.status(200).json(op);

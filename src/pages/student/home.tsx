@@ -9,16 +9,15 @@ import {
   PinInputField,
   Stack,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 
-import { AdminProps } from "archive/AdminWidget2";
 import { ViewIcon, CheckIcon, ViewOffIcon } from "@chakra-ui/icons";
 import SearchView from "components/SearchView";
 
-import { StudentProps } from "archive/StudentWidget";
 import { useEffect, useState } from "react";
 import Router from "next/router";
 import { poster } from "services/poster";
@@ -27,32 +26,28 @@ import MachineWidget from "components/Widget/MachineWidget";
 import { MachineProps } from "types/db";
 
 type PageProps = {
-  students: StudentProps[];
   machines: MachineProps[];
 };
-export default function Home({ students, machines }: PageProps) {
+export default function Home({ machines }: PageProps) {
+  //--template--
   const { data: session, status } = useSession();
-  const toaster = useToast();
+  console.log(session);
   const user = session?.user;
-  const isAdmin = user?.isAdmin;
-
-  const inId = machines
-    .filter((machine) =>
-      machine.students.map((student) => student.id).includes(user!.id)
-    )
-    .map((machine) => machine.id);
+  const toaster = useToast();
+  //--relations--
+  const inId = user!.certificates.map((cert) => cert.machineId);
   const outId = machines
-    .map((item) => item.id)
+    .map((machine) => machine.id)
     .filter((id) => !inId.includes(id));
-
+  //--states--
   const [allowMode, setAllowMode] = useState(true);
   const [PIN, setPIN] = useState(user?.PIN);
   useEffect(() => {
     setPIN(user?.PIN);
   }, [session]);
-
   const [visible, setVisible] = useState(false);
   const [editing, setEditing] = useState(false);
+  //--submit--
   const submitData = async () => {
     const body = {
       id: user?.id,
@@ -67,13 +62,17 @@ export default function Home({ students, machines }: PageProps) {
       setPIN(user?.PIN);
     }
   };
-
+  //--ret--
   return (
-    <StudentLayout isAdmin={isAdmin} isStudent={true} isSupervisor={false}>
+    <StudentLayout
+      isAdmin={user?.isAdmin}
+      isStudent={true}
+      isSupervisor={false}
+    >
       <Stack px={[2, "5vw", "10vw", "15vw"]} alignItems={"center"} spacing="0">
         <Flex flexDir="row" py="8px" gap="8px">
           <Heading>PIN</Heading>
-          <ButtonGroup isAttached>
+          <ButtonGroup isAttached hidden={user?.PIN == undefined}>
             <IconButton
               icon={
                 editing ? (
@@ -110,31 +109,38 @@ export default function Home({ students, machines }: PageProps) {
             /> */}
           </ButtonGroup>
         </Flex>
-        <HStack spacing={["4px", "8px"]}>
-          <PinInput
-            onChange={(e) => setPIN(e)}
-            value={PIN}
-            size={["sm", "md"]}
-            mask={!visible && !editing}
-          >
-            {
-              // Array.from(Array(PINLen).keys())
-              Array.from(Array(PIN?.length).keys()).map((key) =>
-                key == 0 ? (
-                  <PinInputField
-                    key={key}
-                    pointerEvents={editing ? "initial" : "none"}
-                  />
-                ) : (
-                  <PinInputField
-                    key={key}
-                    pointerEvents={editing ? "initial" : "none"}
-                  />
+        {user?.PIN == undefined ? (
+          <Text>
+            You have not been assigned a PIN yet. You will be unable to use any
+            machines until you have received a PIN from an administrator.
+          </Text>
+        ) : (
+          <HStack spacing={["4px", "8px"]}>
+            <PinInput
+              onChange={(e) => setPIN(e)}
+              value={PIN}
+              size={["sm", "md"]}
+              mask={!visible && !editing}
+            >
+              {
+                // Array.from(Array(PINLen).keys())
+                Array.from(Array(PIN?.length).keys()).map((key) =>
+                  key == 0 ? (
+                    <PinInputField
+                      key={key}
+                      pointerEvents={editing ? "initial" : "none"}
+                    />
+                  ) : (
+                    <PinInputField
+                      key={key}
+                      pointerEvents={editing ? "initial" : "none"}
+                    />
+                  )
                 )
-              )
-            }
-          </PinInput>
-        </HStack>
+              }
+            </PinInput>
+          </HStack>
+        )}
       </Stack>
       <Box minH="8px" />
       <Flex flexDir="row" px={[2, "5vw", "10vw", "15vw"]}>
@@ -142,8 +148,8 @@ export default function Home({ students, machines }: PageProps) {
           w="100%"
           p="8px"
           roundedLeft="md"
-          bg={allowMode ? "teal.200" : "gray.100"}
-          _hover={{ bg: allowMode ? "teal.200" : "gray.200" }}
+          bg={allowMode ? "orange.200" : "gray.100"}
+          _hover={{ bg: allowMode ? "orange.200" : "gray.200" }}
           textAlign={"center"}
           onClick={() => setAllowMode(true)}
         >
@@ -153,8 +159,8 @@ export default function Home({ students, machines }: PageProps) {
           w="100%"
           p="8px"
           roundedRight="md"
-          bg={allowMode ? "gray.100" : "teal.200"}
-          _hover={{ bg: allowMode ? "gray.200" : "teal.200" }}
+          bg={allowMode ? "gray.100" : "orange.200"}
+          _hover={{ bg: allowMode ? "gray.200" : "orange.200" }}
           textAlign={"center"}
           onClick={() => setAllowMode(false)}
         >
@@ -175,7 +181,6 @@ export default function Home({ students, machines }: PageProps) {
                 description={""}
                 image={""}
                 count={0}
-                url={""}
               />
             ),
           };
@@ -187,14 +192,9 @@ export default function Home({ students, machines }: PageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const students = await prisma.user.findMany({
-    where: { isAdmin: false },
-    include: { machines: true },
-  });
   const machines = await prisma.machine.findMany();
   return {
     props: {
-      students,
       machines,
     },
   };

@@ -22,86 +22,85 @@ import { useSession } from "next-auth/react";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { poster } from "services/poster";
 import AdminLayout from "components/Layout/AdminLayout";
+import { User } from "next-auth";
+import UserWidget from "components/Widget/UserWidget";
+import { start } from "repl";
+import { responsivePx } from "services/constants";
 
 type PageProps = {
-  admins: AdminProps[];
+  users: User[];
 };
-export default function ManageAdmin({ admins }: PageProps) {
+export default function ManageAdmin({ users }: PageProps) {
+  //--template--
   const { data: session } = useSession();
-  const isAdmin = checkAdmin(session, admins);
-  const myAdmin = getMyAdmin(session, admins);
-  const [email, setEmail] = useState("");
+  const me = session?.user;
   const toaster = useToast();
-
-  const handleCreateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-  const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    const body = { creator: session?.user?.email, email };
-    const res = await poster("/api/add-admin", body, toaster);
+  //--handle add/rm admin--
+  const admins = users.find((user) => user.isAdmin);
+  const addAdmin = async (user: User) => {
+    const body = { id: user.id, isAdmin: true };
+    const res = await poster("/api/update-student", body, toaster);
     if (res.status == 200) Router.reload();
   };
+  const rmAdmin = async (user: User) => {
+    const body = { id: user.id, isAdmin: false };
+    const res = await poster("/api/update-student", body, toaster);
+    if (res.status == 200) Router.reload();
+  };
+  const startSupervising = async () => {
+    const body = { id: me?.id, isSupervising: true };
+    const res = await poster("/api/update-student", body, toaster);
+    if (res.status == 200) Router.reload();
+  };
+  const stopSupervising = async () => {
+    const body = { id: me?.id, isSupervising: false };
+    const res = await poster("/api/update-student", body, toaster);
+    if (res.status == 200) Router.reload();
+  };
+  //--ret--
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={myAdmin.supervising}>
-      <Box px={[2, "5vw", "10vw", "15vw"]}>
+    <AdminLayout isAdmin={me?.isAdmin} isSupervisor={me?.isSupervising}>
+      <Box px={responsivePx}>
         <Box>
-          {myAdmin.supervising
+          {me?.isSupervising
             ? "I agree that when I leave, no students are left in the machine shop unsupervised."
             : "I agree to be physically present in the machine shop as a supervisor. I'm responsible for the safety of the students and will make sure they're using equipment properly."}
         </Box>
         <Box minH="8px" />
         <Center>
           <Button
-            colorScheme={myAdmin.supervising ? "red" : "green"}
-            onClick={async () => {
-              const res = await poster(
-                "/api/update-admin",
-                { admin: myAdmin },
-                toaster
-              );
-              if (res.status == 200) Router.reload();
-            }}
+            bg={me?.isSupervising ? "red.300" : "teal.300"}
+            _hover={{ bg: me?.isSupervising ? "red.400" : "teal.400" }}
+            color="white"
+            onClick={me?.isSupervising ? stopSupervising : startSupervising}
           >
-            {myAdmin.supervising ? "Stop Supervising" : "Start Supervising"}
+            {me?.isSupervising ? "Stop Supervising" : "Start Supervising"}
           </Button>
         </Center>
       </Box>
       <Box minH="8px" />
       <Divider />
       <Box minH="8px" />
-      <Flex px={[2, "5vw", "10vw", "15vw"]} gap={"8px"}>
-        <Input
-          variant="filled"
-          placeholder="Admin email"
-          value={email}
-          onChange={handleCreateChange}
-        />
-        {isAdmin && (
-          <IconButton
-            colorScheme="teal"
-            aria-label="edit"
-            icon={<AddIcon />}
-            onClick={submitData}
-          />
-        )}
-      </Flex>
-      {isAdmin && (
-        <SearchView
-          setIn={admins.map((admin) => ({
-            name: admin.email,
-            widget: <Admin admin={admin} key={admin.id} />,
-          }))}
-          isAdmin={isAdmin}
-          isEdit={false}
-        />
-      )}
+      <SearchView
+        setIn={users.map((user) => ({
+          name: user.name,
+          widget: (
+            <UserWidget
+              id={user.id}
+              name={user.name}
+              email={user.email}
+              image={user.image}
+            />
+          ),
+        }))}
+        isEdit={false}
+      />
     </AdminLayout>
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {
-  const admins = await prisma.admin.findMany();
+  const users = await prisma.user.findMany();
   return {
-    props: { admins: admins },
+    props: { users },
   };
 };

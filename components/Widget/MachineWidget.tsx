@@ -24,7 +24,7 @@ type MachineWidgetProps = {
   description: string;
   image: string;
   count?: number;
-  url: string;
+  url?: string;
 
   type2?: boolean;
   name2?: string;
@@ -77,9 +77,9 @@ export default function MachineWidget(props: MachineWidgetProps) {
       rounded="md"
       boxShadow={"md"}
       mx={1} //so we can see the side shadows
-      onClick={() => Router.push(props.url)}
+      onClick={() => props.url && Router.push(props.url)}
       pr="2"
-      _hover={{ bg: "gray.100" }}
+      _hover={{ bg: props.url ? "gray.100" : "" }}
       minH="60px"
     >
       <HStack>
