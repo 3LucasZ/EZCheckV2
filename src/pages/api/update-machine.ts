@@ -1,8 +1,7 @@
-import { Prisma } from "@prisma/client";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import prisma from "services/prisma";
 import { prismaErrHandler } from "services/prismaErrHandler";
-import { UserProps } from "types/db";
+import { CertificateProps } from "types/db";
 import { TypedRequestBody } from "types/req";
 
 export default async function handle(
@@ -10,11 +9,15 @@ export default async function handle(
     id: number;
     newName: string;
     newDescription: string;
-    newUsers: UserProps[];
+    newCerts: CertificateProps[];
   }>,
   res: NextApiResponse
 ) {
-  const { id, newName, newDescription, newUsers } = req.body;
+  const { id, newName, newDescription, newCerts } = req.body;
+  const newRelations = newCerts.map((cert) => ({
+    recipientId: cert.recipientId!,
+    issuerId: cert.issuerId,
+  }));
   if (newName == "")
     return res.status(500).json("Machine name can not be empty.");
   try {
@@ -22,20 +25,19 @@ export default async function handle(
       where: {
         id: id,
       },
-      update: {
-        name: name,
-        students: {
-          set: studentIds,
+      data: {
+        name: newName,
+        description: newDescription,
+        certificates: {
+          deleteMany: {}, //extremely important, this denotes that you want to delete relations too
+          createMany: {
+            data: newRelations,
+          },
         },
       },
-      create: {
-        name: name,
-        students: {
-          connect: studentIds,
-        },
-      },
+
       include: {
-        students: true,
+        certificates: true,
       },
     });
     return res.status(200).json(op);

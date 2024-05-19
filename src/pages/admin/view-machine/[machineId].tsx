@@ -16,7 +16,7 @@ import SearchView from "components/SearchView";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 import { StudentProps } from "archive/StudentWidget";
-import { MachineProps } from "types/db";
+import { CertificateProps, defaultMachine, MachineProps } from "types/db";
 import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "archive/AdminWidget2";
 import StudentWidget2 from "archive/StudentWidget2";
@@ -29,6 +29,7 @@ import { useState } from "react";
 import { responsivePx } from "services/constants";
 import EditableTitle from "components/Composable/EditableTitle";
 import EditableSubtitle from "components/Composable/EditableSubtitle";
+import CertificateWidget from "components/Widget/CertificateWidget";
 type PageProps = {
   machine: MachineProps;
   students: UserProps[];
@@ -43,12 +44,23 @@ export default function MachinePage({ machine, students }: PageProps) {
   //--new state--
   const [newName, setNewName] = useState(machine.name);
   const [newDescription, setNewDescription] = useState(machine.description);
-  const [newRelations, setNewRelations] = useState(machine.students);
-  //--in and out relations--
-  const inId = machine.students.map((item) => item.id);
+  const [newCerts, setNewCerts] = useState(machine.certificates);
+  //--handle relations--
+  const inId = newCerts.map((cert) => cert.recipientId);
   const outId = students
     .map((item) => item.id)
     .filter((id) => !inId.includes(id));
+  function addCert(certificate: CertificateProps) {
+    const copy = [...newCerts];
+    copy.push(certificate);
+    setNewCerts(copy);
+  }
+  function rmCert(certificate: CertificateProps) {
+    setNewCerts(
+      newCerts.filter((t) => t.recipientId != certificate.recipientId)
+    );
+  }
+  console.log(newCerts.length);
   //--handle delete modal--
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
@@ -61,7 +73,12 @@ export default function MachinePage({ machine, students }: PageProps) {
   //--handle upload image--
   //--handle update machine
   const handleUpdate = async () => {
-    const body = { id: machine.id };
+    const body = {
+      id: machine.id,
+      newName,
+      newDescription,
+      newCerts,
+    };
     const res = await poster("/api/update-machine", body, toaster);
     if (res.status == 200) Router.reload();
   };
@@ -124,34 +141,48 @@ export default function MachinePage({ machine, students }: PageProps) {
         </Badge> */}
       </Flex>
       <SearchView
-        setIn={inId.map((id) => {
-          var student = students.find((x) => x.id == id);
-          if (!student) student = students[0];
-          return {
-            name: student.name,
-            widget: (
-              <UserWidget
-                name={student.name}
-                email={student.email}
-                image={student.image}
-                isAdmin={false}
-                id={student.id}
-              />
-            ),
-          };
-        })}
+        setIn={newCerts.map((cert) => ({
+          name: cert.recipient!.name,
+          widget: (
+            <UserWidget
+              //data
+              name={cert.recipient.name}
+              email={cert.recipient.email}
+              image={cert.recipient.image}
+              id={cert.recipient.id}
+              type2={true}
+              name2={cert.issuer?.name}
+              email2={cert.issuer?.email}
+              //xtra
+              isEdit={isEdit}
+              handleRm={() => rmCert(cert)}
+            />
+          ),
+        }))}
         setOut={outId.map((id) => {
-          var student = students.find((x) => x.id == id);
-          if (!student) student = students[0];
+          const student = students.find((x) => x.id == id) || students[0];
           return {
             name: student.name,
             widget: (
               <UserWidget
+                //data
                 name={student.name}
                 email={student.email}
                 image={student.image}
-                isAdmin={false}
                 id={student.id}
+                //xtra
+                inverted={true}
+                isEdit={isEdit}
+                handleAdd={() =>
+                  addCert({
+                    recipient: student,
+                    recipientId: student.id,
+                    machine: machine,
+                    machineId: machine.id,
+                    issuer: session?.user,
+                    issuerId: session?.user.id,
+                  })
+                }
               />
             ),
           };
@@ -163,7 +194,7 @@ export default function MachinePage({ machine, students }: PageProps) {
         onEdit={() => {
           setNewName(machine.name);
           setNewDescription(machine.description);
-          setNewRelations(machine.students);
+          setNewCerts(machine.certificates);
           setIsEdit(true);
         }}
         onSave={handleUpdate}
@@ -179,8 +210,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       id: Number(context.params?.machineId),
     },
     include: {
-      students: true,
-      usedBy: true,
+      certificates: {
+        include: {
+          recipient: true,
+          issuer: true,
+        },
+      },
     },
   });
   const students = await prisma.user.findMany({ where: { isAdmin: false } });

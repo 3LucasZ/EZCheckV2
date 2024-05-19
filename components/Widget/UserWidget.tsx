@@ -1,4 +1,3 @@
-//COPY FROM EZFIND2
 import {
   Box,
   HStack,
@@ -8,11 +7,13 @@ import {
   Stack,
   Select,
   useDisclosure,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 import AddRemoveButton from "components/Composable/AddRemoveButton";
 import { UserCardModal } from "components/Main/UserCardModal";
 import Router from "next/router";
+import WidgetTitles from "./WidgetTitles";
 
 type UserWidgetProps = {
   //data
@@ -20,22 +21,47 @@ type UserWidgetProps = {
   name: string;
   email: string;
   image: string;
-  perm?: number;
-  isAdmin: boolean;
+
+  type2?: boolean;
+  name2?: string;
+  email2?: string;
 
   //state
   inverted?: boolean;
   isEdit?: boolean;
 
   //functions
-  askConfirmation?: boolean;
+  askConfirmation?: boolean; //only for admin add/rm
   handleAdd?: Function;
-  handleRemove?: Function;
-  handleNewPerm?: Function;
+  handleRm?: Function;
 };
 
 export default function UserWidget(props: UserWidgetProps) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const column =
+    useBreakpointValue(
+      {
+        base: true,
+        sm: true,
+        md: false,
+      },
+      { fallback: "md", ssr: false }
+    ) || false;
+  const content = props.type2 ? (
+    <HStack w="100%">
+      <WidgetTitles title={props.name} subtitle={props.email} column={true} />
+      <WidgetTitles
+        title={props.name2!}
+        subtitle={props.email2!}
+        column={true}
+      />
+    </HStack>
+  ) : (
+    <WidgetTitles
+      title={props.name ? props.name : "Expired admin"}
+      subtitle={props.email ? props.email : "Expired email"}
+      column={column}
+    ></WidgetTitles>
+  );
   return (
     <>
       <Box
@@ -43,19 +69,13 @@ export default function UserWidget(props: UserWidgetProps) {
         rounded="md"
         boxShadow={"md"}
         mx={1} //so we can see the side shadows
-        // onClick={onOpen}
         onClick={() => Router.push(`/admin/view-student/${props.id}`)}
         px="2"
         _hover={{ bg: "gray.100" }}
         minH="60px"
       >
         <HStack h="100%">
-          <AspectRatio
-            minW="45px"
-            maxW="45px"
-            ratio={1}
-            // bgGradient={genGradient(props.name)}
-          >
+          <AspectRatio minW="45px" maxW="45px" ratio={1}>
             <Image
               src={props.image} //pfp stored on google servers, will NOT use our API
               // fallbackSrc="https://via.placeholder.com/150"
@@ -64,60 +84,12 @@ export default function UserWidget(props: UserWidgetProps) {
             ></Image>
           </AspectRatio>
           <Box w="2"></Box>
-          <Stack
-            w="100%"
-            direction={["column", "column", "row"]}
-            gap={["0", "0", "2"]}
-            spacing={0}
-          >
-            <Text
-              w={["100%", "100%", "40%"]}
-              noOfLines={1} //do not render more than one line
-              wordBreak={"break-all"} //ellipsis in the middle of word, not only on new word
-            >
-              {props.name}
-            </Text>
-            <Text
-              w={["100%", "100%", "60%"]}
-              fontSize={["sm", "sm", "md"]}
-              color={["grey", "grey", "black"]}
-              noOfLines={1}
-              wordBreak={"break-all"}
-            >
-              {props.email}
-            </Text>
-          </Stack>
-          {!props.inverted && props.perm && (
-            <Select
-              //--looks--
-              rounded={"lg"}
-              border="none"
-              size={"sm"}
-              pointerEvents={props.isEdit ? "auto" : "none"}
-              iconSize={props.isEdit ? "md" : "0"}
-              minW="80px"
-              maxW="20%"
-              //---behavior---
-              onClick={(e) => e.stopPropagation()}
-              onChange={(e) => {
-                const num = parseInt(e.target.value);
-                props.handleNewPerm!(
-                  Number.isNaN(num) ? 0 : parseInt(e.target.value)
-                );
-              }}
-              value={props.perm}
-              display={props.inverted ? "none" : ""}
-            >
-              <option value="0">Viewer</option>
-              <option value="1">Editor</option>
-              <option value="2">Manager</option>
-            </Select>
-          )}
+          {content}
           <AddRemoveButton
-            mode={props.inverted ? 1 : -1}
+            isAdd={props.inverted}
             invisible={!props.isEdit}
             handleAdd={props.handleAdd!}
-            handleRemove={props.handleRemove!}
+            handleRemove={props.handleRm!}
             askConfirmation={props.askConfirmation}
             actionStr={
               (!props.inverted
@@ -128,15 +100,6 @@ export default function UserWidget(props: UserWidgetProps) {
           />
         </HStack>
       </Box>
-      <UserCardModal
-        name={props.name}
-        email={props.email}
-        image={props.image}
-        isAdmin={props.isAdmin}
-        groups={0}
-        isOpen={isOpen}
-        onClose={onClose}
-      ></UserCardModal>
     </>
   );
 }

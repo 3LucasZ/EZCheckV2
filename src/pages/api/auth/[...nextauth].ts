@@ -1,31 +1,23 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth from "next-auth";
-import { Adapter } from "next-auth/adapters";
+import { Adapter, AdapterAccount, AdapterUser } from "next-auth/adapters";
+import { Session } from "next-auth/core/types";
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "services/prisma";
 
 const { GOOGLE_ID = "", GOOGLE_SECRET = "" } = process.env;
 
-// export default NextAuth({
-//   providers: [
-//     GoogleProvider({
-//       clientId: GOOGLE_ID,
-//       clientSecret: GOOGLE_SECRET,
-//     }),
-//   ],
-// });
-
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const { host } = req.headers;
   if (!host) return res.status(400).send(`Bad Request, missing host header`);
-  //else return res.status(400).send("Debug: " + host);
 
   // process.env.NEXTAUTH_URL = "https://" + host + "/ezfind/api/auth";
   process.env.NEXTAUTH_URL = "https://" + host;
 
   return NextAuth({
-    adapter: PrismaAdapter(prisma) as Adapter,
+    adapter: prismaAdapter as Adapter,
     providers: [
       GoogleProvider({
         clientId: GOOGLE_ID,
@@ -34,22 +26,66 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     ],
     callbacks: {
       //Add data to user object so it is passed along with session
-      session({ session, token, user }) {
-        session.user.id = user.id;
-        //student
-        session.user.PIN = user.PIN;
-        session.user.machines = user.machines;
-        session.user.using = user.using;
-        //admin
-        session.user.isAdmin = user.isAdmin;
+      async session({ session, token, user }) {
+        session.user = user;
+        //instant lucas admin :D
         if (
           user.email == "lucas.j.zheng@gmail.com" ||
           user.email == "lucas.zheng@warriorlife.net"
         )
           session.user.isAdmin = true;
-        session.user.supervising = user.supervising;
         return session;
       },
     },
   })(req, res);
 }
+
+const prismaAdapter = PrismaAdapter(prisma);
+prismaAdapter.getUser = (id: string) => {
+  return prisma.user.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      using: true,
+      certificates: {
+        include: {
+          machine: true,
+          recipient: true,
+        },
+      },
+    },
+  });
+};
+prismaAdapter.getUserByEmail = (email: string) => {
+  return prisma.user.findUnique({
+    where: {
+      email,
+    },
+    include: {
+      using: true,
+      certificates: {
+        include: {
+          machine: true,
+          recipient: true,
+        },
+      },
+    },
+  });
+};
+prismaAdapter.getSessionAndUser = async (sessionToken) => {
+  const userAndSession = await prisma.session.findUnique({
+    where: { sessionToken },
+    include: {
+      user: {
+        include: {
+          using: true,
+          certificates: true,
+        },
+      },
+    },
+  });
+  if (!userAndSession) return null;
+  const { user, ...session } = userAndSession;
+  return { user, session };
+};

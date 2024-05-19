@@ -7,8 +7,17 @@ export type UserProps = {
   isAdmin: boolean;
   image: string;
   machines: MachineProps[];
-  using: MachineProps;
+  using?: MachineProps;
 };
+const defaultUser: UserProps = {
+  id: -100,
+  email: "DNE",
+  name: "DNE",
+  isAdmin: false,
+  image: "DNE",
+  machines: [],
+};
+
 export type MachineProps = {
   id: number;
   name: string;
@@ -18,8 +27,15 @@ export type MachineProps = {
   lastSeen?: string;
   IP?: string;
 
-  students: UserProps[];
+  certificates: CertificateProps[];
   usedBy?: UserProps;
+};
+const defaultMachine: MachineProps = {
+  id: -100,
+  name: "DNE",
+  description: "DNE",
+  image: "DNE",
+  certificates: [],
 };
 
 export type CertificateProps = {
@@ -30,7 +46,6 @@ export type CertificateProps = {
   recipientId: string;
 
   //meta
-  issuedAt: number;
   issuer?: UserProps;
   issuerId?: string;
 };

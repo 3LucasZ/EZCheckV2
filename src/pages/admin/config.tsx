@@ -11,6 +11,7 @@ import {
   useToast,
   Text,
   HStack,
+  Center,
 } from "@chakra-ui/react";
 import { RouteButton } from "components/RouteButton";
 import Layout from "components/Layout/MainLayout";
@@ -64,33 +65,46 @@ export default function Home({ queryName }: PageProps) {
           </FormHelperText>
         </FormControl>
 
-        <Button
-          isDisabled={name.length == 0}
-          size="lg"
-          colorScheme="teal"
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault;
-            if (!name) {
-              errorToast(toaster, "Name can't be empty");
-            } else {
-              const url = "http://" + name.replaceAll(" ", "-") + ".local";
-              console.log(url);
-              Router.push(url);
-            }
-          }}
-        >
-          Start Configuring
-        </Button>
+        <Center>
+          <Button
+            //looks
+            bg="orange.200"
+            bgGradient={"linear(to-br, yellow.200, orange.300)"}
+            _hover={{ bgGradient: "linear(to-br, yellow.300, orange.400)" }}
+            color="white"
+            size="lg"
+            px="16"
+            maxW="800px"
+            //function
+            isDisabled={name.length == 0}
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault;
+              if (!name) {
+                errorToast(toaster, "Name can't be empty");
+              } else {
+                const url = "http://" + name.replaceAll(" ", "-") + ".local";
+                console.log(url);
+                Router.push(url);
+              }
+            }}
+          >
+            Start Configuring
+          </Button>
+        </Center>
         {name && (
           <>
             <Text>
-              You will be redirected to{" "}
+              When you start configuring, you will be redirected to{" "}
               <Link color={"teal.500"}>
                 {"http://" + name.replaceAll(" ", "-") + ".local"}
               </Link>
-              . Make sure you are on Google Chrome (not Safari) and on a
-              computer.
+              .
+            </Text>
+            <Text>
+              Make sure you are on Google Chrome (not Safari) web browser and on
+              a computer. This has not been tested with other browsers or mobile
+              devices.
             </Text>
             <Text>
               If the configuration page does not load, then the machine you are

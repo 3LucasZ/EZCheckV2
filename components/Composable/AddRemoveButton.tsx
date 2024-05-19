@@ -6,15 +6,17 @@ import { MouseEventHandler } from "react";
 import { FiHome, FiMinus, FiPlus, FiX } from "react-icons/fi";
 
 type AddRemoveButtonProps = {
-  mode: number;
+  //work
+  isAdd?: boolean;
   invisible?: boolean;
   handleAdd?: Function;
   handleRemove?: Function;
+  //confirmation
   askConfirmation?: boolean;
   actionStr?: string;
 };
 export default function AddRemoveButton({
-  mode,
+  isAdd,
   invisible,
   handleAdd,
   handleRemove,
@@ -23,22 +25,21 @@ export default function AddRemoveButton({
 }: AddRemoveButtonProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const action = () =>
-    mode == 1 ? handleAdd && handleAdd() : handleRemove && handleRemove();
+    isAdd ? handleAdd && handleAdd() : handleRemove && handleRemove();
   return (
     <>
       <Icon
         //---color
         bg="white"
         transition=""
-        _hover={{ bg: mode == 1 ? "teal.300" : "red.400", color: "white" }}
+        _hover={{ bg: isAdd ? "teal.300" : "red.400", color: "white" }}
         color="black"
         //---border
         rounded="xl"
         borderColor={"grey.200"}
         borderWidth={"1px"}
         //---display
-        as={mode == 1 ? FiPlus : FiX}
-        display={mode == 0 ? "none" : ""}
+        as={isAdd ? FiPlus : FiX}
         opacity={invisible ? 0 : 1}
         boxSize={"10"}
         p="2.5"

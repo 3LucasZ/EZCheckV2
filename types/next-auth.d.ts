@@ -1,5 +1,6 @@
 import NextAuth, { DefaultSession } from "next-auth";
 import { MachineProps } from "./db";
+import { CertificateProps } from "./db";
 
 declare module "next-auth" {
   /**
@@ -13,7 +14,7 @@ declare module "next-auth" {
       supervising: boolean;
       //custom student
       PIN: string;
-      machines: MachineProps[];
+      certificates: CertificateProps[];
       using: MachineProps;
     } & DefaultSession["user"];
   }
@@ -24,7 +25,9 @@ declare module "next-auth" {
     supervising: boolean;
     //custom student
     PIN: string;
-    machines: MachineProps[];
+    certificates: CertificateProps[];
     using: MachineProps;
   }
 }
+
+export function cvtSessionUserToUser(sessionUser: Session.user) {}

@@ -30,9 +30,9 @@ model User {
 
   //custom student
   PIN       String?      @unique @db.VarChar(255) 
-  certificates  MachineCertificate[] @relation("recipient")
-  issuing MachineCertificate[] @relation("issuer")
-  using     Machine?    @relation("using")
+  certificates  MachineCertificate[] @relation("recipient") //special
+  issuing MachineCertificate[] @relation("issuer") //special
+  using     Machine?    @relation("using") //special
 }
  
 model Account {
@@ -106,7 +106,6 @@ model MachineCertificate {
   recipientId String
 
   //meta
-  issuedAt DateTime @default(now())
   issuer User? @relation("issuer", fields: [issuerId], references: [id], onDelete: SetNull)
   issuerId String?
   @@id([machineId, recipientId])

@@ -15,14 +15,12 @@ import { genGradient } from "services/gradientGenerator";
 
 import AddRemoveButton from "components/Composable/AddRemoveButton";
 import { ChangeEventHandler } from "react";
+import { CertificateProps } from "types/db";
 
-type MachineWidgetProps = {
+type CertificateWidgetProps = {
   //data
-  name: string;
-  description: string;
-  image: string;
-  count: number;
-  url: string;
+  cert: CertificateProps;
+  machineMode: boolean;
 
   //state
   inverted?: boolean;
@@ -30,28 +28,40 @@ type MachineWidgetProps = {
 
   //functions
   handleAdd?: Function;
-  handleRemove?: Function;
-  handleNewCount?: ChangeEventHandler<HTMLInputElement>;
+  handleRm?: Function;
 };
 
-export default function MachineWidget(props: MachineWidgetProps) {
+export default function CertificateWidget(props: CertificateWidgetProps) {
+  const url =
+    (props.machineMode
+      ? `/view-machine/${props.cert.machineId}`
+      : `/view-user/${props.cert.recipientId}`) || "";
+  const image =
+    (props.machineMode
+      ? `/api/${props.cert.machine?.image}`
+      : props.cert.recipient?.image) || "";
+  const name =
+    (props.machineMode
+      ? props.cert.machine?.name
+      : props.cert.recipient?.name) || "";
+  const description =
+    (props.machineMode
+      ? props.cert.machine?.description
+      : props.cert.recipient?.email) || "";
   return (
     <Box
       overflow={"hidden"}
       rounded="md"
       boxShadow={"md"}
       mx={1} //so we can see the side shadows
-      onClick={() => Router.push(props.url)}
+      onClick={() => Router.push(url)}
       pr="2"
       _hover={{ bg: "gray.100" }}
       minH="60px"
     >
       <HStack>
-        <AspectRatio minW="60px" ratio={1} bgGradient={genGradient(props.name)}>
-          <Image
-            src={`/api/${props.image}`}
-            hidden={props.image.length < 5}
-          ></Image>
+        <AspectRatio minW="60px" ratio={1} bgGradient={genGradient(name)}>
+          <Image src={image} hidden={image.length < 5}></Image>
         </AspectRatio>
         <HStack w="100%">
           <Text
@@ -59,19 +69,19 @@ export default function MachineWidget(props: MachineWidgetProps) {
             noOfLines={1} //do not render more than one line
             wordBreak={"break-all"} //ellipsis in the middle of word, not only on new word
           >
-            {props.name}
+            {name}
           </Text>
           <Show above="sm">
             <Text w="60%" noOfLines={1} wordBreak={"break-all"}>
-              {props.description ? props.description : "No description."}
+              {description ? description : "No description."}
             </Text>
           </Show>
         </HStack>
         <AddRemoveButton
-          mode={props.inverted ? 1 : -1}
+          isAdd={props.inverted}
           invisible={!props.isEdit}
           handleAdd={props.handleAdd!}
-          handleRemove={props.handleRemove!}
+          handleRemove={props.handleRm!}
         />
       </HStack>
     </Box>
