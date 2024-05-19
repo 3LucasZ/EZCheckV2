@@ -9,16 +9,12 @@ import { Box, Link, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { AdminProps } from "archive/AdminWidget2";
 import Header from "components/Layout/Header";
 
-type PageProps = {
-  admins: AdminProps[];
-};
-export default function Home({ admins }: PageProps) {
+export default function Home() {
   const { data: session } = useSession();
-  const isAdmin = checkAdmin(session, admins);
-  const myAdmin = getMyAdmin(session, admins);
+  const user = session?.user;
   return (
     <Layout>
-      <Header isAdmin={isAdmin} isSupervisor={myAdmin.supervising} />
+      <Header isAdmin={user?.isAdmin} isSupervisor={user?.isSupervising} />
       <Box px="5" overflowY="auto">
         <Text fontSize="4xl">Version</Text>
         <Text fontSize="xl">2.1 (Alpha)</Text>
@@ -66,12 +62,3 @@ export default function Home({ admins }: PageProps) {
     </Layout>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const admins = await prisma.admin.findMany();
-  return {
-    props: {
-      admins: admins,
-    },
-  };
-};
