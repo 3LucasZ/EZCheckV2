@@ -26,11 +26,14 @@ type UserWidgetProps = {
   name2?: string;
   email2?: string;
 
+  isSupervising?: boolean;
+
   //state
   inverted?: boolean;
   isEdit?: boolean;
 
   //functions
+  disabled?: boolean;
   askConfirmation?: boolean; //only for admin add/rm
   handleAdd?: Function;
   handleRm?: Function;
@@ -69,9 +72,12 @@ export default function UserWidget(props: UserWidgetProps) {
         rounded="md"
         boxShadow={"md"}
         mx={1} //so we can see the side shadows
-        onClick={() => Router.push(`/admin/view-student/${props.id}`)}
+        onClick={() =>
+          !props.disabled && Router.push(`/admin/view-student/${props.id}`)
+        }
         px="2"
-        _hover={{ bg: "gray.100" }}
+        bg={props.isSupervising ? "orange.100" : "white"}
+        _hover={{ bg: !props.disabled && "gray.100" }}
         minH="60px"
       >
         <HStack h="100%">
