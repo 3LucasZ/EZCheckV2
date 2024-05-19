@@ -8,6 +8,7 @@ import {
   Input,
   Switch,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import Admin, { AdminProps } from "archive/AdminWidget2";
 import { GetServerSideProps } from "next";
@@ -25,7 +26,7 @@ import AdminLayout from "components/Layout/AdminLayout";
 import { User } from "next-auth";
 import UserWidget from "components/Widget/UserWidget";
 import { start } from "repl";
-import { responsivePx } from "services/constants";
+import { responsiveHeaderFontSize, responsivePx } from "services/constants";
 
 type PageProps = {
   users: User[];
@@ -61,6 +62,9 @@ export default function ManageAdmin({ users }: PageProps) {
   return (
     <AdminLayout isAdmin={me?.isAdmin} isSupervisor={me?.isSupervising}>
       <Box px={responsivePx}>
+        <Text fontSize={responsiveHeaderFontSize} textAlign={"center"}>
+          Supervision
+        </Text>
         <Box>
           {me?.isSupervising
             ? "I agree that when I leave, no students are left in the machine shop unsupervised."
@@ -78,21 +82,48 @@ export default function ManageAdmin({ users }: PageProps) {
           </Button>
         </Center>
       </Box>
-      <Box minH="8px" />
-      <Divider />
-      <Box minH="8px" />
+      <Box minH="8" />
+      <Text fontSize={responsiveHeaderFontSize} textAlign={"center"}>
+        Admins
+      </Text>
       <SearchView
-        setIn={users.map((user) => ({
-          name: user.name,
-          widget: (
-            <UserWidget
-              id={user.id}
-              name={user.name}
-              email={user.email}
-              image={user.image}
-            />
-          ),
-        }))}
+        setIn={users
+          .filter((user) => user.isAdmin)
+          .map((user) => ({
+            name: user.name,
+            widget: (
+              <UserWidget
+                id={user.id}
+                name={user.name}
+                email={user.email}
+                image={user.image}
+                isSupervising={user.isSupervising}
+                disabled={true}
+                isEdit={true}
+                inverted={false}
+                askConfirmation={true}
+                handleRm={() => rmAdmin(user)}
+              />
+            ),
+          }))}
+        setOut={users
+          .filter((user) => !user.isAdmin)
+          .map((user) => ({
+            name: user.name,
+            widget: (
+              <UserWidget
+                id={user.id}
+                name={user.name}
+                email={user.email}
+                image={user.image}
+                disabled={true}
+                isEdit={true}
+                inverted={true}
+                askConfirmation={true}
+                handleAdd={() => addAdmin(user)}
+              />
+            ),
+          }))}
         isEdit={false}
       />
     </AdminLayout>
