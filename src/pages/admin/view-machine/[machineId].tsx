@@ -23,16 +23,16 @@ import StudentWidget2 from "archive/StudentWidget2";
 import AdminLayout from "components/Layout/AdminLayout";
 import { poster } from "services/poster";
 import UserWidget from "components/Widget/UserWidget";
-import { UserProps } from "types/db";
 import { EditFAB } from "components/Layout/FAB/EditFAB";
 import { useState } from "react";
 import { responsivePx } from "services/constants";
 import EditableTitle from "components/Composable/EditableTitle";
 import EditableSubtitle from "components/Composable/EditableSubtitle";
 import CertificateWidget from "components/Widget/CertificateWidget";
+import { User } from "next-auth";
 type PageProps = {
   machine: MachineProps;
-  students: UserProps[];
+  students: User[];
 };
 export default function MachinePage({ machine, students }: PageProps) {
   //--copy paste on every page--
@@ -60,7 +60,6 @@ export default function MachinePage({ machine, students }: PageProps) {
       newCerts.filter((t) => t.recipientId != certificate.recipientId)
     );
   }
-  console.log(newCerts.length);
   //--handle delete modal--
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {

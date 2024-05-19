@@ -50,15 +50,15 @@ export default function UserWidget(props: UserWidgetProps) {
     <HStack w="100%">
       <WidgetTitles title={props.name} subtitle={props.email} column={true} />
       <WidgetTitles
-        title={props.name2!}
-        subtitle={props.email2!}
+        title={props.name2 ? props.name2 : "Expired admin"}
+        subtitle={props.email2 ? props.email2 : "Expired email"}
         column={true}
       />
     </HStack>
   ) : (
     <WidgetTitles
-      title={props.name ? props.name : "Expired admin"}
-      subtitle={props.email ? props.email : "Expired email"}
+      title={props.name}
+      subtitle={props.email}
       column={column}
     ></WidgetTitles>
   );
