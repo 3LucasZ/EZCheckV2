@@ -84,7 +84,7 @@ export default function MachinePage({ machine, students }: PageProps) {
   };
   //--ret--
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.isSupervising}>
       <Flex px={responsivePx}>
         <EditableTitle
           value={isEdit ? newName : machine.name}
@@ -192,13 +192,15 @@ export default function MachinePage({ machine, students }: PageProps) {
       <EditFAB
         isEdit={isEdit}
         onEdit={() => {
-          setNewName(machine.name);
-          setNewDescription(machine.description);
-          setNewCerts(machine.certificates);
           setIsEdit(true);
         }}
         onSave={handleUpdate}
-        onCancel={() => setIsEdit(false)}
+        onCancel={() => {
+          setNewName(machine.name);
+          setNewDescription(machine.description);
+          setNewCerts(machine.certificates);
+          setIsEdit(false);
+        }}
       />
     </AdminLayout>
   );

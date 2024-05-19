@@ -1,14 +1,5 @@
 import { UserProps } from "./db";
 
-export type UserProps = {
-  id: string;
-  email: string;
-  name: string;
-  isAdmin: boolean;
-  image: string;
-  machines: MachineProps[];
-  using?: MachineProps;
-};
 const defaultUser: UserProps = {
   id: -100,
   email: "DNE",

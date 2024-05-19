@@ -68,7 +68,7 @@ export default function MachineWidget(props: MachineWidgetProps) {
           </Show>
         </HStack>
         <AddRemoveButton
-          mode={props.inverted ? 1 : -1}
+          isAdd={props.inverted}
           invisible={!props.isEdit}
           handleAdd={props.handleAdd!}
           handleRemove={props.handleRemove!}

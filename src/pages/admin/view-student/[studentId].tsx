@@ -26,10 +26,10 @@ import { poster } from "services/poster";
 import { PiSignOutBold } from "react-icons/pi";
 import AdminLayout from "components/Layout/AdminLayout";
 import MachineWidget from "components/Widget/MachineWidget";
-import { UserProps } from "types/db";
+import { User } from "next-auth";
 
 type PageProps = {
-  student: UserProps;
+  student: User;
   machines: MachineProps[];
 };
 
@@ -40,7 +40,7 @@ export default function StudentPage(props: PageProps) {
   //toaster
   const toaster = useToast();
   //inId and outId
-  const inId = props.student.machines.map((item) => item.id);
+  const inId = props.student.certificates.map((cert) => cert.machineId);
   const outId = props.machines
     .map((item) => item.id)
     .filter((id) => !inId.includes(id));
@@ -49,8 +49,7 @@ export default function StudentPage(props: PageProps) {
   const handleDelete = async () => {
     const body = { id: user?.id };
     const res = await poster("/api/delete-student", body, toaster);
-    if (res.status == 200)
-      await Router.push({ pathname: "/admin/manage-students" });
+    if (res.status == 200) await Router.push("/admin/manage-students");
   };
   //student force log out
   const handleLeave = async () => {
@@ -62,7 +61,7 @@ export default function StudentPage(props: PageProps) {
   };
   // ret
   return (
-    <AdminLayout isAdmin={user?.isAdmin} isSupervisor={user?.supervising}>
+    <AdminLayout isAdmin={user?.isAdmin} isSupervisor={user?.isSupervising}>
       <Center pb={3} flexDir={"column"}>
         <Flex gap="8px" px={[2, "5vw", "10vw", "15vw"]} pt="8px" w="100%">
           <Center
@@ -75,17 +74,6 @@ export default function StudentPage(props: PageProps) {
           <Spacer />
           {user?.isAdmin && (
             <>
-              <IconButton
-                colorScheme="teal"
-                aria-label=""
-                icon={<EditIcon />}
-                onClick={() =>
-                  Router.push({
-                    pathname: "/admin/student-form",
-                    query: { id: props.student.id },
-                  })
-                }
-              />
               <IconButton
                 onClick={onOpen}
                 colorScheme="red"
@@ -126,7 +114,7 @@ export default function StudentPage(props: PageProps) {
                   description={""}
                   image={""}
                   count={0}
-                  url={""}
+                  url={`/admin/view-machine/${machine.id}`}
                 />
               ),
             };
@@ -160,7 +148,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       id: String(context.params?.studentId),
     },
     include: {
-      machines: true,
+      certificates: true,
       using: true,
     },
   });

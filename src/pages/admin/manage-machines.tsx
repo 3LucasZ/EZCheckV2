@@ -23,7 +23,7 @@ export default function ManageMachines({ machines }: PageProps) {
   const toaster = useToast();
 
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.isSupervising}>
       <SearchView
         setIn={machines.map((machine) => ({
           name: machine.name,
