@@ -8,6 +8,12 @@ import {
   useToast,
   Text,
   Spacer,
+  FormControl,
+  FormLabel,
+  HStack,
+  PinInput,
+  PinInputField,
+  Icon,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { StudentProps } from "archive/StudentWidget";
@@ -28,12 +34,14 @@ import AdminLayout from "components/Layout/AdminLayout";
 import MachineWidget from "components/Widget/MachineWidget";
 import { User } from "next-auth";
 import {
+  PINLen,
   responsiveHeaderFontSize,
   responsivePx,
   responsiveSubheaderFontSize,
 } from "services/constants";
 import { EditFAB } from "components/Layout/FAB/EditFAB";
 import { useState } from "react";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 type PageProps = {
   student: User;
@@ -46,8 +54,12 @@ export default function StudentPage(props: PageProps) {
   const user = session?.user;
   const toaster = useToast();
   //--state--
+  const [isVisible, setIsVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   //--new state--
+  const [newPIN, setNewPIN] = useState(
+    props.student.PIN ? props.student.PIN : ""
+  );
   const [newCerts, setNewCerts] = useState(props.student.certificates);
   //--handle relations--
   const inId = newCerts.map((cert) => cert.machineId);
@@ -75,6 +87,7 @@ export default function StudentPage(props: PageProps) {
   const handleUpdate = async () => {
     const body = {
       id: props.student.id,
+      newPIN,
       newCerts,
     };
     const res = await poster("/api/update-student", body, toaster);
@@ -123,6 +136,28 @@ export default function StudentPage(props: PageProps) {
       {/* <Badge colorScheme={props.student.using ? "green" : "red"}>
         {props.student.using ? props.student.using.name : "Offline"}
       </Badge> */}
+      <Flex px={responsivePx}>
+        <HStack spacing={["4px", "8px"]} maxW="100%" mx="auto">
+          <PinInput
+            onChange={(e) => setNewPIN(e)}
+            value={!isVisible && !isEdit ? newPIN + "      " : newPIN}
+            size={["sm", "md"]}
+            mask={!isVisible}
+          >
+            {Array.from(Array(PINLen).keys()).map((key) => (
+              <PinInputField key={key} />
+            ))}
+          </PinInput>
+          <IconButton
+            icon={isVisible ? <Icon as={FiEyeOff} /> : <Icon as={FiEye} />}
+            bg="teal.300"
+            _hover={{ bg: "teal.400" }}
+            color={"white"}
+            onClick={() => setIsVisible(!isVisible)}
+            aria-label={""}
+          />
+        </HStack>
+      </Flex>
 
       {status != "loading" && (
         <SearchView
@@ -182,6 +217,7 @@ export default function StudentPage(props: PageProps) {
         }}
         onSave={handleUpdate}
         onCancel={() => {
+          setNewPIN(props.student.PIN);
           setNewCerts(props.student.certificates);
           setIsEdit(false);
         }}
