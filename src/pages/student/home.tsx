@@ -26,7 +26,7 @@ import StudentLayout from "components/Layout/StudentLayout";
 import MachineWidget from "components/Widget/MachineWidget";
 import { basicUser, MachineProps } from "types/db";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { PINLen } from "services/constants";
+import { PINLen, tealBtn } from "services/constants";
 
 type PageProps = {
   machines: MachineProps[];
@@ -54,19 +54,14 @@ export default function Home({ machines }: PageProps) {
       <Stack px={[2, "5vw", "10vw", "15vw"]} alignItems={"center"} spacing="0">
         <Flex flexDir="row" py="8px" gap="8px">
           <Heading>PIN</Heading>
-          <ButtonGroup
-            isAttached
-            hidden={me?.PIN == undefined || me?.PIN == ""}
-          >
-            <IconButton
-              icon={isVisible ? <Icon as={FiEyeOff} /> : <Icon as={FiEye} />}
-              colorScheme={"teal"}
-              onClick={() => {
-                setIsVisible(!isVisible);
-              }}
-              aria-label=""
-            />
-          </ButtonGroup>
+          <IconButton
+            icon={isVisible ? <Icon as={FiEyeOff} /> : <Icon as={FiEye} />}
+            onClick={() => {
+              setIsVisible(!isVisible);
+            }}
+            aria-label=""
+            sx={tealBtn}
+          />
         </Flex>
         {me?.PIN == undefined ? (
           <Text>
