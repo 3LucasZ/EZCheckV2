@@ -1,19 +1,7 @@
-import {
-  Avatar,
-  Box,
-  Heading,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-} from "@chakra-ui/react";
-import { signOut, signIn, useSession } from "next-auth/react";
+import { Heading } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
-import { debugMode } from "services/constants";
 import Layout from "./MainLayout";
 import Header from "./Header";
-import AppBar from "./AppBar";
 
 type LayoutProps = {
   isStudent: boolean;

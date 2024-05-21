@@ -8,17 +8,23 @@ import { AdminProps } from "archive/AdminWidget2";
 import Router from "next/router";
 import AdminLayout from "components/Layout/AdminLayout";
 import UserWidget from "components/Widget/UserWidget";
-import { UserProps } from "types/db";
+import { User } from "next-auth";
+import { responsiveHeaderFontSize } from "services/constants";
+import { Text } from "@chakra-ui/react";
 
 type PageProps = {
-  students: UserProps[];
+  students: User[];
 };
+
 export default function ManageStudents({ students }: PageProps) {
-  const { data: session } = useSession();
-  const isAdmin = session?.user.isAdmin;
+  const { data: session, status } = useSession();
+  const me = session?.user;
 
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
+    <AdminLayout isAdmin={me?.isAdmin} isSupervisor={me?.isSupervising}>
+      <Text fontSize={responsiveHeaderFontSize} textAlign={"center"}>
+        Students
+      </Text>
       <SearchView
         setIn={students.map((student) => ({
           name: student.name,
@@ -29,7 +35,6 @@ export default function ManageStudents({ students }: PageProps) {
               name={student.name}
               email={student.email}
               image={student.image}
-              isAdmin={student.isAdmin}
             />
           ),
         }))}
@@ -40,7 +45,7 @@ export default function ManageStudents({ students }: PageProps) {
 }
 export const getServerSideProps: GetServerSideProps = async () => {
   const students = await prisma.user.findMany({
-    where: { isAdmin: false },
+    // where: { isAdmin: false },
     include: { using: true },
   });
   return {

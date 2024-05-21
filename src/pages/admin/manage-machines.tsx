@@ -14,6 +14,9 @@ import { useToast } from "@chakra-ui/react";
 import { MachineProps } from "types/db";
 import MachineWidget from "components/Widget/MachineWidget";
 
+import { Text } from "@chakra-ui/react";
+import { responsiveHeaderFontSize } from "services/constants";
+
 type PageProps = {
   machines: MachineProps[];
 };
@@ -24,6 +27,9 @@ export default function ManageMachines({ machines }: PageProps) {
 
   return (
     <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.isSupervising}>
+      <Text fontSize={responsiveHeaderFontSize} textAlign={"center"}>
+        Machines
+      </Text>
       <SearchView
         setIn={machines.map((machine) => ({
           name: machine.name,
