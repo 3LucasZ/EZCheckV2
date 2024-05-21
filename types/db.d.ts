@@ -1,4 +1,5 @@
 import { UserProps } from "./db";
+import { User } from "./next-auth";
 
 const defaultUser: UserProps = {
   id: -100,
@@ -39,4 +40,15 @@ export type CertificateProps = {
   //meta
   issuer?: UserProps;
   issuerId?: string;
+};
+
+export const basicUser: User = {
+  id: "",
+  email: "",
+  name: "",
+  image: "",
+  PIN: "",
+  certificates: [],
+  isAdmin: false,
+  isSupervising: false,
 };

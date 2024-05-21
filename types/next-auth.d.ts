@@ -1,4 +1,4 @@
-import NextAuth, { DefaultSession } from "next-auth";
+import NextAuth, { DefaultSession, User } from "next-auth";
 import { MachineProps } from "./db";
 import { CertificateProps } from "./db";
 
