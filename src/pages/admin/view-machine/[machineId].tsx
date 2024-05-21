@@ -25,7 +25,7 @@ import { poster } from "services/poster";
 import UserWidget from "components/Widget/UserWidget";
 import { EditFAB } from "components/Layout/FAB/EditFAB";
 import { useState } from "react";
-import { responsivePx } from "services/constants";
+import { redBtn, responsivePx, tealBtn } from "services/constants";
 import EditableTitle from "components/Composable/EditableTitle";
 import EditableSubtitle from "components/Composable/EditableSubtitle";
 import CertificateWidget from "components/Widget/CertificateWidget";
@@ -96,7 +96,7 @@ export default function MachinePage({ machine, students }: PageProps) {
           <ButtonGroup spacing="2" pl="2" isAttached>
             <IconButton
               onClick={onOpen}
-              colorScheme="red"
+              sx={redBtn}
               aria-label="delete"
               icon={<DeleteIcon />}
             />
@@ -113,8 +113,8 @@ export default function MachinePage({ machine, students }: PageProps) {
                   query: { name: machine.name },
                 })
               }
-              colorScheme="blue"
-              aria-label="delete"
+              sx={tealBtn}
+              aria-label=""
               icon={<SettingsIcon />}
             />
           </ButtonGroup>
