@@ -38,6 +38,7 @@ import {
   responsiveHeaderFontSize,
   responsivePx,
   responsiveSubheaderFontSize,
+  tealBtn,
 } from "services/constants";
 import { EditFAB } from "components/Layout/FAB/EditFAB";
 import { useState } from "react";
@@ -150,9 +151,7 @@ export default function StudentPage(props: PageProps) {
           </PinInput>
           <IconButton
             icon={isVisible ? <Icon as={FiEyeOff} /> : <Icon as={FiEye} />}
-            bg="teal.300"
-            _hover={{ bg: "teal.400" }}
-            color={"white"}
+            sx={tealBtn}
             onClick={() => setIsVisible(!isVisible)}
             aria-label={""}
           />

@@ -1,4 +1,5 @@
 //COPY FROM EZFIND2
+import { orangeBtn, redBtn, tealBtn } from "services/constants";
 import { FAB } from "./FAB";
 import { FiCheck, FiEdit2, FiX } from "react-icons/fi";
 
@@ -12,12 +13,16 @@ type EditFABProps = {
 export const EditFAB = ({ isEdit, onEdit, onSave, onCancel }: EditFABProps) => {
   return (
     <>
-      <FAB icon={FiCheck} onClick={onSave} bottomOffset={isEdit ? 75 : 0} />
+      <FAB
+        icon={FiCheck}
+        onClick={onSave}
+        bottomOffset={isEdit ? 75 : 0}
+        sx={tealBtn}
+      />
       <FAB
         icon={isEdit ? FiX : FiEdit2}
         onClick={isEdit ? onCancel : onEdit}
-        bg={isEdit ? "red.300" : "orange.200"}
-        hoverBg={isEdit ? "red.400" : "orange.300"}
+        sx={isEdit ? redBtn : orangeBtn}
       />
     </>
   );
