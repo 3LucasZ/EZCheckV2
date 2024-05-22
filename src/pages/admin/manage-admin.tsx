@@ -1,13 +1,31 @@
-import { Box, Button, Center, useToast, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  IconButton,
+  Input,
+  Switch,
+  useToast,
+  Text,
+} from "@chakra-ui/react";
+import Admin, { AdminProps } from "archive/AdminWidget2";
 import { GetServerSideProps } from "next";
+import { useState } from "react";
 import Router from "next/router";
+import Layout from "components/Layout/MainLayout";
 import SearchView from "components/SearchView";
+import { errorToast, successToast } from "services/toasty";
 import prisma from "services/prisma";
+import { AddIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
+import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { poster } from "services/poster";
 import AdminLayout from "components/Layout/AdminLayout";
 import { User } from "next-auth";
 import UserWidget from "components/Widget/UserWidget";
+import { start } from "repl";
 import { responsiveHeaderFontSize, responsivePx } from "services/constants";
 
 type PageProps = {

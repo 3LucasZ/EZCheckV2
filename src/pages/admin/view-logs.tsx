@@ -8,7 +8,6 @@ import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "archive/AdminWidget2";
 import LogWidget, { LogProps } from "components/Widget/LogWidget";
 import AdminLayout from "components/Layout/AdminLayout";
-import { TextingBar } from "components/Layout/TextingBar";
 
 type PageProps = {
   admins: AdminProps[];
@@ -16,26 +15,16 @@ type PageProps = {
 };
 export default function Home({ admins, logs }: PageProps) {
   const { data: session } = useSession();
-  const user = session?.user;
+  const isAdmin = session?.user.isAdmin;
   return (
-    <AdminLayout isAdmin={user?.isAdmin} isSupervisor={user?.isSupervising}>
+    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
       <Box gap="8px" overflowY="auto" px="5" display="grid">
         <Box minH="0px"></Box>
-        <LogWidget
-          log={{
-            id: -1,
-            timestamp: new Date().toLocaleString(),
-            message:
-              "Hello! Welcome to the start of EZCheck logs. Here, you can get notified of who used what machine during every point of the day. You can even create your own cusotm logs.",
-            level: 0,
-          }}
-        ></LogWidget>
         {logs.map((log) => (
           <LogWidget log={log}></LogWidget>
         ))}
         <Box minH="0px"></Box>
       </Box>
-      <TextingBar />
     </AdminLayout>
   );
 }

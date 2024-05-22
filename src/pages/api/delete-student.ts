@@ -6,13 +6,14 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const { id } = req.body;
   try {
-    const op = await prisma.machine.create({
-      data: {
-        name: "Machine-" + new Date().getTime(),
+    const op = await prisma.student.delete({
+      where: {
+        id: id,
       },
     });
-    return res.status(200).json(op.id);
+    return res.status(200).json(op);
   } catch (e) {
     return res.status(500).json(prismaErrHandler(e));
   }

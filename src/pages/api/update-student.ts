@@ -27,7 +27,6 @@ export default async function handle(
   if (newPIN == "") return res.status(500).json("PIN can't be empty");
   try {
     const op = await prisma.user.update({
-      //very robust: only add what is given via ...
       where: {
         id,
       },
