@@ -1,15 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { debugMode } from "services/constants";
 import createLog from "services/createLog";
 import prisma from "services/prisma";
 import { prismaErrHandler } from "services/prismaErrHandler";
+import { TypedRequestBody } from "types/req";
 
 export default async function handle(
-  req: NextApiRequest,
+  req: TypedRequestBody<{
+    machineName: string;
+    studentPIN: string;
+    IP: string;
+  }>,
   res: NextApiResponse
 ) {
   const { machineName, studentPIN, IP } = req.body;
-
   //find machine
   const machine = await prisma.machine.findUnique({
     where: {
@@ -20,29 +23,34 @@ export default async function handle(
     },
   });
   //find student
-  const student = await prisma.student.findUnique({
+  const student = await prisma.user.findUnique({
     where: {
       PIN: studentPIN,
     },
     include: {
-      machines: true,
+      certificates: {
+        include: {
+          machine: true,
+        },
+      },
       using: true,
     },
   });
+  //TODO: special case for admin
   //find supervisors
-  const supervisors = await prisma.admin.findMany({
+  const supervisors = await prisma.user.findMany({
     where: {
-      supervising: true,
+      isSupervising: true,
     },
   });
   const supervisorsMsg = supervisors.length
     ? "Supervisors: " +
       supervisors.map((supervisor) => supervisor.email).join(", ") +
       "."
-    : "No supervisors available.";
+    : "Unsupervised.";
   //find student allowed machines
   const machinesStr = student
-    ? student.machines.map((machine) => machine.name)
+    ? student.certificates.map((cert) => cert.machine.name)
     : [];
 
   //check cases
@@ -99,9 +107,7 @@ export default async function handle(
         supervisorsMsg,
       2
     );
-    return res
-      .status(500)
-      .send(machine.name + " already in use by " + machine.usedBy.name + ".");
+    return res.status(500).send("Already in use by " + machine.usedBy.name);
   } else if (!machinesStr.includes(machineName)) {
     createLog(
       student.name +
@@ -129,7 +135,7 @@ export default async function handle(
       );
       return res.status(200).send(student.name);
     } catch (e) {
-      createLog("Database error: " + prismaErrHandler(e), 2);
+      createLog("Database malfunction: " + prismaErrHandler(e), 2);
       return res.status(500).send("Internal error");
     }
   }

@@ -1,9 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "services/prisma";
 import { prismaErrHandler } from "services/prismaErrHandler";
+import { TypedRequestBody } from "types/req";
 
 export default async function handle(
-  req: NextApiRequest,
+  req: TypedRequestBody<{}>,
   res: NextApiResponse
 ) {
   try {

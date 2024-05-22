@@ -13,13 +13,13 @@ const defaultUser: UserProps = {
 export type MachineProps = {
   id: number;
   name: string;
-  description: string;
-  image: string;
+  description?: string;
+  image?: string;
 
   lastSeen?: string;
   IP?: string;
 
-  certificates: CertificateProps[];
+  certificates?: CertificateProps[];
   usedBy?: UserProps;
 };
 const defaultMachine: MachineProps = {

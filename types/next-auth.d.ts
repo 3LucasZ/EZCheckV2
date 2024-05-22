@@ -7,33 +7,20 @@ declare module "next-auth" {
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session {
-    user: {
-      //basic
-      id: string;
-      email: string;
-      name: string;
-      image: string;
-      //custom student
-      PIN: string;
-      certificates: CertificateProps[];
-      using?: MachineProps;
-      //custom admin
-      isAdmin: boolean;
-      isSupervising: boolean;
-    } & DefaultSession["user"];
+    user: User & DefaultSession["user"];
   }
   interface User {
     //basic
-    id: string;
-    email: string;
-    name: string;
-    image: string;
+    id?: string;
+    email?: string;
+    name?: string | null;
+    image?: string;
     //custom student
-    PIN: string;
-    certificates: CertificateProps[];
+    PIN?: string;
+    certificates?: CertificateProps[];
     using?: MachineProps;
     //custom admin
-    isAdmin: boolean;
-    isSupervising: boolean;
+    isAdmin?: boolean;
+    isSupervising?: boolean;
   }
 }
