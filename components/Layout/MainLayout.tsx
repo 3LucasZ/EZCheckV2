@@ -7,7 +7,7 @@ type LayoutProps = {
   // isAdmin: boolean | undefined;
   authorized?: boolean;
   loading?: boolean;
-  children?: ReactNode;
+  children: ReactNode;
 };
 export default function Layout(props: LayoutProps) {
   // set content based on: loading, authorized
