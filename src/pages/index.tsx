@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <Header isAdmin={isAdmin} isSupervisor={session?.user.supervising} />
+        <Header isAdmin={isAdmin} isSupervisor={session?.user.isSupervising} />
         <Box px={responsivePx} overflow={"auto"}>
           <Box h="20"></Box>
           <Heading
@@ -50,7 +50,7 @@ export default function Home() {
           >
             Machine management{" "}
             <Text
-              as={"span"}
+              // as={"span"}
               bgGradient={"linear(to-r, orange.300, red.400)"}
               bgClip={"text"}
             >
@@ -68,7 +68,7 @@ export default function Home() {
             colorScheme={"orange"}
             bg={"orange.300"}
             _hover={{ bg: "orange.500" }}
-            onClick={(e) => {
+            onClick={(e: any) => {
               e.preventDefault();
               session
                 ? Router.push(isAdmin ? "/admin/home" : "/student/home")

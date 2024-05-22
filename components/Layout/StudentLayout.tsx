@@ -7,7 +7,7 @@ type LayoutProps = {
   isStudent: boolean;
   isAdmin: boolean | undefined;
   isSupervisor: boolean;
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 export default function StudentLayout({

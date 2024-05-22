@@ -18,7 +18,7 @@ import AppBar from "./AppBar";
 type LayoutProps = {
   isAdmin: boolean | undefined;
   isSupervisor: boolean | undefined;
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 export default function AdminLayout({
