@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <Header isAdmin={isAdmin} isSupervisor={session?.user.supervising} />
+        <Header isAdmin={isAdmin} isSupervisor={session?.user.isSupervising} />
         <Box px={responsivePx} overflow={"auto"}>
           <Box h="20"></Box>
           <Heading
