@@ -68,7 +68,7 @@ export default function Home() {
             colorScheme={"orange"}
             bg={"orange.300"}
             _hover={{ bg: "orange.500" }}
-            onClick={(e) => {
+            onClick={(e: any) => {
               e.preventDefault();
               session
                 ? Router.push(isAdmin ? "/admin/home" : "/student/home")

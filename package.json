@@ -26,7 +26,7 @@
     "@types/react-dom": "18.0.11",
     "@types/three": "^0.164.1",
     "chakra-react-select": "^4.6.0",
-    "eslint": "8.34.0",
+    "eslint": "^9.3.0",
     "eslint-config-next": "^14.2.3",
     "framer-motion": "^10.0.0",
     "next": "^14.2.3",
