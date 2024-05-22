@@ -3,8 +3,6 @@ import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
 
-import { checkAdmin, getMyAdmin } from "services/userHandler";
-
 import { Box, Link, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { AdminProps } from "archive/AdminWidget2";
 import Header from "components/Layout/Header";

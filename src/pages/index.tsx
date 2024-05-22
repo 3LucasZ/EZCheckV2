@@ -23,7 +23,6 @@ import { GiSewingMachine, GiTeacher } from "react-icons/gi";
 import { IoDocumentText } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 
-import { checkAdmin, getMyAdmin } from "services/userHandler";
 import { AdminProps } from "archive/AdminWidget2";
 import { RiAdminLine } from "react-icons/ri";
 import { PiStudent, PiStudentBold, PiStudentDuotone } from "react-icons/pi";
@@ -40,7 +39,7 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <Header isAdmin={isAdmin} isSupervisor={session?.user.supervising} />
+        <Header isAdmin={isAdmin} isSupervisor={session?.user.isSupervising} />
         <Box px={responsivePx} overflow={"auto"}>
           <Box h="20"></Box>
           <Heading
