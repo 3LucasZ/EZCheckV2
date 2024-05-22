@@ -22,9 +22,9 @@ import { FaWrench } from "react-icons/fa6";
 
 export default function Home() {
   const { data: session } = useSession();
-  const isAdmin = session?.user.isAdmin;
+  const user = session?.user;
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
+    <AdminLayout isAdmin={user?.isAdmin} isSupervisor={user?.isSupervising}>
       <SimpleGrid
         columns={[1, 2]}
         overflowY="auto"

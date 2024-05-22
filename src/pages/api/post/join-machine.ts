@@ -20,19 +20,19 @@ export default async function handle(
     },
   });
   //find student
-  const student = await prisma.student.findUnique({
+  const student = await prisma.user.findUnique({
     where: {
       PIN: studentPIN,
     },
     include: {
-      machines: true,
+      certificates: true,
       using: true,
     },
   });
   //find supervisors
-  const supervisors = await prisma.admin.findMany({
+  const supervisors = await prisma.user.findMany({
     where: {
-      supervising: true,
+      isSupervising: true,
     },
   });
   const supervisorsMsg = supervisors.length
@@ -42,7 +42,7 @@ export default async function handle(
     : "No supervisors available.";
   //find student allowed machines
   const machinesStr = student
-    ? student.machines.map((machine) => machine.name)
+    ? student.certificates.map((cert) => cert.machineId)
     : [];
 
   //check cases

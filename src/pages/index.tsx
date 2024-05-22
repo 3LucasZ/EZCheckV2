@@ -36,11 +36,11 @@ import Router from "next/router";
 
 export default function Home() {
   const { data: session } = useSession();
-  const isAdmin = session?.user.isAdmin;
+  const user = session?.user;
   return (
     <>
       <Layout>
-        <Header isAdmin={isAdmin} isSupervisor={session?.user.supervising} />
+        <Header isAdmin={user?.isAdmin} isSupervisor={user?.isSupervising} />
         <Box px={responsivePx} overflow={"auto"}>
           <Box h="20"></Box>
           <Heading
@@ -71,7 +71,7 @@ export default function Home() {
             onClick={(e) => {
               e.preventDefault();
               session
-                ? Router.push(isAdmin ? "/admin/home" : "/student/home")
+                ? Router.push(user?.isAdmin ? "/admin/home" : "/student/home")
                 : signIn("google", { callbackUrl: "/main" });
             }}
           >

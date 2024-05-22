@@ -1,25 +1,19 @@
 import {
-  Badge,
   ButtonGroup,
   Center,
   Flex,
   IconButton,
-  Spacer,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon, SettingsIcon } from "@chakra-ui/icons";
+import { DeleteIcon, SettingsIcon } from "@chakra-ui/icons";
 import { GetServerSideProps } from "next";
 import Router from "next/router";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import SearchView from "components/SearchView";
 import { useSession } from "next-auth/react";
 import prisma from "services/prisma";
-import { StudentProps } from "archive/StudentWidget";
-import { CertificateProps, defaultMachine, MachineProps } from "types/db";
-import { checkAdmin, getMyAdmin } from "services/userHandler";
-import { AdminProps } from "archive/AdminWidget2";
-import StudentWidget2 from "archive/StudentWidget2";
+import { CertificateProps, MachineProps } from "types/db";
 import AdminLayout from "components/Layout/AdminLayout";
 import { poster } from "services/poster";
 import UserWidget from "components/Widget/UserWidget";
@@ -28,7 +22,6 @@ import { useState } from "react";
 import { redBtn, responsivePx, tealBtn } from "services/constants";
 import EditableTitle from "components/Composable/EditableTitle";
 import EditableSubtitle from "components/Composable/EditableSubtitle";
-import CertificateWidget from "components/Widget/CertificateWidget";
 import { User } from "next-auth";
 type PageProps = {
   machine: MachineProps;

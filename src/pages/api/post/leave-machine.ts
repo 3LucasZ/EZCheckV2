@@ -21,9 +21,9 @@ export default async function handle(
   //find student
   const student = machine?.usedBy;
   //find supervisors
-  const supervisors = await prisma.admin.findMany({
+  const supervisors = await prisma.user.findMany({
     where: {
-      supervising: true,
+      isSupervising: true,
     },
   });
   const supervisorsMsg = supervisors.length

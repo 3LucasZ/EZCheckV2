@@ -15,7 +15,7 @@ import { MachineProps } from "types/db";
 import MachineWidget from "components/Widget/MachineWidget";
 
 import { Text } from "@chakra-ui/react";
-import { responsiveHeaderFontSize } from "services/constants";
+import { orangeBtn, responsiveHeaderFontSize } from "services/constants";
 
 type PageProps = {
   machines: MachineProps[];
@@ -55,8 +55,7 @@ export default function ManageMachines({ machines }: PageProps) {
           }
         }}
         icon={AddIcon}
-        bg="orange.200"
-        hoverBg="orange.300"
+        sx={orangeBtn}
       />
     </AdminLayout>
   );

@@ -38,12 +38,12 @@ type PageProps = {
 };
 export default function Home({ queryName }: PageProps) {
   const { data: session } = useSession();
-  const isAdmin = session?.user.isAdmin;
+  const user = session?.user;
   const toaster = useToast();
 
   const [name, setName] = useState<string>(queryName);
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
+    <AdminLayout isAdmin={user?.isAdmin} isSupervisor={user?.isSupervising}>
       <Flex
         flexDir="column"
         gap="10"

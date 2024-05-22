@@ -15,9 +15,9 @@ type PageProps = {
 };
 export default function Home({ admins, logs }: PageProps) {
   const { data: session } = useSession();
-  const isAdmin = session?.user.isAdmin;
+  const user = session?.user;
   return (
-    <AdminLayout isAdmin={isAdmin} isSupervisor={session?.user.supervising}>
+    <AdminLayout isAdmin={user?.isAdmin} isSupervisor={user?.isSupervising}>
       <Box gap="8px" overflowY="auto" px="5" display="grid">
         <Box minH="0px"></Box>
         {logs.map((log) => (
