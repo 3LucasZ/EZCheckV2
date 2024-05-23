@@ -1,27 +1,19 @@
 "use client";
 
-import { useRef } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { Mesh } from "three";
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 function MeshComponent() {
-  const fileUrl = "shiba/scene.gltf";
-  const mesh = useRef<Mesh>(null!);
-  const gltf = useLoader(GLTFLoader, fileUrl);
-
-  //   useFrame(() => {
-  //     mesh.current.rotation.y += 0.01;
-  //   });
-
+  const width = 1.13;
+  const height = 1.35;
+  const depth = 0.5;
   return (
-    <mesh position={[1, 1, 1]}>
-      <boxGeometry args={[3, 3, 3]} />
+    <mesh position={[0, 0, 0]}>
+      <boxGeometry args={[1.13, 1.35, 0.5]} />
       <meshStandardMaterial />
-      <mesh position={[1, 1, 1]}>
-        <boxGeometry args={[3, 3, 3]} />
+      <mesh position={[0, 1.35, 0]}>
+        <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial />
       </mesh>
     </mesh>
