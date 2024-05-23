@@ -5,6 +5,7 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Mesh } from "three";
+import { Box, Flex } from "@chakra-ui/react";
 
 function MeshComponent() {
   const fileUrl = "shiba/scene.gltf";
@@ -16,21 +17,26 @@ function MeshComponent() {
   //   });
 
   return (
-    <mesh ref={mesh}>
-      <primitive object={gltf.scene} />
+    <mesh position={[1, 1, 1]}>
+      <boxGeometry args={[3, 3, 3]} />
+      <meshStandardMaterial />
+      <mesh position={[1, 1, 1]}>
+        <boxGeometry args={[3, 3, 3]} />
+        <meshStandardMaterial />
+      </mesh>
     </mesh>
   );
 }
 
 export function EZCheck() {
   return (
-    <div className="flex justify-center items-center h-screen">
+    <Flex bg="black" h="100vh">
       <Canvas>
         <OrbitControls />
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
+        <ambientLight intensity={0.1} />
+        <directionalLight color="red" position={[0, 0, 5]} />
         <MeshComponent />
       </Canvas>
-    </div>
+    </Flex>
   );
 }
