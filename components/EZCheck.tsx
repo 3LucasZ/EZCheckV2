@@ -4,16 +4,23 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Flex } from "@chakra-ui/react";
 
-function MeshComponent() {
-  const width = 1.13;
-  const height = 1.35;
-  const depth = 0.5;
+function LED() {}
+function Frame() {
+  const boxWidth = 1.13;
+  const boxHeight = 1.35;
+  const boxDepth = 0.5;
+
+  const ledRadius = boxDepth / 2;
+  const ledHeight = 0.3;
+
   return (
     <mesh position={[0, 0, 0]}>
-      <boxGeometry args={[1.13, 1.35, 0.5]} />
+      <boxGeometry args={[boxWidth, boxHeight, boxDepth]} />
       <meshStandardMaterial />
-      <mesh position={[0, 1.35, 0]}>
-        <boxGeometry args={[1, 1, 1]} />
+      <mesh
+        position={[-boxWidth / 2 + ledRadius, boxHeight / 2 + ledHeight / 2, 0]}
+      >
+        <cylinderGeometry args={[ledRadius, ledRadius, ledHeight]} />
         <meshStandardMaterial />
       </mesh>
     </mesh>
@@ -27,7 +34,7 @@ export function EZCheck() {
         <OrbitControls />
         <ambientLight intensity={0.1} />
         <directionalLight color="red" position={[0, 0, 5]} />
-        <MeshComponent />
+        <Frame />
       </Canvas>
     </Flex>
   );
